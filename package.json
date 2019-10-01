@@ -1,0 +1,32 @@
+{
+  "name": "ddd-forum",
+  "version": "1.0.0",
+  "description": "Learn how to build a hacker news-type app with TypeScript & DDD",
+  "main": "index.js",
+  "scripts": {
+    "build:public": "cd public/app && npm run build",
+    "start:public": "cd public/app && npm run start",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stemmlerjs/ddd-forum.git"
+  },
+  "keywords": [
+    "ddd",
+    "typescript"
+  ],
+  "author": "Khalil Stemmler <khalil@khalilstemmler.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/stemmlerjs/ddd-forum/issues"
+  },
+  "homepage": "https://github.com/stemmlerjs/ddd-forum#readme",
+  "devDependencies": {
+    "@types/express": "^4.17.1",
+    "@types/node": "^12.7.8"
+  },
+  "dependencies": {
+    "express-rate-limit": "^5.0.0"
+  }
+}

@@ -1,0 +1,117 @@
+
+
+
+.app-container
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+
+  .editor-container
+    width: 40%;
+    padding-right: 1.5rem;
+
+    .editor-container-inner
+      position: fixed;
+      width: 30vw;
+      max-width: 370px;
+
+      h2 
+        margin-top: 0;
+
+      .editor .quill
+        min-height: 400px;
+
+
+  .comments-container
+    width: 60%;
+    padding-left: 1.5rem;
+
+    .total
+      font-weight: 500;
+
+    .comment-section
+      display: flex;
+      flex-direction: row;
+      margin-bottom: 2rem;
+
+      .comment-section-item
+        margin-right: 1rem;
+        text-align: center;
+        font-size: 1.2rem;
+        cursor: pointer;
+
+        &.selected
+          border-bottom: solid 4px black;
+          font-weight: bold;
+
+
+    .comment
+      margin-bottom: 1rem;
+      border-radius: 3px;
+      padding: 1rem;
+      transition: 0.2s all;
+
+      &.selected
+        background: #ff006c1a;
+        border: solid 3px #da095142;
+
+      .name
+        font-weight: bold;
+        font-size: 1.7rem;
+        cursor: pointer;
+
+      .link
+        color: #FF1055;
+        text-decoration: none;
+
+      .content
+        font-weight: 500;
+
+      .date
+        font-size: 0.8rem;
+        font-weight: 600;
+        padding-bottom: 0.5rem;
+
+        span
+          background: #FF1055;
+          color: darken(#FF1055, 25%);
+          border-radius: 3px;
+          padding: 0.5rem;
+          padding-top: 0.2rem;
+          padding-bottom: 0.2rem;
+          display: inline-block;
+          font-weight: 500;
+          margin-right: 0.5rem;
+
+
+.comment-selected
+  background: #ff006c1a;
+  border: solid 3px #da095142;
+  padding: 1rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  font-weight: bold;
+
+  span 
+    margin-left: 1rem;
+
+  img 
+    cursor: pointer;
+
+.comment-actions
+  margin-bottom: 1rem;
+
+  .buttons
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    
+    .button
+      width: 49%;
+
+.settings-button
+  position: absolute;
+  right: 2rem;
+  cursor: pointer;
