@@ -3,8 +3,7 @@ import React from 'react';
 import { Layout } from '../layout';
 import Header from '../components/shared/header/components/Header';
 import { Button } from '../components/shared/button';
-
-type PostFilterType = 'POPULAR' | 'NEW';
+import PostFilters, { PostFilterType } from '../components/posts/filters/components/PostFilters';
 
 interface IndexPageProps {
 
@@ -27,6 +26,14 @@ class IndexPage extends React.Component<IndexPageProps, IndexPageState> {
 
   }
 
+  setActiveFilter (filter: PostFilterType) {
+    console.log(filter);
+    this.setState({
+      ...this,
+      activeFilter: filter
+    })
+  }
+
   render () {
     const { activeFilter } = this.state;
 
@@ -45,10 +52,10 @@ class IndexPage extends React.Component<IndexPageProps, IndexPageState> {
         <br/>
         <br/>
 
-        <div className="post-filters">
-          <div className={`post-filter ${activeFilter === 'POPULAR' ? 'active' : ''}`}>Popular</div>
-          <div className={`post-filter ${activeFilter === 'NEW' ? 'active' : ''}`}>New</div>
-        </div>
+        <PostFilters
+          activeFilter={activeFilter} 
+          onClick={(filter) => this.setActiveFilter(filter)}
+        />
 
       </Layout>
     )
