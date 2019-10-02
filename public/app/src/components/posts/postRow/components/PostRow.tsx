@@ -14,6 +14,9 @@ const PostRow: React.FC<PostRowProps> = (props) => (
     </div>
     <div className="content">
       <p>{props.title}</p>
+      <div>
+        
+      </div>
     </div>
   </div>
 )

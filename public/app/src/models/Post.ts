@@ -1,8 +1,8 @@
 
 export interface Post {
   title: string;
-  createdAt: string;
+  createdAt: string | Date;
   postAuthor: string;
   numComments: number;
-  upvotes: number;
+  points: number;
 }

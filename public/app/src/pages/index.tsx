@@ -4,6 +4,27 @@ import { Layout } from '../layout';
 import Header from '../components/shared/header/components/Header';
 import { Button } from '../components/shared/button';
 import PostFilters, { PostFilterType } from '../components/posts/filters/components/PostFilters';
+import { Post } from '../models/Post';
+import { DateUtil } from '../utils/DateUtil';
+import { PostRow } from '../components/posts/postRow';
+
+const posts: Post[] = [
+  { 
+    title: "Where the hell do I even start with Domain-Driven Design?",
+    createdAt: DateUtil.createPreviousDate(0, 0, 10),
+    postAuthor: 'stemmlerjs',
+    points: 143,
+    numComments: 150
+  },
+  { 
+    title: "Help with Aggregregate Design",
+    createdAt: DateUtil.createPreviousDate(0, 0, 15),
+    postAuthor: 'jimmyuringer',
+    points: 50,
+    numComments: 60
+  }
+]
+
 
 interface IndexPageProps {
 
@@ -56,6 +77,10 @@ class IndexPage extends React.Component<IndexPageProps, IndexPageState> {
           activeFilter={activeFilter} 
           onClick={(filter) => this.setActiveFilter(filter)}
         />
+
+        {posts.map((p, i) => (
+          <PostRow key={i} {...p}/>
+        ))}
 
       </Layout>
     )
