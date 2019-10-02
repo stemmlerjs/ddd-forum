@@ -16,14 +16,18 @@ const posts: Post[] = [
     points: 143,
     numComments: 150,
     slug: '/discuss/where-to-do-ddd',
+    comments: [],
+    text: 'content goes here :)'
   },
   { 
-    title: "Help with Aggregregate Design",
+    title: "Help with Aggregate Design",
     createdAt: DateUtil.createPreviousDate(0, 0, 15),
     postAuthor: 'jimmyuringer',
     points: 50,
     numComments: 60,
-    slug: '/discuss/help-with-aggregate-design'
+    slug: '/discuss/help-with-aggregate-design',
+    comments: [],
+    text: 'content goes here :)'
   },
   { 
     title: "CQRS Killed My App and I Don’t Like It",
@@ -31,7 +35,9 @@ const posts: Post[] = [
     postAuthor: 'wesbos',
     points: 42,
     numComments: 32,
-    slug: '/discuss/cqrs-killed-my-app'
+    slug: '/discuss/cqrs-killed-my-app',
+    comments: [],
+    text: 'content goes here :)'
   },
   { 
     title: "Guys, it’s REDUX for DDD (Domain Events)",
@@ -39,7 +45,9 @@ const posts: Post[] = [
     postAuthor: 'danabramov',
     points: 12,
     numComments: 32,
-    slug: '/discuss/ddd-redux'
+    slug: '/discuss/ddd-redux',
+    comments: [],
+    text: 'content goes here :)'
   }
 ]
 

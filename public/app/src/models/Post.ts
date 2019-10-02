@@ -1,4 +1,6 @@
 
+import { Comment } from "./Comment";
+
 export interface Post {
   slug: string;
   title: string;
@@ -6,4 +8,8 @@ export interface Post {
   postAuthor: string;
   numComments: number;
   points: number;
+  comments: Comment[];
+  text: string;
 }
+
+
