@@ -3,3 +3,5 @@
 npm-debug.log
 .DS_Store
 /templates
+# Local Netlify folder
+.netlify
