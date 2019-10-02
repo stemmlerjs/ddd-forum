@@ -14,28 +14,41 @@ const posts: Post[] = [
     createdAt: DateUtil.createPreviousDate(0, 0, 10),
     postAuthor: 'stemmlerjs',
     points: 143,
-    numComments: 150
+    numComments: 150,
+    slug: '/discuss/where-to-do-ddd',
   },
   { 
     title: "Help with Aggregregate Design",
     createdAt: DateUtil.createPreviousDate(0, 0, 15),
     postAuthor: 'jimmyuringer',
     points: 50,
-    numComments: 60
+    numComments: 60,
+    slug: '/discuss/help-with-aggregate-design'
+  },
+  { 
+    title: "CQRS Killed My App and I Don’t Like It",
+    createdAt: DateUtil.createPreviousDate(0, 0, 30),
+    postAuthor: 'wesbos',
+    points: 42,
+    numComments: 32,
+    slug: '/discuss/cqrs-killed-my-app'
+  },
+  { 
+    title: "Guys, it’s REDUX for DDD (Domain Events)",
+    createdAt: DateUtil.createPreviousDate(0, 1, 0),
+    postAuthor: 'danabramov',
+    points: 12,
+    numComments: 32,
+    slug: '/discuss/ddd-redux'
   }
 ]
-
-
-interface IndexPageProps {
-
-}
 
 interface IndexPageState {
   activeFilter: PostFilterType;
 }
 
-class IndexPage extends React.Component<IndexPageProps, IndexPageState> {
-  constructor (props: IndexPageProps) {
+class IndexPage extends React.Component<any, IndexPageState> {
+  constructor (props: any) {
     super(props);
 
     this.state = {
@@ -48,7 +61,6 @@ class IndexPage extends React.Component<IndexPageProps, IndexPageState> {
   }
 
   setActiveFilter (filter: PostFilterType) {
-    console.log(filter);
     this.setState({
       ...this,
       activeFilter: filter
