@@ -7,14 +7,23 @@ import { Guard } from "shared/core/Guard";
 import { Result } from "shared/core/Result";
 import { UserId } from "./userId";
 import { UserCreated } from "./events/userCreated";
+import { UserPassword } from "./userPassword";
+import { JWTToken } from "./jwt";
+import { UserLoggedIn } from "./events/userLoggedIn";
 
 interface UserProps {
-  userId: UserId;
   email: UserEmail;
   username: UserName;
+  password: UserPassword;
+  jwtToken?: JWTToken;
 }
 
 export class User extends AggregateRoot<UserProps> {
+
+  get userId (): UserId {
+    return UserId.create(this._id)
+      .getValue();
+  }
 
   get email (): UserEmail {
     return this.props.email;
@@ -22,6 +31,19 @@ export class User extends AggregateRoot<UserProps> {
 
   get username (): UserName {
     return this.props.username;
+  }
+
+  get password (): UserPassword {
+    return this.props.password;
+  }
+
+  get jwtToken (): string {
+    return this.props.jwtToken;
+  }
+
+  public setCurrentAccessToken (token: JWTToken): void {
+    this.addDomainEvent(new UserLoggedIn(this));
+    this.props.jwtToken = token;
   }
 
   private constructor (props: UserProps, id?: UniqueEntityID) {

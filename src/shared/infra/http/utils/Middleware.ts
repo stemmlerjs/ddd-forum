@@ -1,5 +1,5 @@
 
-import { isProduction } from "../../../config";
+import { isProduction } from "../../../../config";
 const rateLimit = require('express-rate-limit')
 
 export class Middleware {

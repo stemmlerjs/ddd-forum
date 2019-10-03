@@ -11,6 +11,10 @@ export class UserName extends ValueObject<UserNameProps> {
   public static maxLength: number = 15;
   public static minLength: number = 2;
 
+  get value (): string {
+    return this.props.name;
+  }
+
   private constructor (props: UserNameProps) {
     super(props);
   }

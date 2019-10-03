@@ -13,7 +13,8 @@
     "typeRoots" : ["./node_modules/@types", "./src/@types"],
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "baseUrl": "./src"
+    "baseUrl": "./src",
+    "esModuleInterop": true
   },
   "include": [
     "src/*.ts",

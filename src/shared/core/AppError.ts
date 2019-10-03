@@ -1,14 +1,14 @@
 
 import { Result } from "./Result";
-import { DomainError } from "../domain/DomainError";
+import { UseCaseError } from "shared/domain/UseCaseError";
 
 export namespace AppError {
-  export class UnexpectedError extends Result<DomainError> {
+  export class UnexpectedError extends Result<UseCaseError> {
     public constructor (err: any) {
       super(false, {
         message: `An unexpected error occurred.`,
         error: err
-      } as DomainError)
+      } as UseCaseError)
       console.log(`[AppError]: An unexpected error occurred`);
       console.error(err);
     }
