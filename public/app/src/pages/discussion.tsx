@@ -7,6 +7,9 @@ import { DateUtil } from '../utils/DateUtil';
 import PostSummary from '../components/posts/post/components/PostSummary';
 import PostComment from '../components/posts/post/components/PostComment';
 import { Comment } from '../models/Comment';
+import { BackNavigation } from '../components/shared/header';
+import { Button } from '../components/shared/button';
+import { CommentUtil } from '../utils/CommentUtil';
 
 const post: Post = { 
   title: "Where the hell do I even start with Domain-Driven Design?",
@@ -22,6 +25,7 @@ const post: Post = {
       postAuthor: "elonmusk",
       createdAt: DateUtil.createPreviousDate(0, 0, 10),
       childComments: [],
+      postSlug: '/discuss/where-to-do-ddd',
     },
     {
       commentId: '1',
@@ -33,6 +37,7 @@ const post: Post = {
       postAuthor: "elonmusk",
       createdAt: DateUtil.createPreviousDate(0, 0, 10),
       childComments: [],
+      postSlug: '/discuss/where-to-do-ddd',
     },
     {
       commentId: '2',
@@ -42,6 +47,7 @@ const post: Post = {
       postAuthor: "dondraper",
       createdAt: DateUtil.createPreviousDate(0, 0, 10),
       childComments: [],
+      postSlug: '/discuss/where-to-do-ddd',
     },
     {
       commentId: '3',
@@ -51,6 +57,7 @@ const post: Post = {
       postAuthor: "tonysoprano",
       createdAt: DateUtil.createPreviousDate(0, 0, 10),
       childComments: [],
+      postSlug: '/discuss/where-to-do-ddd',
     }
   ],
   text: `
@@ -82,37 +89,24 @@ class DiscussionPage extends React.Component<any, DiscussionState> {
     })
   }
 
-  getSortedComments () {
-    let comments = this.state.comments;
-
-    comments.forEach((c) => {
-      const hasParentComment = !!c.parentCommentId === true;
-      if (hasParentComment) {
-        // get the index of the parent comment
-        const parentCommentIndex = comments.findIndex((cc) => cc.commentId === c.parentCommentId);
-        
-        if (parentCommentIndex !== -1) {
-          comments[parentCommentIndex].childComments.push(c)
-        }
-      }
-    });
-
-    return comments.filter((c) => !!c.parentCommentId === false);
-  }
-
   componentDidMount () {
     this.getCommentsFromAPI();
   }
 
   render () {
-    const comments = this.getSortedComments();
-    console.log(comments);
+    const comments = CommentUtil.getSortedComments(this.state.comments);
     return (
       <Layout>
-        <a href="/">Back to all discussions</a>
-        <Header
-          title={`"${post.title}"`}
-        />
+        <div className="flex flex-row flex-center flex-between">
+          <BackNavigation
+            text="Back to all discussions"
+            to="/"
+          />
+          <Button text="Join" onClick={() => {}} />
+        </div>
+
+        <Header title={`"${post.title}"`} />
+        
         <br/>
         <br/>
         <PostSummary

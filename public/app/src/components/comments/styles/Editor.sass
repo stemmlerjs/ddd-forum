@@ -1,0 +1,29 @@
+.editor  
+  margin-bottom: 1rem;
+
+  .quill
+    border-radius: 3px;
+    border: solid 3px;
+
+    > div
+      border: none;
+
+    .ql-toolbar
+      border-bottom: solid 3px;
+
+  .ql-editor
+    min-height: 90px;
+    transition: 0.2s all;
+
+    &:hover
+      background: #fbfbfb;
+  
+  .ql-editor.ql-blank::before
+    font-size: 0.9rem;
+    font-style: normal;
+
+  .ql-snow .ql-editor pre.ql-syntax
+    font-family: 'Consolas'
+
+  p, u, ul, li, b
+    font-size: 0.9rem;

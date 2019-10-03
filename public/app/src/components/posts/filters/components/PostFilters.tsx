@@ -12,7 +12,7 @@ interface FilterProps {
 }
 
 const Filter:React.FC<FilterProps> = (props) => (
-  <div 
+  <div
     onClick={() => props.onClick(props.filterType)} 
     className={`post-filter ${props.activeFilter === props.filterType ? 'active' : ''}`}>
     {props.text}

@@ -1,5 +1,6 @@
 
 export interface Comment {
+  postSlug: string;
   commentId: string;
   parentCommentId?: string;
   text: string;
