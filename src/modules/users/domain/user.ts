@@ -1,7 +1,7 @@
 
 import { UserEmail } from "./userEmail";
 import { AggregateRoot } from "shared/domain/AggregateRoot";
-import { UserName } from "./username";
+import { UserName } from "./userName";
 import { UniqueEntityID } from "shared/domain/UniqueEntityID";
 import { Guard } from "shared/core/Guard";
 import { Result } from "shared/core/Result";

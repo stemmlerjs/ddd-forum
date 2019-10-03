@@ -6,7 +6,7 @@ import { Either, Result, left, right } from "shared/core/Result";
 import { CreateUserErrors } from "./CreateUserErrors";
 import { UserEmail } from "modules/users/domain/userEmail";
 import { UserPassword } from "modules/users/domain/userPassword";
-import { UserName } from "modules/users/domain/username";
+import { UserName } from "modules/users/domain/userName";
 import { AppError } from "shared/core/AppError";
 import { User } from "modules/users/domain/user";
 

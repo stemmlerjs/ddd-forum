@@ -5,7 +5,7 @@ import { Either, Result, left } from "shared/core/Result";
 import { User } from "modules/users/domain/user";
 import { AppError } from "shared/core/AppError";
 import { IUserRepo } from "modules/users/infra/userRepo";
-import { UserName } from "modules/users/domain/username";
+import { UserName } from "modules/users/domain/userName";
 
 type Response = Either<
   AppError.UnexpectedError |
