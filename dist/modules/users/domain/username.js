@@ -29,4 +29,4 @@ class UserName extends ValueObject_1.ValueObject {
 exports.UserName = UserName;
 UserName.maxLength = 15;
 UserName.minLength = 2;
-//# sourceMappingURL=username.js.map
+//# sourceMappingURL=userName.js.map

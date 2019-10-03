@@ -4,7 +4,7 @@ const Result_1 = require("shared/core/Result");
 const CreateUserErrors_1 = require("./CreateUserErrors");
 const userEmail_1 = require("modules/users/domain/userEmail");
 const userPassword_1 = require("modules/users/domain/userPassword");
-const username_1 = require("modules/users/domain/username");
+const userName_1 = require("modules/users/domain/userName");
 const AppError_1 = require("shared/core/AppError");
 const user_1 = require("modules/users/domain/user");
 class CreateUserUseCase {
@@ -14,7 +14,7 @@ class CreateUserUseCase {
     async execute(request) {
         const emailOrError = userEmail_1.UserEmail.create(request.email);
         const passwordOrError = userPassword_1.UserPassword.create({ value: request.password });
-        const usernameOrError = username_1.UserName.create({ name: request.username });
+        const usernameOrError = userName_1.UserName.create({ name: request.username });
         const dtoResult = Result_1.Result.combine([
             emailOrError, passwordOrError, usernameOrError
         ]);
