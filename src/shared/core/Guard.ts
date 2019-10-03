@@ -20,6 +20,24 @@ export class Guard {
     return { succeeded: true };
   }
 
+  public static againstAtLeast (numChars: number, text: string): IGuardResult {
+    return text.length >= numChars 
+      ? { succeeded: true } 
+      : { 
+          succeeded: false, 
+          message: `Text is not at least ${numChars} chars.`
+      }
+  }
+
+  public static againstAtMost (numChars: number, text: string): IGuardResult {
+    return text.length <= numChars 
+      ? { succeeded: true } 
+      : { 
+          succeeded: false, 
+          message: `Text is greater than ${numChars} chars.`
+      }
+  }
+
   public static againstNullOrUndefined (argument: any, argumentName: string): IGuardResult {
     if (argument === null || argument === undefined) {
       return { succeeded: false, message: `${argumentName} is null or undefined` }

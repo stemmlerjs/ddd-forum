@@ -30,6 +30,7 @@
   },
   "dependencies": {
     "express-rate-limit": "^5.0.0",
-    "react-quill": "^1.3.3"
+    "react-quill": "^1.3.3",
+    "typescript": "^3.6.3"
   }
 }
