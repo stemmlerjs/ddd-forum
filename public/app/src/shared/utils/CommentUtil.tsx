@@ -1,5 +1,5 @@
 
-import { Comment } from "../../models/Comment";
+import { Comment } from "../../modules/forum/models/Comment";
 
 export class CommentUtil {
   public static getSortedComments (comments: Comment[]): Comment[] {

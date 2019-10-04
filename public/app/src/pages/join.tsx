@@ -1,9 +1,9 @@
 
 import React from 'react'
 import { Layout } from '../shared/layout'
-import Header from '../components/shared/header/components/Header'
+import Header from '../shared/components/header/components/Header'
 import { toast } from 'react-toastify';
-import { OnboardTemplate } from '../components/onboarding/onboardTemplate'
+import { OnboardTemplate } from '../modules/users/components/onboarding/onboardTemplate'
 
 interface JoinPageState {
   email: string;

@@ -1,12 +1,12 @@
 
 import React from 'react';
 import { Layout } from '../shared/layout';
-import Header from '../components/shared/header/components/Header';
-import { Button } from '../components/shared/button';
-import PostFilters, { PostFilterType } from '../components/posts/filters/components/PostFilters';
-import { Post } from '../models/Post';
+import Header from '../shared/components/header/components/Header';
+import { Button } from '../shared/components/button';
+import PostFilters, { PostFilterType } from '../modules/forum/components/posts/filters/components/PostFilters';
+import { Post } from '../modules/forum/models/Post';
 import { DateUtil } from '../shared/utils/DateUtil';
-import { PostRow } from '../components/posts/postRow';
+import { PostRow } from '../modules/forum/components/posts/postRow';
 
 const posts: Post[] = [
   { 

@@ -1,9 +1,8 @@
 
-import { BaseAPI } from "../../shared/infra/services/BaseAPI";
+import { BaseAPI } from "../../../shared/infra/services/BaseAPI";
 
 export interface IUsersService {
   createUser (email: string, username: string, password: string): Promise<void>;
-  login (): Promise<any>;
 }
 
 export class UsersService extends BaseAPI implements IUsersService {
@@ -12,11 +11,8 @@ export class UsersService extends BaseAPI implements IUsersService {
   }
 
   async createUser (email: string, username: string, password: string): Promise<void> {
+    await this.post('/users', { email, username, password });
     return;
-  }
-
-  async login (): Promise<any> {
-    return  null;
   }
 }
 

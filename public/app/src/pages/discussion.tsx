@@ -1,14 +1,14 @@
 
 import React from 'react'
 import { Layout } from '../shared/layout';
-import Header from '../components/shared/header/components/Header';
-import { Post } from '../models/Post';
+import Header from '../shared/components/header/components/Header';
+import { Post } from '../modules/forum/models/Post';
 import { DateUtil } from '../shared/utils/DateUtil';
-import PostSummary from '../components/posts/post/components/PostSummary';
-import PostComment from '../components/posts/post/components/PostComment';
-import { Comment } from '../models/Comment';
-import { BackNavigation } from '../components/shared/header';
-import { Button } from '../components/shared/button';
+import PostSummary from '../modules/forum/components/posts/post/components/PostSummary';
+import PostComment from '../modules/forum/components/posts/post/components/PostComment';
+import { Comment } from '../modules/forum/models/Comment';
+import { BackNavigation } from '../shared/components/header';
+import { Button } from '../shared/components/button';
 import { CommentUtil } from '../shared/utils/CommentUtil';
 
 const post: Post = { 

@@ -1,14 +1,14 @@
 
 import React from 'react'
-import { Comment } from '../models/Comment';
+import { Comment } from '../modules/forum/models/Comment';
 import { Layout } from '../shared/layout';
-import Editor from '../components/comments/components/Editor';
-import { SubmitButton, Button } from '../components/shared/button';
-import Header from '../components/shared/header/components/Header';
-import { BackNavigation } from '../components/shared/header';
+import Editor from '../modules/forum/components/comments/components/Editor';
+import { SubmitButton, Button } from '../shared/components/button';
+import Header from '../shared/components/header/components/Header';
+import { BackNavigation } from '../shared/components/header';
 import { DateUtil } from '../shared/utils/DateUtil';
-import PostCommentAuthorAndText from '../components/posts/post/components/PostCommentAuthorAndText';
-import PostComment from '../components/posts/post/components/PostComment';
+import PostCommentAuthorAndText from '../modules/forum/components/posts/post/components/PostCommentAuthorAndText';
+import PostComment from '../modules/forum/components/posts/post/components/PostComment';
 import { CommentUtil } from '../shared/utils/CommentUtil';
 
 interface CommentState {

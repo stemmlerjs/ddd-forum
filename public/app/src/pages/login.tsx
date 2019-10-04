@@ -1,8 +1,8 @@
 
 import React from 'react'
 import { Layout } from '../shared/layout'
-import { OnboardTemplate } from '../components/onboarding/onboardTemplate'
-import Header from '../components/shared/header/components/Header'
+import { OnboardTemplate } from '../modules/users/components/onboarding/onboardTemplate'
+import Header from '../shared/components/header/components/Header'
 
 interface LoginPageState {
   username: string;

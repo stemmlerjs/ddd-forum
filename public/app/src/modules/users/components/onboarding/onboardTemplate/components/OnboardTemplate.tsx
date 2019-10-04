@@ -2,8 +2,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import "../styles/OnboardTemplate.sass"
-import { TextInput } from '../../../shared/text-input'
-import { Button } from '../../../shared/button'
+import { TextInput } from '../../../../../../shared/components/text-input'
+import { Button } from '../../../../../../shared/components/button'
 
 type TemplateType = 'login' | 'signup';
 
