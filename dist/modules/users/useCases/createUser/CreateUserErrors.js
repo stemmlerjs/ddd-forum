@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const Result_1 = require("shared/core/Result");
+const Result_1 = require("../../../../shared/core/Result");
 var CreateUserErrors;
 (function (CreateUserErrors) {
     class EmailAlreadyExistsError extends Result_1.Result {

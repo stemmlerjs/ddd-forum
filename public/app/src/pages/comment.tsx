@@ -1,15 +1,15 @@
 
 import React from 'react'
 import { Comment } from '../models/Comment';
-import { Layout } from '../layout';
+import { Layout } from '../shared/layout';
 import Editor from '../components/comments/components/Editor';
 import { SubmitButton, Button } from '../components/shared/button';
 import Header from '../components/shared/header/components/Header';
 import { BackNavigation } from '../components/shared/header';
-import { DateUtil } from '../utils/DateUtil';
+import { DateUtil } from '../shared/utils/DateUtil';
 import PostCommentAuthorAndText from '../components/posts/post/components/PostCommentAuthorAndText';
-import { CommentUtil } from '../utils/CommentUtil';
 import PostComment from '../components/posts/post/components/PostComment';
+import { CommentUtil } from '../shared/utils/CommentUtil';
 
 interface CommentState {
   comment: Comment | {};

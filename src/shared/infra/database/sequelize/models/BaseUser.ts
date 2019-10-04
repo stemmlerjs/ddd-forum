@@ -7,16 +7,6 @@ export default (sequelize, DataTypes) => {
       allowNull: false,
       primaryKey: true
     },
-    // Optional
-    first_name: {
-      type: DataTypes.STRING(250),
-      allowNull: true
-    },
-    // Optional
-    last_name: {
-      type: DataTypes.STRING(250),
-      allowNull: true
-    },
     user_email: {
       type: DataTypes.STRING(250),
       allowNull: false,

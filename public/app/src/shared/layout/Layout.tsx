@@ -1,8 +1,11 @@
 
 import React from 'react'
 import Helmet from 'react-helmet';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 import "./Layout.sass"
-import { siteMetaData } from '../config/siteMetaData';
+import { siteMetaData } from '../../config/siteMetaData';
 
 interface LayoutProps {
 
@@ -26,7 +29,7 @@ class Layout extends React.Component {
               <link rel="stylesheet" href="//cdn.quilljs.com/1.2.6/quill.snow.css"></link>
             </Helmet>
           }
-          
+          <ToastContainer/>
           {this.props.children}
         </div>
       </div>

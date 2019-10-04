@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const Entity_1 = require("shared/domain/Entity");
-const Result_1 = require("shared/core/Result");
+const Result_1 = require("../../../shared/core/Result");
+const Entity_1 = require("../../../shared/domain/Entity");
 class UserId extends Entity_1.Entity {
     get id() {
         return this._id;

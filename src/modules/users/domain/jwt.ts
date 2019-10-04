@@ -1,10 +1,14 @@
 
 export interface JWTClaims {
   userId: string;
-  isEmailVerified: string;
+  isEmailVerified: boolean;
   email: string;
   adminUser: boolean;
-  sessionId: string;
+  sessionId?: string;
 }; 
 
 export type JWTToken = string;
+
+export type SessionId = string;
+
+export type RefreshToken = string;

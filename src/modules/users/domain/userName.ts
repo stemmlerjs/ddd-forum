@@ -1,7 +1,7 @@
 
-import { ValueObject } from "shared/domain/ValueObject";
-import { Result } from "shared/core/Result";
-import { Guard } from "shared/core/Guard";
+import { Result } from "../../../shared/core/Result";
+import { ValueObject } from "../../../shared/domain/ValueObject";
+import { Guard } from "../../../shared/core/Guard";
 
 interface UserNameProps {
   name: string;

@@ -1,8 +1,8 @@
 
 import * as bcrypt from 'bcrypt-nodejs'
-import { ValueObject } from 'shared/domain/ValueObject';
-import { Guard } from 'shared/core/Guard';
-import { Result } from 'shared/core/Result';
+import { ValueObject } from '../../../shared/domain/ValueObject';
+import { Guard } from '../../../shared/core/Guard';
+import { Result } from '../../../shared/core/Result';
 
 export interface IUserPasswordProps {
   value: string;

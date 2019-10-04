@@ -1,11 +1,11 @@
 
 import React from 'react';
-import { Layout } from '../layout';
+import { Layout } from '../shared/layout';
 import Header from '../components/shared/header/components/Header';
 import { Button } from '../components/shared/button';
 import PostFilters, { PostFilterType } from '../components/posts/filters/components/PostFilters';
 import { Post } from '../models/Post';
-import { DateUtil } from '../utils/DateUtil';
+import { DateUtil } from '../shared/utils/DateUtil';
 import { PostRow } from '../components/posts/postRow';
 
 const posts: Post[] = [

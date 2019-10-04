@@ -1,6 +1,6 @@
 
-import { UseCaseError } from "shared/domain/UseCaseError";
-import { Result } from "shared/core/Result";
+import { UseCaseError } from "../../../../shared/domain/UseCaseError"
+import { Result } from "../../../../shared/core/Result"
 
 export namespace CreateUserErrors {
 
@@ -19,5 +19,6 @@ export namespace CreateUserErrors {
       } as UseCaseError)
     }
   }
+
 
 }

@@ -1,11 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const AggregateRoot_1 = require("shared/domain/AggregateRoot");
-const Guard_1 = require("shared/core/Guard");
-const Result_1 = require("shared/core/Result");
 const userId_1 = require("./userId");
 const userCreated_1 = require("./events/userCreated");
 const userLoggedIn_1 = require("./events/userLoggedIn");
+const userDeleted_1 = require("./events/userDeleted");
+const Result_1 = require("../../../shared/core/Result");
+const Guard_1 = require("../../../shared/core/Guard");
+const AggregateRoot_1 = require("../../../shared/domain/AggregateRoot");
 class User extends AggregateRoot_1.AggregateRoot {
     get userId() {
         return userId_1.UserId.create(this._id)
@@ -20,12 +21,35 @@ class User extends AggregateRoot_1.AggregateRoot {
     get password() {
         return this.props.password;
     }
-    get jwtToken() {
-        return this.props.jwtToken;
+    get accessToken() {
+        return this.props.accessToken;
     }
-    setCurrentAccessToken(token) {
+    get isDeleted() {
+        return this.props.isDeleted;
+    }
+    get isEmailVerified() {
+        return this.props.isEmailVerified;
+    }
+    get isAdminUser() {
+        return this.props.isAdminUser;
+    }
+    get lastLogin() {
+        return this.props.lastLogin;
+    }
+    isLoggedIn() {
+        return !!this.props.accessToken && !!this.props.refreshToken;
+    }
+    setAccessToken(token, refreshToken) {
         this.addDomainEvent(new userLoggedIn_1.UserLoggedIn(this));
-        this.props.jwtToken = token;
+        this.props.accessToken = token;
+        this.props.refreshToken = refreshToken;
+        this.props.lastLogin = new Date();
+    }
+    delete() {
+        if (!this.props.isDeleted) {
+            this.addDomainEvent(new userDeleted_1.UserDeleted(this));
+            this.props.isDeleted = true;
+        }
     }
     constructor(props, id) {
         super(props, id);
@@ -39,7 +63,7 @@ class User extends AggregateRoot_1.AggregateRoot {
             return Result_1.Result.fail(guardResult.message);
         }
         const isNewUser = !!id === false;
-        const user = new User(props, id);
+        const user = new User(Object.assign(Object.assign({}, props), { isDeleted: props.isDeleted ? props.isDeleted : false, isEmailVerified: props.isEmailVerified ? props.isEmailVerified : false, isAdminUser: props.isAdminUser ? props.isAdminUser : false }), id);
         if (isNewUser) {
             user.addDomainEvent(new userCreated_1.UserCreated(user));
         }

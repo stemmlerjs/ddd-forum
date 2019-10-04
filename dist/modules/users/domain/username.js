@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const ValueObject_1 = require("shared/domain/ValueObject");
-const Result_1 = require("shared/core/Result");
-const Guard_1 = require("shared/core/Guard");
+const Result_1 = require("../../../shared/core/Result");
+const ValueObject_1 = require("../../../shared/domain/ValueObject");
+const Guard_1 = require("../../../shared/core/Guard");
 class UserName extends ValueObject_1.ValueObject {
     constructor(props) {
         super(props);

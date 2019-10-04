@@ -1,12 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const Result_1 = require("shared/core/Result");
 const CreateUserErrors_1 = require("./CreateUserErrors");
-const userEmail_1 = require("modules/users/domain/userEmail");
-const userPassword_1 = require("modules/users/domain/userPassword");
-const userName_1 = require("modules/users/domain/userName");
-const AppError_1 = require("shared/core/AppError");
-const user_1 = require("modules/users/domain/user");
+const Result_1 = require("../../../../shared/core/Result");
+const AppError_1 = require("../../../../shared/core/AppError");
+const userEmail_1 = require("../../domain/userEmail");
+const userPassword_1 = require("../../domain/userPassword");
+const userName_1 = require("../../domain/userName");
+const user_1 = require("../../domain/user");
 class CreateUserUseCase {
     constructor(userRepo) {
         this.userRepo = userRepo;

@@ -1,21 +1,27 @@
 
 import { UserEmail } from "./userEmail";
-import { AggregateRoot } from "shared/domain/AggregateRoot";
 import { UserName } from "./userName";
-import { UniqueEntityID } from "shared/domain/UniqueEntityID";
-import { Guard } from "shared/core/Guard";
-import { Result } from "shared/core/Result";
 import { UserId } from "./userId";
 import { UserCreated } from "./events/userCreated";
 import { UserPassword } from "./userPassword";
-import { JWTToken } from "./jwt";
+import { JWTToken, RefreshToken } from "./jwt";
 import { UserLoggedIn } from "./events/userLoggedIn";
+import { UserDeleted } from "./events/userDeleted";
+import { UniqueEntityID } from "../../../shared/domain/UniqueEntityID";
+import { Result } from "../../../shared/core/Result";
+import { Guard } from "../../../shared/core/Guard";
+import { AggregateRoot } from "../../../shared/domain/AggregateRoot";
 
 interface UserProps {
   email: UserEmail;
   username: UserName;
   password: UserPassword;
-  jwtToken?: JWTToken;
+  isEmailVerified?: boolean;
+  isAdminUser?: boolean;
+  accessToken?: JWTToken;
+  refreshToken?: RefreshToken;
+  isDeleted?: boolean;
+  lastLogin?: Date;
 }
 
 export class User extends AggregateRoot<UserProps> {
@@ -37,13 +43,42 @@ export class User extends AggregateRoot<UserProps> {
     return this.props.password;
   }
 
-  get jwtToken (): string {
-    return this.props.jwtToken;
+  get accessToken (): string {
+    return this.props.accessToken;
   }
 
-  public setCurrentAccessToken (token: JWTToken): void {
+  get isDeleted (): boolean {
+    return this.props.isDeleted;
+  }
+
+  get isEmailVerified (): boolean {
+    return this.props.isEmailVerified;
+  }
+
+  get isAdminUser (): boolean {
+    return this.props.isAdminUser;
+  }
+
+  get lastLogin (): Date {
+    return this.props.lastLogin;
+  }
+
+  public isLoggedIn (): boolean {
+    return !!this.props.accessToken && !!this.props.refreshToken
+  }
+
+  public setAccessToken (token: JWTToken, refreshToken: RefreshToken): void {
     this.addDomainEvent(new UserLoggedIn(this));
-    this.props.jwtToken = token;
+    this.props.accessToken = token;
+    this.props.refreshToken = refreshToken;
+    this.props.lastLogin = new Date();
+  }
+
+  public delete (): void {
+    if (!this.props.isDeleted) {
+      this.addDomainEvent(new UserDeleted(this));
+      this.props.isDeleted = true;
+    }
   }
 
   private constructor (props: UserProps, id?: UniqueEntityID) {
@@ -61,7 +96,12 @@ export class User extends AggregateRoot<UserProps> {
     }
 
     const isNewUser = !!id === false;
-    const user = new User(props, id);
+    const user = new User({
+      ...props,
+      isDeleted: props.isDeleted ? props.isDeleted : false,
+      isEmailVerified: props.isEmailVerified ? props.isEmailVerified : false,
+      isAdminUser: props.isAdminUser ? props.isAdminUser : false
+    }, id);
 
     if (isNewUser) {
       user.addDomainEvent(new UserCreated(user));

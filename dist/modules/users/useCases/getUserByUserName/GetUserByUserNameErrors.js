@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const Result_1 = require("shared/core/Result");
+const Result_1 = require("../../../../shared/core/Result");
 var GetUserByUserNameErrors;
 (function (GetUserByUserNameErrors) {
     class UserNotFoundError extends Result_1.Result {

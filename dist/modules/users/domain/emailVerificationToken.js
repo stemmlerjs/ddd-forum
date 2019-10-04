@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const ValueObject_1 = require("shared/domain/ValueObject");
-const Result_1 = require("shared/core/Result");
+const Result_1 = require("../../../shared/core/Result");
+const ValueObject_1 = require("../../../shared/domain/ValueObject");
 class EmailVerificationToken extends ValueObject_1.ValueObject {
     constructor(props) {
         super(props);

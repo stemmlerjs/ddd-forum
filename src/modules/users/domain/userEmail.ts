@@ -21,11 +21,17 @@ export class UserEmail extends ValueObject<UserEmailProps> {
     return re.test(email);
   }
 
+  private static format (email: string): string {
+    return email.trim().toLowerCase();
+  }
+
   public static create (email: string): Result<UserEmail> {
     if (!this.isValidEmail(email)) {
       return Result.fail<UserEmail>('Email address not valid');
     } else {
-      return Result.ok<UserEmail>(new UserEmail({ value: email }));
+      return Result.ok<UserEmail>(
+        new UserEmail({ value: this.format(email) })
+      );
     }
   }
 }

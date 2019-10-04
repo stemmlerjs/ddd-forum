@@ -13,12 +13,15 @@ class UserEmail extends ValueObject_1.ValueObject {
         var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return re.test(email);
     }
+    static format(email) {
+        return email.trim().toLowerCase();
+    }
     static create(email) {
         if (!this.isValidEmail(email)) {
             return Result_1.Result.fail('Email address not valid');
         }
         else {
-            return Result_1.Result.ok(new UserEmail({ value: email }));
+            return Result_1.Result.ok(new UserEmail({ value: this.format(email) }));
         }
     }
 }

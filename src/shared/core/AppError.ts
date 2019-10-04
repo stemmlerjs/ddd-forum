@@ -1,6 +1,6 @@
 
 import { Result } from "./Result";
-import { UseCaseError } from "shared/domain/UseCaseError";
+import { UseCaseError } from "../domain/UseCaseError";
 
 export namespace AppError {
   export class UnexpectedError extends Result<UseCaseError> {

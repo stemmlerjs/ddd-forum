@@ -1,15 +1,15 @@
 
 import React from 'react'
-import { Layout } from '../layout';
+import { Layout } from '../shared/layout';
 import Header from '../components/shared/header/components/Header';
 import { Post } from '../models/Post';
-import { DateUtil } from '../utils/DateUtil';
+import { DateUtil } from '../shared/utils/DateUtil';
 import PostSummary from '../components/posts/post/components/PostSummary';
 import PostComment from '../components/posts/post/components/PostComment';
 import { Comment } from '../models/Comment';
 import { BackNavigation } from '../components/shared/header';
 import { Button } from '../components/shared/button';
-import { CommentUtil } from '../utils/CommentUtil';
+import { CommentUtil } from '../shared/utils/CommentUtil';
 
 const post: Post = { 
   title: "Where the hell do I even start with Domain-Driven Design?",

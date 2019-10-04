@@ -1,14 +1,14 @@
 
-import { UseCase } from "shared/core/UseCase";
-import { IUserRepo } from "modules/users/infra/userRepo";
 import { CreateUserDTO } from "./CreateUserDTO";
-import { Either, Result, left, right } from "shared/core/Result";
 import { CreateUserErrors } from "./CreateUserErrors";
-import { UserEmail } from "modules/users/domain/userEmail";
-import { UserPassword } from "modules/users/domain/userPassword";
-import { UserName } from "modules/users/domain/userName";
-import { AppError } from "shared/core/AppError";
-import { User } from "modules/users/domain/user";
+import { Either, Result, left, right } from "../../../../shared/core/Result";
+import { AppError } from "../../../../shared/core/AppError";
+import { IUserRepo } from "../../repos/userRepo";
+import { UseCase } from "../../../../shared/core/UseCase";
+import { UserEmail } from "../../domain/userEmail";
+import { UserPassword } from "../../domain/userPassword";
+import { UserName } from "../../domain/userName";
+import { User } from "../../domain/user";
 
 type Response = Either<
   CreateUserErrors.EmailAlreadyExistsError |

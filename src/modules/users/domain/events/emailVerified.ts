@@ -1,7 +1,7 @@
 
-import { IDomainEvent } from "shared/domain/events/IDomainEvent";
 import { User } from "../user";
-import { UniqueEntityID } from "shared/domain/UniqueEntityID";
+import { IDomainEvent } from "../../../../shared/domain/events/IDomainEvent";
+import { UniqueEntityID } from "../../../../shared/domain/UniqueEntityID";
 
 export class EmailVerified implements IDomainEvent {
   public dateTimeOccurred: Date;
