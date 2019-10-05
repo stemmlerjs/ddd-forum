@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const sequelizeUserRepo_1 = require("./implementations/sequelizeUserRepo");
 const models_1 = __importDefault(require("../../../shared/infra/database/sequelize/models"));
+console.log(Object.keys(models_1.default));
 const userRepo = new sequelizeUserRepo_1.SequelizeUserRepo(models_1.default);
 exports.userRepo = userRepo;
 //# sourceMappingURL=index.js.map

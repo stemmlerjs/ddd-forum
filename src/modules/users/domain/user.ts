@@ -63,6 +63,10 @@ export class User extends AggregateRoot<UserProps> {
     return this.props.lastLogin;
   }
 
+  get refreshToken (): RefreshToken {
+    return this.props.refreshToken
+  }
+
   public isLoggedIn (): boolean {
     return !!this.props.accessToken && !!this.props.refreshToken
   }

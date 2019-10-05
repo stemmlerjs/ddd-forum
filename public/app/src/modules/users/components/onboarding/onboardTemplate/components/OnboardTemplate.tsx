@@ -14,7 +14,7 @@ interface OnboardTemplateProps {
 }
 
 function getRedirectTextName (type: TemplateType): string {
-  return type === 'login' ? 'Login' : 'Signup'
+  return type === 'login' ? 'Signup' : 'Login'
 }
 
 function getRedirectText (type: TemplateType): string {

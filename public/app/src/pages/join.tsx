@@ -4,6 +4,14 @@ import { Layout } from '../shared/layout'
 import Header from '../shared/components/header/components/Header'
 import { toast } from 'react-toastify';
 import { OnboardTemplate } from '../modules/users/components/onboarding/onboardTemplate'
+import withUsersService from '../modules/users/hocs/withUsersService';
+import { UsersService } from '../modules/users/services/userService';
+import { TextUtil } from '../shared/utils/TextUtil';
+import { LoginDTO } from '../modules/users/dtos/loginDTO';
+
+interface JoinPageProps {
+  usersService: UsersService;
+}
 
 interface JoinPageState {
   email: string;
@@ -11,8 +19,8 @@ interface JoinPageState {
   password: string;
 }
 
-class JoinPage extends React.Component<any, JoinPageState> {
-  constructor (props: any) {
+class JoinPage extends React.Component<JoinPageProps, JoinPageState> {
+  constructor (props: JoinPageProps) {
     super(props);
 
     this.state = {
@@ -29,14 +37,62 @@ class JoinPage extends React.Component<any, JoinPageState> {
     })
   }
 
-  async onSubmit () {
-    toast.success("Yeahhhhh", {
-      autoClose: 3000
-    })
+  isFormValid = () => {
+    const { email, username, password } = this.state;
 
-    toast.error("Yeahhhhh", {
-      autoClose: 3000
-    })
+    if (email === "" || email === undefined || !TextUtil.validateEmail(email)) {
+      toast.error("Yeahhhhh, Want to try that again with a valid email? 🤠", {
+        autoClose: 3000
+      })
+      return false;
+    }
+
+    if (!!username === false) {
+      toast.error("Yeahhhhh, you forgot your username. 🤠", {
+        autoClose: 3000
+      })
+      return false;
+    }
+
+    if (!!password === false || !TextUtil.atLeast(password, 6)) {
+      toast.error("Yeahhhhh, your password should be at least 6 chars 🤠", {
+        autoClose: 3000
+      })
+      return false;
+    }
+    
+    return true;
+  }
+
+  async onSubmit () {
+    if (this.isFormValid()) {
+      const { email, username, password } = this.state;  
+
+      const createUserResult = await this.props.usersService
+        .createUser(email, username, password);
+
+      if (createUserResult.isLeft()) {
+        return toast.error(`Yeahhhhh, ${createUserResult.value} 🤠`, {
+          autoClose: 3000
+        })
+      } 
+
+      const loginResult = await this.props.usersService
+        .login(username, password);
+
+      if (loginResult.isLeft()) {
+        return toast.error(`Yeahhhhh, ${loginResult.value} 🤠`, {
+          autoClose: 3000
+        })
+      }
+
+      const response: LoginDTO = loginResult.value.getValue();
+      console.log(response);
+
+      toast.success("You're in! 🤠", {
+        autoClose: 3000
+      })
+    }
   }
 
   render () {
@@ -58,4 +114,4 @@ class JoinPage extends React.Component<any, JoinPageState> {
   }
 }
 
-export default JoinPage;
+export default withUsersService(JoinPage);

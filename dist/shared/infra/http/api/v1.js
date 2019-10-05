@@ -10,5 +10,5 @@ exports.v1Router = v1Router;
 v1Router.get('/', (req, res) => {
     return res.json({ message: "Yo! we're up" });
 });
-v1Router.use('/user', routes_1.userRouter);
+v1Router.use('/users', routes_1.userRouter);
 //# sourceMappingURL=v1.js.map

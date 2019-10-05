@@ -33,6 +33,16 @@ exports.default = {
                     allowNull: true,
                     defaultValue: null
                 },
+                is_admin_user: {
+                    type: Sequelize.BOOLEAN,
+                    allowNull: false,
+                    defaultValue: false
+                },
+                is_deleted: {
+                    type: Sequelize.BOOLEAN,
+                    allowNull: false,
+                    defaultValue: false
+                },
                 created_at: {
                     type: Sequelize.DATE,
                     allowNull: false,

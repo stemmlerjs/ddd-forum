@@ -7,7 +7,7 @@ export namespace LoginUseCaseErrors {
   export class UserNameDoesntExistError extends Result<UseCaseError> {
     constructor () {
       super(false, {
-        message: `Email or password incorrect.`
+        message: `Username or password incorrect.`
       } as UseCaseError)
     }
   }

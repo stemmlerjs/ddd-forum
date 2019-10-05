@@ -17,13 +17,14 @@ class LoginController extends BaseController_1.BaseController {
                     case LoginErrors_1.LoginUseCaseErrors.UserNameDoesntExistError:
                         return this.notFound(error.errorValue().message);
                     case LoginErrors_1.LoginUseCaseErrors.PasswordDoesntMatchError:
-                        return this.clientError(error.getValue().message);
+                        return this.clientError(error.errorValue().message);
                     default:
                         return this.fail(error.errorValue().message);
                 }
             }
             else {
-                return this.ok(this.res);
+                const dto = result.value.getValue();
+                return this.ok(this.res, dto);
             }
         }
         catch (err) {

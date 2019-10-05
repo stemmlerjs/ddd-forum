@@ -9,8 +9,7 @@ import { AppError } from "../../../../shared/core/AppError";
 import { User } from "../../domain/user";
 
 type Response = Either<
-  AppError.UnexpectedError |
-  Result<any>,
+  AppError.UnexpectedError,
   Result<User>
 >
 
@@ -36,7 +35,7 @@ export class GetUserByUserName implements UseCase<GetUserByUserNameDTO, Promise<
       const user = await this.userRepo.getUserByUserName(userName);
       const userFound = !!user === true;
 
-      if (userFound) {
+      if (!userFound) {
         return left(
           new GetUserByUserNameErrors.UserNotFoundError(userName.value)
         ) as Response

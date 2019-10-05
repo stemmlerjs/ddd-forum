@@ -7,6 +7,7 @@ import DiscussionPage from './pages/discussion';
 import CommentPage from './pages/comment';
 import LoginPage from './pages/login';
 import JoinPage from './pages/join';
+import UnauthenticatedRoute from './shared/infra/router/UnauthenticatedRoute';
 
 const App: React.FC = () => {
   return (
@@ -14,8 +15,8 @@ const App: React.FC = () => {
       <Route path="/" exact component={IndexPage} />
       <Route path="/discuss/:slug" component={DiscussionPage}/>
       <Route path="/comment/:commentId" component={CommentPage}/>
-      <Route path="/join" component={JoinPage}/>
-      <Route path="/login" component={LoginPage}/>
+      <UnauthenticatedRoute path="/join" component={JoinPage}/>
+      <UnauthenticatedRoute path="/login" component={LoginPage}/>
     </Router>
   );
 }

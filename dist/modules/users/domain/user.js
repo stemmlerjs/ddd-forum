@@ -36,6 +36,9 @@ class User extends AggregateRoot_1.AggregateRoot {
     get lastLogin() {
         return this.props.lastLogin;
     }
+    get refreshToken() {
+        return this.props.refreshToken;
+    }
     isLoggedIn() {
         return !!this.props.accessToken && !!this.props.refreshToken;
     }

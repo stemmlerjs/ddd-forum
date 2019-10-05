@@ -15,8 +15,7 @@ import { JWTToken, RefreshToken } from "../../domain/jwt";
 type Response = Either<
   LoginUseCaseErrors.PasswordDoesntMatchError |
   LoginUseCaseErrors.UserNameDoesntExistError |
-  AppError.UnexpectedError |
-  Result<any>,
+  AppError.UnexpectedError,
   Result<LoginDTOResponse>
 >
 
@@ -61,6 +60,7 @@ export class LoginUserUseCase implements UseCase<LoginDTO, Promise<Response>> {
       }
 
       const accessToken: JWTToken = this.authService.signJWT({
+        username: user.username.value,
         email: user.email.value,
         isEmailVerified: user.isEmailVerified,
         userId: user.userId.toString(),
@@ -72,7 +72,7 @@ export class LoginUserUseCase implements UseCase<LoginDTO, Promise<Response>> {
 
       user.setAccessToken(accessToken, refreshToken);
       
-      // await this.userRepo.save(user);
+      await this.authService.saveAuthenticatedUser(user);
 
       return right(Result.ok<LoginDTOResponse>({
         accessToken,

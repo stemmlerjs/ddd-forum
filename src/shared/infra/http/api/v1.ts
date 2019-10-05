@@ -8,6 +8,6 @@ v1Router.get('/', (req, res) => {
   return res.json({ message: "Yo! we're up" });
 })
 
-v1Router.use('/user', userRouter);
+v1Router.use('/users', userRouter);
 
 export { v1Router }

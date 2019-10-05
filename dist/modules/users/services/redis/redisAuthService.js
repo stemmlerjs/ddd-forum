@@ -11,7 +11,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const jwt = __importStar(require("jsonwebtoken"));
-const uuid = __importStar(require("uuid"));
 const rand_token_1 = __importDefault(require("rand-token"));
 const config_1 = require("../../../../config");
 const abstractRedisClient_1 = require("./abstractRedisClient");
@@ -27,8 +26,13 @@ class RedisAuthService extends abstractRedisClient_1.AbstractRedisClient {
         super(redisClient);
         this.jwtHashName = 'activeJwtClients';
     }
-    createSessionId() {
-        return uuid.v4();
+    async saveAuthenticatedUser(user) {
+        if (user.isLoggedIn()) {
+            await this.addToken(user.username.value, user.refreshToken, user.accessToken);
+        }
+    }
+    async deAuthenticateUser(username) {
+        await this.clearAllSessions(username);
     }
     createRefreshToken() {
         return rand_token_1.default.uid(256);
@@ -41,8 +45,8 @@ class RedisAuthService extends abstractRedisClient_1.AbstractRedisClient {
     signJWT(props) {
         const claims = {
             email: props.email,
+            username: props.username,
             userId: props.userId,
-            sessionId: props.sessionId ? props.sessionId : this.createSessionId(),
             adminUser: props.adminUser,
             isEmailVerified: props.isEmailVerified
         };
@@ -66,20 +70,20 @@ class RedisAuthService extends abstractRedisClient_1.AbstractRedisClient {
             });
         });
     }
-    constructKey(email, sessionId) {
-        return `session-${sessionId}.${this.jwtHashName}.${email}`;
+    constructKey(username, refreshToken) {
+        return `refresh-${refreshToken}.${this.jwtHashName}.${username}`;
     }
     /**
      * @method addToken
      * @desc Adds the token for this user to redis.
      *
-     * @param {email} string
-     * @param {sessionId} string
+     * @param {username} string
+     * @param {refreshToken} string
      * @param {token} string
      * @return Promise<any>
      */
-    addToken(email, sessionId, token) {
-        return this.set(this.constructKey(email, sessionId), token);
+    addToken(username, refreshToken, token) {
+        return this.set(this.constructKey(username, refreshToken), token);
     }
     /**
      * @method clearAllTokens
@@ -93,11 +97,11 @@ class RedisAuthService extends abstractRedisClient_1.AbstractRedisClient {
     /**
      * @method countSessions
      * @desc Counts the total number of sessions for a particular user.
-     * @param {email} string
+     * @param {username} string
      * @return Promise<number>
      */
-    countSessions(email) {
-        return this.count(`*${this.jwtHashName}.${email}`);
+    countSessions(username) {
+        return this.count(`*${this.jwtHashName}.${username}`);
     }
     /**
      * @method countTokens
@@ -112,50 +116,50 @@ class RedisAuthService extends abstractRedisClient_1.AbstractRedisClient {
      * @desc Gets the user's tokens that are currently active.
      * @return Promise<string[]>
      */
-    async getTokens(email) {
-        const keyValues = await this.getAllKeyValue(`*${this.jwtHashName}.${email}`);
+    async getTokens(username) {
+        const keyValues = await this.getAllKeyValue(`*${this.jwtHashName}.${username}`);
         return keyValues.map((kv) => kv.value);
     }
     /**
      * @method getToken
      * @desc Gets a single token for the user.
-     * @param {email} string
-     * @param {sessionId} string
+     * @param {username} string
+     * @param {refreshToken} string
      * @return Promise<string>
      */
-    async getToken(email, sessionId) {
-        return this.getOne(this.constructKey(email, sessionId));
+    async getToken(username, refreshToken) {
+        return this.getOne(this.constructKey(username, refreshToken));
     }
     /**
      * @method clearToken
      * @desc Deletes a single user's session token.
-     * @param {email} string
-     * @param {sessionId} string
+     * @param {username} string
+     * @param {refreshToken} string
      * @return Promise<string>
      */
-    async clearToken(email, sessionId) {
-        return this.deleteOne(this.constructKey(email, sessionId));
+    async clearToken(username, refreshToken) {
+        return this.deleteOne(this.constructKey(username, refreshToken));
     }
     /**
      * @method clearAllSessions
      * @desc Clears all active sessions for the current user.
-     * @param {email} string
+     * @param {username} string
      * @return Promise<any>
      */
-    async clearAllSessions(email) {
-        const keyValues = await this.getAllKeyValue(`*${this.jwtHashName}.${email}`);
+    async clearAllSessions(username) {
+        const keyValues = await this.getAllKeyValue(`*${this.jwtHashName}.${username}`);
         const keys = keyValues.map((kv) => kv.key);
         return Promise.all(keys.map((key) => this.deleteOne(key)));
     }
     /**
      * @method sessionExists
      * @desc Checks if the session for this user exists
-     * @param {email} string
-     * @param {sessionId} string
+     * @param {username} string
+     * @param {refreshToken} string
      * @return Promise<boolean>
      */
-    async sessionExists(email, sessionId) {
-        const token = await this.getToken(email, sessionId);
+    async sessionExists(username, refreshToken) {
+        const token = await this.getToken(username, refreshToken);
         if (!!token) {
             return true;
         }

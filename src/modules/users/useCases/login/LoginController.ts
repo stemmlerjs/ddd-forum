@@ -1,6 +1,6 @@
 
 import { LoginUserUseCase } from "./LoginUseCase";
-import { LoginDTO } from "./LoginDTO";
+import { LoginDTO, LoginDTOResponse } from "./LoginDTO";
 import { LoginUseCaseErrors } from "./LoginErrors";
 import { BaseController } from "../../../../shared/infra/http/models/BaseController";
 
@@ -25,14 +25,13 @@ export class LoginController extends BaseController {
           case LoginUseCaseErrors.UserNameDoesntExistError:
             return this.notFound(error.errorValue().message)
           case LoginUseCaseErrors.PasswordDoesntMatchError:
-            return this.clientError(error.getValue().message)
+            return this.clientError(error.errorValue().message)
           default:
             return this.fail(error.errorValue().message);
         }
-      } 
-      
-      else {
-        return this.ok(this.res);
+      } else {
+        const dto: LoginDTOResponse = result.value.getValue() as LoginDTOResponse;
+        return this.ok<LoginDTOResponse>(this.res, dto);
       }
 
     } catch (err) {

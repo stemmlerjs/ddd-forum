@@ -6,7 +6,7 @@ var LoginUseCaseErrors;
     class UserNameDoesntExistError extends Result_1.Result {
         constructor() {
             super(false, {
-                message: `Email or password incorrect.`
+                message: `Username or password incorrect.`
             });
         }
     }

@@ -33,6 +33,7 @@ class LoginUserUseCase {
                 return Result_1.left(new LoginErrors_1.LoginUseCaseErrors.PasswordDoesntMatchError());
             }
             const accessToken = this.authService.signJWT({
+                username: user.username.value,
                 email: user.email.value,
                 isEmailVerified: user.isEmailVerified,
                 userId: user.userId.toString(),
@@ -41,7 +42,7 @@ class LoginUserUseCase {
             const refreshToken = this.authService
                 .createRefreshToken();
             user.setAccessToken(accessToken, refreshToken);
-            // await this.userRepo.save(user);
+            await this.authService.saveAuthenticatedUser(user);
             return Result_1.right(Result_1.Result.ok({
                 accessToken,
                 refreshToken
