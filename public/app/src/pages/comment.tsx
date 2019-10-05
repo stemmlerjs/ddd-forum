@@ -3,13 +3,20 @@ import React from 'react'
 import { Comment } from '../modules/forum/models/Comment';
 import { Layout } from '../shared/layout';
 import Editor from '../modules/forum/components/comments/components/Editor';
-import { SubmitButton, Button } from '../shared/components/button';
+import { SubmitButton } from '../shared/components/button';
 import Header from '../shared/components/header/components/Header';
 import { BackNavigation } from '../shared/components/header';
 import { DateUtil } from '../shared/utils/DateUtil';
 import PostCommentAuthorAndText from '../modules/forum/components/posts/post/components/PostCommentAuthorAndText';
 import PostComment from '../modules/forum/components/posts/post/components/PostComment';
 import { CommentUtil } from '../shared/utils/CommentUtil';
+import { UsersState } from '../modules/users/redux/states';
+//@ts-ignore
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as usersOperators from '../modules/users/redux/operators'
+import { User } from '../modules/users/models/user';
+import { ProfileButton } from '../modules/users/components/profileButton';
 
 interface CommentState {
   comment: Comment | {};
@@ -136,9 +143,10 @@ class CommentPage extends React.Component<any, CommentState> {
             to={`/discuss${commentUnderFocus.postSlug}`}
             text={`Back to "${"Where the hell do I even start with Domain-Driven Design"}"`}
           />
-          <Button 
-            text="Join" 
-            onClick={() => this.onClickJoinButton()}
+          <ProfileButton
+            isLoggedIn={this.props.users.isAuthenticated}
+            username={this.props.users.isAuthenticated ? (this.props.users.user as User).username : ''}
+            onLogout={() => {}}
           />
         </div>
         <br/>
@@ -169,4 +177,19 @@ class CommentPage extends React.Component<any, CommentState> {
   }
 }
 
-export default CommentPage;
+function mapStateToProps ({ users }: { users: UsersState }) {
+  return {
+    users
+  };
+}
+
+function mapActionCreatorsToProps(dispatch: any) {
+  return bindActionCreators(
+    {
+      ...usersOperators,
+    }, dispatch);
+}
+
+export default connect(mapStateToProps, mapActionCreatorsToProps)(
+  CommentPage
+);

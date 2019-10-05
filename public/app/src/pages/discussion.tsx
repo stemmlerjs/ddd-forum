@@ -8,8 +8,14 @@ import PostSummary from '../modules/forum/components/posts/post/components/PostS
 import PostComment from '../modules/forum/components/posts/post/components/PostComment';
 import { Comment } from '../modules/forum/models/Comment';
 import { BackNavigation } from '../shared/components/header';
-import { Button } from '../shared/components/button';
 import { CommentUtil } from '../shared/utils/CommentUtil';
+import { UsersState } from '../modules/users/redux/states';
+//@ts-ignore
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as usersOperators from '../modules/users/redux/operators'
+import { User } from '../modules/users/models/user';
+import { ProfileButton } from '../modules/users/components/profileButton';
 
 const post: Post = { 
   title: "Where the hell do I even start with Domain-Driven Design?",
@@ -68,12 +74,16 @@ const post: Post = {
   `
 }
 
+interface DiscussionPageProps {
+  users: UsersState;
+}
+
 interface DiscussionState {
   comments: Comment[]
 }
 
-class DiscussionPage extends React.Component<any, DiscussionState> {
-  constructor (props: any) {
+class DiscussionPage extends React.Component<DiscussionPageProps, DiscussionState> {
+  constructor (props: DiscussionPageProps) {
     super(props);
 
     this.state = {
@@ -102,7 +112,11 @@ class DiscussionPage extends React.Component<any, DiscussionState> {
             text="Back to all discussions"
             to="/"
           />
-          <Button text="Join" onClick={() => {}} />
+          <ProfileButton
+            isLoggedIn={this.props.users.isAuthenticated}
+            username={this.props.users.isAuthenticated ? (this.props.users.user as User).username : ''}
+            onLogout={() => {}}
+          />
         </div>
 
         <Header title={`"${post.title}"`} />
@@ -122,4 +136,19 @@ class DiscussionPage extends React.Component<any, DiscussionState> {
   }
 }
 
-export default DiscussionPage;
+function mapStateToProps ({ users }: { users: UsersState }) {
+  return {
+    users
+  };
+}
+
+function mapActionCreatorsToProps(dispatch: any) {
+  return bindActionCreators(
+    {
+      ...usersOperators,
+    }, dispatch);
+}
+
+export default connect(mapStateToProps, mapActionCreatorsToProps)(
+  DiscussionPage
+);

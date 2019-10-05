@@ -4,7 +4,7 @@ import * as actionCreators from '../actionCreators'
 import { usersService } from '../../services';
 
 function getUserProfile () {
-  return async (dispatch: any, getState: any) => {
+  return async (dispatch: any, getState?: any) => {
     dispatch(actionCreators.gettingUserProfile());
     try {
       const user = await usersService.getCurrentUserProfile();

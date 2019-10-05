@@ -50,7 +50,7 @@ export class RefreshAccessToken implements UseCase<RefreshAccessTokenDTO, Promis
         username: user.username.value,
         email: user.email.value,
         isEmailVerified: user.isEmailVerified,
-        userId: user.userId.toString(),
+        userId: user.userId.id.toString(),
         adminUser: user.isAdminUser,
       });
 

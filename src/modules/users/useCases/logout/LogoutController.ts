@@ -1,39 +1,31 @@
 
+import { BaseController } from "../../../../shared/infra/http/models/BaseController";
+import { DecodedExpressRequest } from "../../infra/http/models/decodedRequest";
+import { LogoutUseCase } from "./LogoutUseCase";
 
+export class LogoutController extends BaseController {
+  private useCase: LogoutUseCase;
 
-// export class LogoutController extends BaseController {
-//   private useCase: LoginUserUseCase;
+  constructor (useCase: LogoutUseCase) {
+    super();
+    this.useCase = useCase;
+  }
 
-//   constructor (useCase: LoginUserUseCase) {
-//     super();
-//     this.useCase = useCase;
-//   }
+  async executeImpl (): Promise<any> {
+    const req = this.req as DecodedExpressRequest;
+    const { userId } = req.decoded;
 
-//   async executeImpl (): Promise<any> {
-//     const dto: LoginDTO = this.req.body as LoginDTO;
+    try {
+      const result = await this.useCase.execute({ userId });
 
-//     try {
-//       const result = await this.useCase.execute(dto);
+      if (result.isLeft()) {
+        return this.fail(result.value.errorValue().message);
+      } else {
+        return this.ok(this.res);
+      }
 
-//       if (result.isLeft()) {
-//         const error = result.value;
-  
-//         switch (error.constructor) {
-//           case LoginUseCaseErrors.UserNameDoesntExistError:
-//             return this.notFound(error.errorValue().message)
-//           case LoginUseCaseErrors.PasswordDoesntMatchError:
-//             return this.clientError(error.getValue().message)
-//           default:
-//             return this.fail(error.errorValue().message);
-//         }
-//       } 
-      
-//       else {
-//         return this.ok(this.res);
-//       }
-
-//     } catch (err) {
-//       return this.fail(err)
-//     }
-//   }
-// }
+    } catch (err) {
+      return this.fail(err)
+    }
+  }
+}

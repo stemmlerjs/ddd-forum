@@ -7,8 +7,11 @@ import { Post } from '../modules/forum/models/Post';
 import { DateUtil } from '../shared/utils/DateUtil';
 import { PostRow } from '../modules/forum/components/posts/postRow';
 import { ProfileButton } from '../modules/users/components/profileButton';
-import withUsersService from '../modules/users/hocs/withUsersService';
-import { UsersService } from '../modules/users/services/userService';
+import { UsersState } from '../modules/users/redux/states';
+//@ts-ignore
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as usersOperators from '../modules/users/redux/operators'
 import { User } from '../modules/users/models/user';
 
 const posts: Post[] = [
@@ -55,7 +58,7 @@ const posts: Post[] = [
 ]
 
 interface IndexPageProps {
-  usersService: UsersService
+  users: UsersState;
 }
 
 interface IndexPageState {
@@ -83,8 +86,6 @@ class IndexPage extends React.Component<IndexPageProps, IndexPageState> {
   }
 
   render () {
-    const { currentUser } = this.props.usersService;
-    const isAuthenticated = this.props.usersService.authService.isAuthenticated();
     const { activeFilter } = this.state;
 
     console.log(this.props);
@@ -97,8 +98,9 @@ class IndexPage extends React.Component<IndexPageProps, IndexPageState> {
             subtitle="Where awesome Domain-Driven Designers are made"
           />
           <ProfileButton
-            isLoggedIn={this.props.usersService.authService.isAuthenticated()}
-            username={!!currentUser ? (currentUser as User).username : ''}
+            isLoggedIn={this.props.users.isAuthenticated}
+            username={this.props.users.isAuthenticated ? (this.props.users.user as User).username : ''}
+            onLogout={() => {}}
           />
         </div>
         <br/>
@@ -118,4 +120,19 @@ class IndexPage extends React.Component<IndexPageProps, IndexPageState> {
   }
 }
 
-export default withUsersService(IndexPage); 
+function mapStateToProps ({ users }: { users: UsersState }) {
+  return {
+    users
+  };
+}
+
+function mapActionCreatorsToProps(dispatch: any) {
+  return bindActionCreators(
+    {
+      ...usersOperators,
+    }, dispatch);
+}
+
+export default connect(mapStateToProps, mapActionCreatorsToProps)(
+  IndexPage
+);

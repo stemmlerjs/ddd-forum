@@ -4,19 +4,24 @@ import { Button } from '../../../../../shared/components/button'
 
 interface ProfileButtonProps {
   isLoggedIn: boolean;
-  username: string;
+  username: string
+  onLogout: () => void;
 }
 
 const ProfileButton: React.FC<ProfileButtonProps> = (props) => {
   return props.isLoggedIn ? (
     <Button 
-      text={props.username}
+      text={<span>{`${props.username} / `}{<u onClick={props.onLogout}>logout</u>}</span>}
       onClick={() => {}}
     />
   ) : (
     <Button 
       text="Join" 
-      onClick={() => {}}
+      onClick={() => {
+        if (typeof window !== 'undefined') {
+          window.location.href = "/join"
+        }
+      }}
     />
   )
 }

@@ -3,7 +3,7 @@ import React from 'react'
 import "../styles/Button.sass"
 
 interface ButtonProps {
-  text: string;
+  text: any;
   onClick: () => void;
 }
 
