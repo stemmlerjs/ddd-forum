@@ -1,6 +1,10 @@
 import { UsersService } from "./userService";
+import { AuthService } from "./authService";
 
-const usersService = new UsersService();
+const authService = new AuthService();
+const usersService = new UsersService(
+  authService
+);
 
 export {
   usersService

@@ -5,9 +5,7 @@ import { Result } from "../../../shared/core/Result";
 import { APIResponse } from "../../../shared/infra/services/APIResponse";
 import { LoginDTO } from "../dtos/loginDTO";
 import { User } from "../models/user";
-import { JWTToken, RefreshToken } from "../models/tokens";
-
-type TokenType = 'access-token' | 'refresh-token';
+import { IAuthService } from "./authService";
 
 export interface IUsersService {
   getCurrentUserProfile (): Promise<User>;
@@ -16,29 +14,20 @@ export interface IUsersService {
   logout (store: any): Promise<any>;
 }
 
-export function getToken (tokenType: TokenType): JWTToken | RefreshToken {
-  const tokenName: string = tokenType === 'access-token' 
-    ? UsersService.accessTokenName 
-    : UsersService.refreshTokenName
-
-  const token = localStorage.getItem(tokenName);
-  return token ? JSON.parse(token).token : null;
-}
-
 export class UsersService extends BaseAPI implements IUsersService {
-  public static accessTokenName: string = 'ddd-forum-access-token';
-  public static refreshTokenName: string = 'ddd-forum-refresh-token';
-
+  
+  public authService: IAuthService;
   public currentUser: User | {} = {};
   public isAuthenticated: boolean = false;
 
-  constructor () {
-    super();
+  constructor (authService: IAuthService) {
+    super(authService);
     this.checkAuthState();
+    this.authService = authService;
   }
 
   private async checkAuthState (): Promise<void> {
-    const accessToken = getToken('access-token');
+    const accessToken = this.authService.getToken('access-token');
     const hasAccessToken = !!accessToken === true;
 
     if (!hasAccessToken) return;
@@ -55,7 +44,7 @@ export class UsersService extends BaseAPI implements IUsersService {
 
   async getCurrentUserProfile (): Promise<User> {
     const response = await this.get('/users/me', null, { 
-      authorization: getToken('access-token') 
+      authorization: this.authService.getToken('access-token') 
     });
     this.currentUser = response.data as User;
     return this.currentUser as User;
@@ -65,29 +54,12 @@ export class UsersService extends BaseAPI implements IUsersService {
 
   }
 
-  private setToken (tokenType: TokenType, token: JWTToken | RefreshToken): void {
-    var d = new Date();
-    d.setTime(d.getTime() + 30 * 60 * 1000); // set cookie to last 30 mins
-
-    const tokenName: string = tokenType === 'access-token' 
-      ? UsersService.accessTokenName 
-      : UsersService.refreshTokenName
-
-    localStorage.setItem(
-      tokenName,
-      JSON.stringify({
-        token: token,
-        expires: d
-      })
-    );
-  }
-
   async login (username: string, password: string): Promise<APIResponse<LoginDTO>> {
     try {
       const response = await this.post('/users/login', { username, password });
       const dto: LoginDTO = response.data as LoginDTO;
-      this.setToken('access-token', dto.accessToken);
-      this.setToken('refresh-token', dto.refreshToken);
+      this.authService.setToken('access-token', dto.accessToken);
+      this.authService.setToken('refresh-token', dto.refreshToken);
       return right(Result.ok<LoginDTO>(dto));
     } catch (err) {
       return left(err.response.data.message)

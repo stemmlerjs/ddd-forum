@@ -2,13 +2,15 @@
 import axios, { AxiosInstance } from 'axios';
 import { apiConfig } from '../../../config/api';
 import { get } from 'lodash'
-import { getToken } from '../../../modules/users/services/userService';
+import { IAuthService } from '../../../modules/users/services/authService';
 
 export abstract class BaseAPI {
   protected baseUrl: string;
   private axiosInstance: AxiosInstance | any = null;
+  public authService: IAuthService;
 
-  constructor () {
+  constructor (authService: IAuthService) {
+    this.authService = authService;
     this.baseUrl = apiConfig.baseUrl
     this.axiosInstance = axios.create({})
     this.enableInterceptors();
@@ -38,7 +40,7 @@ export abstract class BaseAPI {
   private getErrorResponseHandler () {
     return (error: any) => {
       if (this.didAccessTokenExpire(error.response)) {
-        const refreshToken = getToken('refresh-token');
+        const refreshToken = this.authService.getToken('refresh-token');
         const hasRefreshToken = !!refreshToken;
 
         if (hasRefreshToken) {
