@@ -31,7 +31,7 @@ export class SequelizeUserRepo implements IUserRepo {
           : userName
       }
     });
-    if (!!baseUser === false) return null;
+    if (!!baseUser === false) throw new Error("User not found.")
     return UserMap.toDomain(baseUser);
   }
 

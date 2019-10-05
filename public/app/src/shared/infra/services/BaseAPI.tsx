@@ -1,7 +1,8 @@
 //@ts-ignore
 import axios, { AxiosInstance } from 'axios';
 import { apiConfig } from '../../../config/api';
-
+import { get } from 'lodash'
+import { getToken } from '../../../modules/users/services/userService';
 
 export abstract class BaseAPI {
   protected baseUrl: string;
@@ -14,13 +15,13 @@ export abstract class BaseAPI {
   }
 
   private enableInterceptors (): void {
-    this.axiosInstance.interceptors.request.use(
-      this.getSuccessHandler(),
-      this.getErrorHandler()
+    this.axiosInstance.interceptors.response.use(
+      this.getSuccessResponseHandler(),
+      this.getErrorResponseHandler()
     )
   }
 
-  private getSuccessHandler () {
+  private getSuccessResponseHandler () {
     return (response: any) => {
       debugger;
       // if (isHandlerEnabled(response.config)) {
@@ -30,12 +31,21 @@ export abstract class BaseAPI {
     }
   }
 
-  private getErrorHandler () {
+  private didAccessTokenExpire (response: any): boolean {
+    return get(response, 'data.message') === "Token signature expired.";
+  }
+
+  private getErrorResponseHandler () {
     return (error: any) => {
-      debugger;
-      // if (isHandlerEnabled(error.config)) {
-      //   // Handle errors
-      // }
+      if (this.didAccessTokenExpire(error.response)) {
+        const refreshToken = getToken('refresh-token');
+        const hasRefreshToken = !!refreshToken;
+
+        if (hasRefreshToken) {
+          debugger;
+        }
+        
+      }
       return Promise.reject({ ...error })
     }
   }

@@ -7,15 +7,6 @@ import { LoginDTO } from "../dtos/loginDTO";
 import { User } from "../models/user";
 import { JWTToken, RefreshToken } from "../models/tokens";
 
-export function checkAccessToken() {
-  return localStorage.getItem("univjobs-access-token") ? true : false;
-}
-
-export function getAccessToken() {
-  const token = localStorage.getItem("univjobs-access-token");
-  return token ? JSON.parse(token).token : null;
-}
-
 type TokenType = 'access-token' | 'refresh-token';
 
 export interface IUsersService {
@@ -25,9 +16,18 @@ export interface IUsersService {
   logout (store: any): Promise<any>;
 }
 
+export function getToken (tokenType: TokenType): JWTToken | RefreshToken {
+  const tokenName: string = tokenType === 'access-token' 
+    ? UsersService.accessTokenName 
+    : UsersService.refreshTokenName
+
+  const token = localStorage.getItem(tokenName);
+  return token ? JSON.parse(token).token : null;
+}
+
 export class UsersService extends BaseAPI implements IUsersService {
-  private static accessTokenName: string = 'ddd-forum-access-token';
-  private static refreshTokenName: string = 'ddd-forum-refresh-token';
+  public static accessTokenName: string = 'ddd-forum-access-token';
+  public static refreshTokenName: string = 'ddd-forum-refresh-token';
 
   public currentUser: User | {} = {};
   public isAuthenticated: boolean = false;
@@ -38,7 +38,7 @@ export class UsersService extends BaseAPI implements IUsersService {
   }
 
   private async checkAuthState (): Promise<void> {
-    const accessToken = this.getToken('access-token');
+    const accessToken = getToken('access-token');
     const hasAccessToken = !!accessToken === true;
 
     if (!hasAccessToken) return;
@@ -54,7 +54,9 @@ export class UsersService extends BaseAPI implements IUsersService {
   }
 
   async getCurrentUserProfile (): Promise<User> {
-    const response = await this.get('/users/me', null, { authorization: this.getToken('access-token') });
+    const response = await this.get('/users/me', null, { 
+      authorization: getToken('access-token') 
+    });
     this.currentUser = response.data as User;
     return this.currentUser as User;
   }
@@ -78,15 +80,6 @@ export class UsersService extends BaseAPI implements IUsersService {
         expires: d
       })
     );
-  }
-
-  public getToken (tokenType: TokenType): JWTToken | RefreshToken {
-    const tokenName: string = tokenType === 'access-token' 
-      ? UsersService.accessTokenName 
-      : UsersService.refreshTokenName
-
-    const token = localStorage.getItem(tokenName);
-    return token ? JSON.parse(token).token : null;
   }
 
   async login (username: string, password: string): Promise<APIResponse<LoginDTO>> {

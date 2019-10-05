@@ -6,6 +6,7 @@ import { getUserByUserNameController } from '../../../useCases/getUserByUserName
 import { loginController } from '../../../useCases/login';
 import { middleware } from '../../../../../shared/infra/http';
 import { getCurrentUserController } from '../../../useCases/getCurrentUser';
+import { refreshAccessTokenController } from '../../../useCases/refreshAccessToken';
 
 const userRouter = express.Router();
 
@@ -20,6 +21,10 @@ userRouter.get('/me',
 
 userRouter.post('/login',
   (req, res) => loginController.execute(req, res)
+)
+
+userRouter.post('/token/refresh',
+  (req, res) => refreshAccessTokenController.execute(req, res)
 )
 
 userRouter.delete('/:userId',
