@@ -8,6 +8,8 @@ import { User } from "../models/user";
 import { IAuthService } from "./authService";
 
 export interface IUsersService {
+  isAuthenticated (): boolean;
+  getCurrentUser (): User | {};
   getCurrentUserProfile (): Promise<User>;
   createUser (email: string, username: string, password: string): Promise<APIResponse<void>>;
   login (username: string, password: string): Promise<APIResponse<LoginDTO>>;
@@ -16,38 +18,31 @@ export interface IUsersService {
 
 export class UsersService extends BaseAPI implements IUsersService {
   
-  public authService: IAuthService;
   public currentUser: User | {} = {};
-  public isAuthenticated: boolean = false;
 
   constructor (authService: IAuthService) {
     super(authService);
-    this.checkAuthState();
-    this.authService = authService;
-  }
-
-  private async checkAuthState (): Promise<void> {
-    const accessToken = this.authService.getToken('access-token');
-    const hasAccessToken = !!accessToken === true;
-
-    if (!hasAccessToken) return;
-
-    try {
-      const user = await this.getCurrentUserProfile();
-      const userExists = !!user === true;
-      
-      if (userExists) {
-        this.isAuthenticated = true;
-      }
-    } catch (err) {}
+    this.getCurrentUserProfile();
   }
 
   async getCurrentUserProfile (): Promise<User> {
+    if (Object.keys(this.currentUser).length !== 0) {
+      return this.currentUser as User;
+    }
+    
     const response = await this.get('/users/me', null, { 
       authorization: this.authService.getToken('access-token') 
     });
-    this.currentUser = response.data as User;
+    this.currentUser = response.data.user as User;
     return this.currentUser as User;
+  }
+
+  public isAuthenticated (): boolean {
+    return Object.keys(this.currentUser).length !== 0;
+  }
+
+  public getCurrentUser (): User | {} {
+    return this.currentUser;
   }
 
   public async logout (store: any): Promise<any> {

@@ -8,6 +8,7 @@ function withUsersService (WrappedComponent: any) {
       return (
         <WrappedComponent
           {...this.props}
+          currentUser={usersService.currentUser}
           usersService={usersService}
         />
       );

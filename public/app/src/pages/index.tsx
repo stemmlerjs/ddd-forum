@@ -2,11 +2,14 @@
 import React from 'react';
 import { Layout } from '../shared/layout';
 import Header from '../shared/components/header/components/Header';
-import { Button } from '../shared/components/button';
 import PostFilters, { PostFilterType } from '../modules/forum/components/posts/filters/components/PostFilters';
 import { Post } from '../modules/forum/models/Post';
 import { DateUtil } from '../shared/utils/DateUtil';
 import { PostRow } from '../modules/forum/components/posts/postRow';
+import { ProfileButton } from '../modules/users/components/profileButton';
+import withUsersService from '../modules/users/hocs/withUsersService';
+import { UsersService } from '../modules/users/services/userService';
+import { User } from '../modules/users/models/user';
 
 const posts: Post[] = [
   { 
@@ -51,12 +54,16 @@ const posts: Post[] = [
   }
 ]
 
+interface IndexPageProps {
+  usersService: UsersService
+}
+
 interface IndexPageState {
   activeFilter: PostFilterType;
 }
 
-class IndexPage extends React.Component<any, IndexPageState> {
-  constructor (props: any) {
+class IndexPage extends React.Component<IndexPageProps, IndexPageState> {
+  constructor (props: IndexPageProps) {
     super(props);
 
     this.state = {
@@ -70,13 +77,17 @@ class IndexPage extends React.Component<any, IndexPageState> {
 
   setActiveFilter (filter: PostFilterType) {
     this.setState({
-      ...this,
+      ...this.state,
       activeFilter: filter
     })
   }
 
   render () {
+    const { currentUser } = this.props.usersService;
+    const isAuthenticated = this.props.usersService.authService.isAuthenticated();
     const { activeFilter } = this.state;
+
+    console.log(this.props);
 
     return (
       <Layout>
@@ -85,9 +96,9 @@ class IndexPage extends React.Component<any, IndexPageState> {
             title="Domain-Driven Designers"
             subtitle="Where awesome Domain-Driven Designers are made"
           />
-          <Button 
-            text="Join" 
-            onClick={() => this.onClickJoinButton()}
+          <ProfileButton
+            isLoggedIn={this.props.usersService.authService.isAuthenticated()}
+            username={!!currentUser ? (currentUser as User).username : ''}
           />
         </div>
         <br/>
@@ -107,4 +118,4 @@ class IndexPage extends React.Component<any, IndexPageState> {
   }
 }
 
-export default IndexPage;
+export default withUsersService(IndexPage); 

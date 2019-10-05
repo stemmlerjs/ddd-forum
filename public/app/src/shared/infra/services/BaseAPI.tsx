@@ -3,6 +3,7 @@ import axios, { AxiosInstance } from 'axios';
 import { apiConfig } from '../../../config/api';
 import { get } from 'lodash'
 import { IAuthService } from '../../../modules/users/services/authService';
+import { JWTToken } from '../../../modules/users/models/tokens';
 
 export abstract class BaseAPI {
   protected baseUrl: string;
@@ -25,11 +26,7 @@ export abstract class BaseAPI {
 
   private getSuccessResponseHandler () {
     return (response: any) => {
-      debugger;
-      // if (isHandlerEnabled(response.config)) {
-      //   // Handle responses
-      // }
-      return response
+      return response;
     }
   }
 
@@ -37,14 +34,42 @@ export abstract class BaseAPI {
     return get(response, 'data.message') === "Token signature expired.";
   }
 
+  private async regenerateAccessTokenFromRefreshToken (): Promise<JWTToken> {
+    const response = await axios({
+      method: 'POST',
+      url: `${this.baseUrl}/users/token/refresh`,
+      data: {
+        refreshToken: this.authService.getToken('refresh-token')
+      }
+    });
+    return response.data.accessToken;
+  }
+
   private getErrorResponseHandler () {
-    return (error: any) => {
+    return async (error: any) => {
       if (this.didAccessTokenExpire(error.response)) {
         const refreshToken = this.authService.getToken('refresh-token');
         const hasRefreshToken = !!refreshToken;
 
         if (hasRefreshToken) {
-          debugger;
+          try {
+            // Get the new access token
+            const accessToken = await this
+              .regenerateAccessTokenFromRefreshToken();
+
+            // Save token
+            this.authService.setToken('access-token', accessToken);
+
+            // Retry request
+            error.config.headers['authorization'] = accessToken;
+            return this.axiosInstance.request(error.config);
+            
+          } catch (err) {
+            // remove access and refresh tokens
+            this.authService.removeToken('access-token');
+            this.authService.removeToken('refresh-token');
+            console.log(err);
+          }
         }
         
       }

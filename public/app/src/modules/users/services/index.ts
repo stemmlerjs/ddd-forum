@@ -1,3 +1,4 @@
+
 import { UsersService } from "./userService";
 import { AuthService } from "./authService";
 
@@ -7,5 +8,6 @@ const usersService = new UsersService(
 );
 
 export {
+  authService,
   usersService
 }
