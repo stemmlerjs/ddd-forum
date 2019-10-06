@@ -2,6 +2,8 @@
 import { IMemberRepo } from "../memberRepo";
 import { Member } from "../../domain/member";
 import { MemberMap } from "../../mappers/memberMap";
+import { MemberDetails } from "../../domain/memberDetails";
+import { MemberDetailsMap } from "../../mappers/memberDetailsMap";
 
 export class MemberRepo implements IMemberRepo {
   private models: any;
@@ -35,8 +37,32 @@ export class MemberRepo implements IMemberRepo {
     baseQuery.where['member_base_id'] = userId;
     const member = await MemberModel.findOne(baseQuery);
     const found = !!member === true;
-    if (found) throw new Error("Member not found");
+    if (!found) throw new Error("Member not found");
     return MemberMap.toDomain(member);
+  }
+
+  public async getMemberByUserName (username: string): Promise<Member> {
+    const MemberModel = this.models.Member;
+    const baseQuery = this.createBaseQuery();
+    baseQuery.include[0].where = {
+      username: username
+    }
+    const member = await MemberModel.findOne(baseQuery);
+    const found = !!member === true;
+    if (!found) throw new Error("Member not found");
+    return MemberMap.toDomain(member);
+  }
+
+  public async getMemberDetailsByUserName (username: string): Promise<MemberDetails> {
+    const MemberModel = this.models.Member;
+    const baseQuery = this.createBaseQuery();
+    baseQuery.include[0].where = {
+      username: username
+    }
+    const member = await MemberModel.findOne(baseQuery);
+    const found = !!member === true;
+    if (!found) throw new Error("Member not found");
+    return MemberDetailsMap.toDomain(member);
   }
 
   public async save (member: Member): Promise<void> {

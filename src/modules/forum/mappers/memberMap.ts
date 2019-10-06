@@ -22,11 +22,6 @@ export class MemberMap implements Mapper<Member> {
     return memberOrError.isSuccess ? memberOrError.getValue() : null;
   }
 
-  public static toDTO (member: Member): MemberDTO {
-    // TODO:
-    return null;
-  }
-
   public static toPersistence (member: Member): any {
     return {
       member_id: member.memberId.id.toString(),
