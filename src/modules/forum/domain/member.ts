@@ -6,6 +6,7 @@ import { UserId } from "../../users/domain/userId";
 import { UserName } from "../../users/domain/userName";
 import { Guard } from "../../../shared/core/Guard";
 import { MemberCreated } from "./events/memberCreated";
+import { MemberId } from "./memberId";
 
 interface MemberProps {
   userId: UserId;
@@ -14,6 +15,23 @@ interface MemberProps {
 }
 
 export class Member extends AggregateRoot<MemberProps> {
+
+  get memberId (): MemberId {
+    return MemberId.create(this._id)
+      .getValue();
+  }
+
+  get userId (): UserId {
+    return this.props.userId;
+  }
+
+  get username (): UserName {
+    return this.props.username;
+  }
+
+  get reputation (): number {
+    return this.props.reputation;
+  }
 
   private constructor (props: MemberProps, id?: UniqueEntityID) {
     super(props, id)
