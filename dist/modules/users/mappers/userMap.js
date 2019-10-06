@@ -9,20 +9,22 @@ class UserMap {
     static toDTO(user) {
         return {
             username: user.username.value,
-            email: user.email.value,
             isEmailVerified: user.isEmailVerified,
             isAdminUser: user.isAdminUser,
             isDeleted: user.isDeleted
         };
     }
     static toDomain(raw) {
+        const userNameOrError = userName_1.UserName.create({ name: raw.username });
+        const userPasswordOrError = userPassword_1.UserPassword.create({ value: raw.user_password, hashed: true });
+        const userEmailOrError = userEmail_1.UserEmail.create(raw.user_email);
         const userOrError = user_1.User.create({
-            username: userName_1.UserName.create({ name: raw.username }).getValue(),
+            username: userNameOrError.getValue(),
             isAdminUser: raw.is_admin_user,
             isDeleted: raw.is_deleted,
             isEmailVerified: raw.is_email_verified,
-            password: userPassword_1.UserPassword.create({ value: raw.user_password, hashed: true }).getValue(),
-            email: userEmail_1.UserEmail.create(raw.user_email).getValue(),
+            password: userPasswordOrError.getValue(),
+            email: userEmailOrError.getValue(),
         }, new UniqueEntityID_1.UniqueEntityID(raw.base_user_id));
         userOrError.isFailure ? console.log(userOrError.error) : '';
         return userOrError.isSuccess ? userOrError.getValue() : null;

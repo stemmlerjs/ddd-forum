@@ -20,6 +20,15 @@ export class Guard {
     return { succeeded: true };
   }
 
+  public static greaterThan (minValue: number, actualValue: number): IGuardResult {
+    return actualValue > minValue 
+      ? { succeeded: true } 
+      : { 
+        succeeded: false, 
+        message: `Number given {${actualValue}} is not greater than {${minValue}}`
+    }
+  }
+
   public static againstAtLeast (numChars: number, text: string): IGuardResult {
     return text.length >= numChars 
       ? { succeeded: true } 

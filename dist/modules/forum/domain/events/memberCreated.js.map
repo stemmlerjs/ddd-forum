@@ -1,0 +1,1 @@
+{"version":3,"file":"memberCreated.js","sourceRoot":"","sources":["../../../../../src/modules/forum/domain/events/memberCreated.ts"],"names":[],"mappings":";;AAMA,MAAa,aAAa;IAIxB,YAAa,MAAc;QACzB,IAAI,CAAC,gBAAgB,GAAG,IAAI,IAAI,EAAE,CAAC;QACnC,IAAI,CAAC,MAAM,GAAG,MAAM,CAAC;IACvB,CAAC;IAED,cAAc;QACZ,OAAO,IAAI,CAAC,MAAM,CAAC,EAAE,CAAC;IACxB,CAAC;CACF;AAZD,sCAYC"}

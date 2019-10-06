@@ -29,12 +29,15 @@ class CreateUserUseCase {
             if (userAlreadyExists) {
                 return Result_1.left(new CreateUserErrors_1.CreateUserErrors.EmailAlreadyExistsError(email.value));
             }
-            const alreadyCreatedUserByUserName = await this.userRepo
-                .getUserByUserName(username);
-            const userNameTaken = !!alreadyCreatedUserByUserName === true;
-            if (userNameTaken) {
-                return Result_1.left(new CreateUserErrors_1.CreateUserErrors.UsernameTakenError(username.value));
+            try {
+                const alreadyCreatedUserByUserName = await this.userRepo
+                    .getUserByUserName(username);
+                const userNameTaken = !!alreadyCreatedUserByUserName === true;
+                if (userNameTaken) {
+                    return Result_1.left(new CreateUserErrors_1.CreateUserErrors.UsernameTakenError(username.value));
+                }
             }
+            catch (err) { }
             const userOrError = user_1.User.create({
                 email, password, username,
             });

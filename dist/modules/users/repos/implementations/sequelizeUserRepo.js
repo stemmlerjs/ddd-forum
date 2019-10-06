@@ -25,7 +25,7 @@ class SequelizeUserRepo {
             }
         });
         if (!!baseUser === false)
-            return null;
+            throw new Error("User not found.");
         return userMap_1.UserMap.toDomain(baseUser);
     }
     async getUserByUserId(userId) {
@@ -36,7 +36,7 @@ class SequelizeUserRepo {
             }
         });
         if (!!baseUser === false)
-            return null;
+            throw new Error("User not found.");
         return userMap_1.UserMap.toDomain(baseUser);
     }
     async save(user) {

@@ -36,7 +36,7 @@ class LoginUserUseCase {
                 username: user.username.value,
                 email: user.email.value,
                 isEmailVerified: user.isEmailVerified,
-                userId: user.userId.toString(),
+                userId: user.userId.id.toString(),
                 adminUser: user.isAdminUser,
             });
             const refreshToken = this.authService

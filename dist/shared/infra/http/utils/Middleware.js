@@ -12,13 +12,12 @@ class Middleware {
     authenticateRequests() {
         return async (req, res, next) => {
             const token = req.headers['authorization'];
-            debugger;
             // Confirm that the token was signed with our signature.
             if (token) {
                 const decoded = await this.authService.decodeJWT(token);
                 const signatureFailed = !!decoded === false;
                 if (signatureFailed) {
-                    return this.endRequest(400, 'Token signature failed.', res);
+                    return this.endRequest(403, 'Token signature expired.', res);
                 }
                 // See if the token was found
                 const { username } = decoded;

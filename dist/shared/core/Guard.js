@@ -8,6 +8,14 @@ class Guard {
         }
         return { succeeded: true };
     }
+    static greaterThan(minValue, actualValue) {
+        return actualValue > minValue
+            ? { succeeded: true }
+            : {
+                succeeded: false,
+                message: `Number given {${actualValue}} is not greater than {${minValue}}`
+            };
+    }
     static againstAtLeast(numChars, text) {
         return text.length >= numChars
             ? { succeeded: true }

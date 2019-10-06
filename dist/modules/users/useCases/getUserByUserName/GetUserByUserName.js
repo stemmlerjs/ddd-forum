@@ -17,7 +17,7 @@ class GetUserByUserName {
             const userName = userNameOrError.getValue();
             const user = await this.userRepo.getUserByUserName(userName);
             const userFound = !!user === true;
-            if (userFound) {
+            if (!userFound) {
                 return Result_1.left(new GetUserByUserNameErrors_1.GetUserByUserNameErrors.UserNotFoundError(userName.value));
             }
             return Result_1.right(Result_1.Result.ok(user));
