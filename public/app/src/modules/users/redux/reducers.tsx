@@ -30,7 +30,8 @@ export default function users (state: UsersState = states,
     case actions.LOGGING_IN:
       return {
         ...state,
-        ...ReduxUtils.reportEventStatus('isLoggingIn')
+        ...ReduxUtils.reportEventStatus('isLoggingIn'),
+        error: '',
       }
     case actions.LOGGING_IN_SUCCESS:
       return {
@@ -44,10 +45,12 @@ export default function users (state: UsersState = states,
         ...ReduxUtils.reportEventStatus('isLoggingIn', false),
         error: action.error
       }
+
     case actions.LOGGING_OUT:
       return {
         ...state,
-        ...ReduxUtils.reportEventStatus('isLoggingOut')
+        ...ReduxUtils.reportEventStatus('isLoggingOut'),
+        error: '',
       }
     case actions.LOGGING_OUT_SUCCESS:
       return {
@@ -61,6 +64,24 @@ export default function users (state: UsersState = states,
         ...ReduxUtils.reportEventStatus('isLoggingOut', false),
         error: action.error
       }
+    
+    case actions.CREATING_USER:
+      return {
+        ...state,
+        ...ReduxUtils.reportEventStatus('isCreatingUser'),
+        error: action.error
+      }
+    case actions.CREATING_USER_SUCCESS:
+      return {
+        ...state,
+        ...ReduxUtils.reportEventStatus('isCreatingUser', true),
+      }     
+    case actions.CREATING_USER_FAILURE:
+      return {
+        ...state,
+        ...ReduxUtils.reportEventStatus('isCreatingUser', false),
+        error: action.error
+      }       
     default:
       return state;
   }

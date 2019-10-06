@@ -10,6 +10,7 @@ import { UsersState } from '../modules/users/redux/states';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as usersOperators from '../modules/users/redux/operators'
+import withLoginHandling from '../modules/users/hocs/withLoginHandling';
 
 interface LoginPageProps extends IUserOperators {
   users: UsersState;
@@ -59,40 +60,11 @@ class LoginPage extends React.Component<LoginPageProps, LoginPageState> {
     return true;
   }
 
-  afterSuccessfulLogin (prevProps: LoginPageProps) {
-    const currentProps: LoginPageProps = this.props;
-    if (currentProps.users.isLoggingInSuccess === !prevProps.users.isLoggingInSuccess) {
-      // Get user profile as well
-      this.props.getUserProfile();
-      setTimeout(() => {
-        this.props.history.push('/')
-      }, 2000)
-      return toast.success("Welcome back! Redirecting you home 🤠", {
-        autoClose: 2000
-      })
-    }
-  }
-
-  afterFailedLogin (prevProps: LoginPageProps) {
-    const currentProps: LoginPageProps = this.props;
-    if (currentProps.users.isLoggingInFailure === !prevProps.users.isLoggingInFailure) {
-      const error: string = currentProps.users.error;
-      return toast.error(`Yeahhhhh, ${error} 🤠`, {
-        autoClose: 3000
-      })
-    }
-  }
-
   async onSubmit () {
     if (this.isFormValid()) {
       const { username, password } = this.state;
       this.props.login(username, password);
     }
-  }
-  
-  componentDidUpdate (prevProps: LoginPageProps) {
-    this.afterSuccessfulLogin(prevProps);
-    this.afterFailedLogin(prevProps)
   }
 
   render () {
@@ -129,5 +101,5 @@ function mapActionCreatorsToProps(dispatch: any) {
 }
 
 export default connect(mapStateToProps, mapActionCreatorsToProps)(
-  LoginPage
+  withLoginHandling(LoginPage)
 );

@@ -62,6 +62,25 @@ function loggingOutFailure (error: string): UsersAction {
   };
 }
 
+function creatingUser (): UsersAction {
+  return {
+    type: actions.CREATING_USER
+  };
+}
+
+function creatingUserSuccess (): UsersAction {
+  return {
+    type: actions.CREATING_USER_SUCCESS
+  };
+}
+
+function creatingUserFailure (error: string): UsersAction {
+  return {
+    type: actions.CREATING_USER_FAILURE,
+    error
+  };
+}
+
 export {
   gettingUserProfile,
   gettingUserProfileSuccess,
@@ -73,5 +92,9 @@ export {
 
   loggingOut,
   loggingOutSuccess,
-  loggingOutFailure
+  loggingOutFailure,
+
+  creatingUser,
+  creatingUserSuccess,
+  creatingUserFailure
 }

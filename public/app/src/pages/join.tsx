@@ -4,14 +4,19 @@ import { Layout } from '../shared/layout'
 import Header from '../shared/components/header/components/Header'
 import { toast } from 'react-toastify';
 import { OnboardTemplate } from '../modules/users/components/onboarding/onboardTemplate'
-import withUsersService from '../modules/users/hocs/withUsersService';
-import { UsersService } from '../modules/users/services/userService';
 import { TextUtil } from '../shared/utils/TextUtil';
 import { LoginDTO } from '../modules/users/dtos/loginDTO';
 import { IUserOperators } from '../modules/users/redux/operators';
+import { UsersState } from '../modules/users/redux/states';
+//@ts-ignore
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as usersOperators from '../modules/users/redux/operators'
+import withLoginHandling from '../modules/users/hocs/withLoginHandling';
 
 interface JoinPageProps extends IUserOperators {
-  usersService: UsersService;
+  users: UsersState;
+  history: any;
 }
 
 interface JoinPageState {
@@ -65,34 +70,36 @@ class JoinPage extends React.Component<JoinPageProps, JoinPageState> {
     return true;
   }
 
+  afterJoinSuccess (prevProps: JoinPageProps) {
+    const currentProps: JoinPageProps = this.props;
+    if (currentProps.users.isCreatingUserSuccess === !prevProps.users.isCreatingUserSuccess) {
+      toast.success(`You're all signed up! Logging you in. 🤠`, {
+        autoClose: 3000
+      });
+      // Now login
+      this.props.login(this.state.username, this.state.password);
+    }
+  }
+
+  afterJoinFailure (prevProps: JoinPageProps) {
+    const currentProps: JoinPageProps = this.props;
+    if (currentProps.users.isCreatingUserFailure === !prevProps.users.isCreatingUserFailure) {
+      const error: string = currentProps.users.error;
+      return toast.error(`Yeahhhhh, ${error} 🤠`, {
+        autoClose: 3000
+      })
+    }
+  }
+
+  componentDidUpdate (prevProps: JoinPageProps) {
+    this.afterJoinSuccess(prevProps);
+    this.afterJoinFailure(prevProps);
+  }
+
   async onSubmit () {
     if (this.isFormValid()) {
       const { email, username, password } = this.state;  
-
-      const createUserResult = await this.props.usersService
-        .createUser(email, username, password);
-
-      if (createUserResult.isLeft()) {
-        return toast.error(`Yeahhhhh, ${createUserResult.value} 🤠`, {
-          autoClose: 3000
-        })
-      } 
-
-      const loginResult = await this.props.usersService
-        .login(username, password);
-
-      if (loginResult.isLeft()) {
-        return toast.error(`Yeahhhhh, ${loginResult.value} 🤠`, {
-          autoClose: 3000
-        })
-      }
-
-      const response: LoginDTO = loginResult.value.getValue();
-      console.log(response);
-
-      toast.success("You're in! 🤠", {
-        autoClose: 3000
-      })
+      this.props.createUser(email, username, password)
     }
   }
 
@@ -117,4 +124,20 @@ class JoinPage extends React.Component<JoinPageProps, JoinPageState> {
   }
 }
 
-export default withUsersService(JoinPage);
+function mapStateToProps ({ users }: { users: UsersState }) {
+  return {
+    users
+  };
+}
+
+function mapActionCreatorsToProps(dispatch: any) {
+  return bindActionCreators(
+    {
+      ...usersOperators,
+    }, dispatch);
+}
+
+export default connect(mapStateToProps, mapActionCreatorsToProps)(
+  withLoginHandling(JoinPage)
+);
+

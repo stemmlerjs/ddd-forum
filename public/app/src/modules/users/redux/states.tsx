@@ -16,6 +16,10 @@ export interface UsersState {
   isLoggingOutSuccess: boolean;
   isLoggingOutFailure: boolean;
 
+  isCreatingUser: boolean;
+  isCreatingUserSuccess: boolean;
+  isCreatingUserFailure: boolean;
+
   error: string;
 }
 
@@ -33,6 +37,10 @@ const initialUserState: UsersState = {
   isLoggingOut: false,
   isLoggingOutSuccess: false,
   isLoggingOutFailure: false,
+
+  isCreatingUser: false,
+  isCreatingUserSuccess: false,
+  isCreatingUserFailure: false,
 
   error: ''
 }
