@@ -17,6 +17,7 @@ import { bindActionCreators } from "redux";
 import * as usersOperators from '../modules/users/redux/operators'
 import { User } from '../modules/users/models/user';
 import { ProfileButton } from '../modules/users/components/profileButton';
+import withLogoutHandling from '../modules/users/hocs/withLogoutHandling';
 
 interface CommentState {
   comment: Comment | {};
@@ -54,7 +55,11 @@ const comment: Comment = {
   postSlug: '/where-to-do-ddd',
 }
 
-class CommentPage extends React.Component<any, CommentState> {
+interface CommentPageProps extends usersOperators.IUserOperators {
+  users: UsersState;
+}
+
+class CommentPage extends React.Component<CommentPageProps, CommentState> {
   private maxCommentLength: number = 9000;
   private minCommentLength: number = 10;
 
@@ -146,7 +151,7 @@ class CommentPage extends React.Component<any, CommentState> {
           <ProfileButton
             isLoggedIn={this.props.users.isAuthenticated}
             username={this.props.users.isAuthenticated ? (this.props.users.user as User).username : ''}
-            onLogout={() => {}}
+            onLogout={() => this.props.logout()}
           />
         </div>
         <br/>
@@ -191,5 +196,5 @@ function mapActionCreatorsToProps(dispatch: any) {
 }
 
 export default connect(mapStateToProps, mapActionCreatorsToProps)(
-  CommentPage
+  withLogoutHandling(CommentPage)
 );

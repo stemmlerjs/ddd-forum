@@ -16,6 +16,7 @@ import { bindActionCreators } from "redux";
 import * as usersOperators from '../modules/users/redux/operators'
 import { User } from '../modules/users/models/user';
 import { ProfileButton } from '../modules/users/components/profileButton';
+import withLogoutHandling from '../modules/users/hocs/withLogoutHandling';
 
 const post: Post = { 
   title: "Where the hell do I even start with Domain-Driven Design?",
@@ -74,7 +75,7 @@ const post: Post = {
   `
 }
 
-interface DiscussionPageProps {
+interface DiscussionPageProps extends usersOperators.IUserOperators {
   users: UsersState;
 }
 
@@ -115,7 +116,7 @@ class DiscussionPage extends React.Component<DiscussionPageProps, DiscussionStat
           <ProfileButton
             isLoggedIn={this.props.users.isAuthenticated}
             username={this.props.users.isAuthenticated ? (this.props.users.user as User).username : ''}
-            onLogout={() => {}}
+            onLogout={() => this.props.logout()}
           />
         </div>
 
@@ -150,5 +151,5 @@ function mapActionCreatorsToProps(dispatch: any) {
 }
 
 export default connect(mapStateToProps, mapActionCreatorsToProps)(
-  DiscussionPage
+  withLogoutHandling(DiscussionPage)
 );
