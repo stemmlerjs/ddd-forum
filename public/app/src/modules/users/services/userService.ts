@@ -11,7 +11,7 @@ export interface IUsersService {
   getCurrentUserProfile (): Promise<User>;
   createUser (email: string, username: string, password: string): Promise<APIResponse<void>>;
   login (username: string, password: string): Promise<APIResponse<LoginDTO>>;
-  logout (store: any): Promise<any>;
+  logout (): Promise<APIResponse<void>>;
 }
 
 export class UsersService extends BaseAPI implements IUsersService {
@@ -27,8 +27,17 @@ export class UsersService extends BaseAPI implements IUsersService {
     return response.data.user as User;
   }
 
-  public async logout (store: any): Promise<any> {
-
+  public async logout (): Promise<APIResponse<void>> {
+    try {
+      await this.post('/users/logout', null, null, { 
+        authorization: this.authService.getToken('access-token') 
+      })
+      this.authService.removeToken('access-token');
+      this.authService.removeToken('refresh-token');
+      return right(Result.ok<void>());
+    } catch (err) {
+      return left(err.response.data.message)
+    }
   }
 
   async login (username: string, password: string): Promise<APIResponse<LoginDTO>> {

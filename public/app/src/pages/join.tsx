@@ -8,8 +8,9 @@ import withUsersService from '../modules/users/hocs/withUsersService';
 import { UsersService } from '../modules/users/services/userService';
 import { TextUtil } from '../shared/utils/TextUtil';
 import { LoginDTO } from '../modules/users/dtos/loginDTO';
+import { IUserOperators } from '../modules/users/redux/operators';
 
-interface JoinPageProps {
+interface JoinPageProps extends IUserOperators {
   usersService: UsersService;
 }
 
@@ -106,7 +107,9 @@ class JoinPage extends React.Component<JoinPageProps, JoinPageState> {
         </div>
         <OnboardTemplate
           type="signup"
-          updateFormField={(fieldName: string, val: string) => this.updateFormField(fieldName, val)}
+          updateFormField={
+            (fieldName: string, val: string) => this.updateFormField(fieldName, val)
+          }
           onSubmit={() => this.onSubmit()}
         />
       </Layout>

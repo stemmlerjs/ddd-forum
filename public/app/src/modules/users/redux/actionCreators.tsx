@@ -24,8 +24,54 @@ function gettingUserProfileFailure (errorMessage: string): UsersAction & { error
   };
 }
 
+function loggingIn (): UsersAction {
+  return {
+    type: actions.LOGGING_IN
+  };
+}
+
+function loggingInSuccess (): UsersAction {
+  return {
+    type: actions.LOGGING_IN_SUCCESS
+  };
+}
+
+function loggingInFailure (error: string): UsersAction {
+  return {
+    type: actions.LOGGING_IN_FAILURE,
+    error
+  };
+}
+
+function loggingOut (): UsersAction {
+  return {
+    type: actions.LOGGING_OUT
+  };
+}
+
+function loggingOutSuccess (): UsersAction {
+  return {
+    type: actions.LOGGING_OUT_SUCCESS
+  };
+}
+
+function loggingOutFailure (error: string): UsersAction {
+  return {
+    type: actions.LOGGING_OUT_FAILURE,
+    error
+  };
+}
+
 export {
   gettingUserProfile,
   gettingUserProfileSuccess,
   gettingUserProfileFailure,
+
+  loggingIn,
+  loggingInSuccess,
+  loggingInFailure,
+
+  loggingOut,
+  loggingOutSuccess,
+  loggingOutFailure
 }

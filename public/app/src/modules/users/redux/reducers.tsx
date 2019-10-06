@@ -26,6 +26,41 @@ export default function users (state: UsersState = states,
         ...state,
         ...ReduxUtils.reportEventStatus("isFetchingUser", false)
       };
+    
+    case actions.LOGGING_IN:
+      return {
+        ...state,
+        ...ReduxUtils.reportEventStatus('isLoggingIn')
+      }
+    case actions.LOGGING_IN_SUCCESS:
+      return {
+        ...state,
+        ...ReduxUtils.reportEventStatus('isLoggingIn', true),
+        isAuthenticated: true
+      }
+    case actions.LOGGING_IN_FAILURE:
+      return {
+        ...state,
+        ...ReduxUtils.reportEventStatus('isLoggingIn', false),
+        error: action.error
+      }
+    case actions.LOGGING_OUT:
+      return {
+        ...state,
+        ...ReduxUtils.reportEventStatus('isLoggingOut')
+      }
+    case actions.LOGGING_OUT_SUCCESS:
+      return {
+        ...state,
+        ...ReduxUtils.reportEventStatus('isLoggingOut', true),
+        isAuthenticated: false
+      }
+    case actions.LOGGING_OUT_FAILURE:
+      return {
+        ...state,
+        ...ReduxUtils.reportEventStatus('isLoggingOut', false),
+        error: action.error
+      }
     default:
       return state;
   }

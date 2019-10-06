@@ -7,6 +7,16 @@ export interface UsersState {
   isFetchingUser: boolean;
   isFetchingUserSuccess: boolean;
   isFetchingUserFailure: boolean;
+
+  isLoggingIn: boolean,
+  isLoggingInSuccess: boolean,
+  isLoggingInFailure: boolean,
+
+  isLoggingOut: boolean;
+  isLoggingOutSuccess: boolean;
+  isLoggingOutFailure: boolean;
+
+  error: string;
 }
 
 const initialUserState: UsersState = {
@@ -15,6 +25,16 @@ const initialUserState: UsersState = {
   isFetchingUser: false,
   isFetchingUserSuccess: false,
   isFetchingUserFailure: false,
+
+  isLoggingIn: false,
+  isLoggingInSuccess: false,
+  isLoggingInFailure: false,
+
+  isLoggingOut: false,
+  isLoggingOutSuccess: false,
+  isLoggingOutFailure: false,
+
+  error: ''
 }
 
 export default initialUserState;

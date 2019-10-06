@@ -13,6 +13,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as usersOperators from '../modules/users/redux/operators'
 import { User } from '../modules/users/models/user';
+import withLogoutHandling from '../modules/users/hocs/withLogoutHandling';
 
 const posts: Post[] = [
   { 
@@ -57,7 +58,7 @@ const posts: Post[] = [
   }
 ]
 
-interface IndexPageProps {
+interface IndexPageProps extends usersOperators.IUserOperators {
   users: UsersState;
 }
 
@@ -88,8 +89,6 @@ class IndexPage extends React.Component<IndexPageProps, IndexPageState> {
   render () {
     const { activeFilter } = this.state;
 
-    console.log(this.props);
-
     return (
       <Layout>
         <div className="flex flex-row flex-center flex-even">
@@ -100,7 +99,7 @@ class IndexPage extends React.Component<IndexPageProps, IndexPageState> {
           <ProfileButton
             isLoggedIn={this.props.users.isAuthenticated}
             username={this.props.users.isAuthenticated ? (this.props.users.user as User).username : ''}
-            onLogout={() => {}}
+            onLogout={() => this.props.logout()}
           />
         </div>
         <br/>
@@ -134,5 +133,5 @@ function mapActionCreatorsToProps(dispatch: any) {
 }
 
 export default connect(mapStateToProps, mapActionCreatorsToProps)(
-  IndexPage
+  withLogoutHandling(IndexPage)
 );

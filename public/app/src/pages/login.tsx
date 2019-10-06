@@ -4,13 +4,16 @@ import { Layout } from '../shared/layout'
 import { toast } from 'react-toastify';
 import { OnboardTemplate } from '../modules/users/components/onboarding/onboardTemplate'
 import Header from '../shared/components/header/components/Header'
-import { UsersService } from '../modules/users/services/userService';
-import { TextUtil } from '../shared/utils/TextUtil';
-import { LoginDTO } from '../modules/users/dtos/loginDTO';
-import withUsersService from '../modules/users/hocs/withUsersService';
+import { IUserOperators } from '../modules/users/redux/operators';
+import { UsersState } from '../modules/users/redux/states';
+//@ts-ignore
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as usersOperators from '../modules/users/redux/operators'
 
-interface LoginPageProps {
-  usersService: UsersService;
+interface LoginPageProps extends IUserOperators {
+  users: UsersState;
+  history: any;
 }
 
 interface LoginPageState {
@@ -19,12 +22,13 @@ interface LoginPageState {
 }
 
 class LoginPage extends React.Component<LoginPageProps, LoginPageState> {
+  
   constructor (props: LoginPageProps) {
     super(props);
 
     this.state = {
       username: '',
-      password: ''
+      password: '',
     }
   }
 
@@ -39,14 +43,14 @@ class LoginPage extends React.Component<LoginPageProps, LoginPageState> {
     const { username, password } = this.state;
 
     if (!!username === false) {
-      toast.error("Yeahhhhh, you forgot your username. 🤠", {
+      toast.error("Yeahhhhh, you forgot to include username. 🤠", {
         autoClose: 3000
       })
       return false;
     }
 
-    if (!!password === false || !TextUtil.atLeast(password, 6)) {
-      toast.error("Yeahhhhh, your password should be at least 6 chars 🤠", {
+    if (!!password === false) {
+      toast.error("Yeahhhhh, you forgot to include your password 🤠", {
         autoClose: 3000
       })
       return false;
@@ -55,32 +59,44 @@ class LoginPage extends React.Component<LoginPageProps, LoginPageState> {
     return true;
   }
 
-  async onSubmit () {
-    if (this.isFormValid()) {
-      const { username, password } = this.state;  
+  afterSuccessfulLogin (prevProps: LoginPageProps) {
+    const currentProps: LoginPageProps = this.props;
+    if (currentProps.users.isLoggingInSuccess === !prevProps.users.isLoggingInSuccess) {
+      // Get user profile as well
+      this.props.getUserProfile();
+      setTimeout(() => {
+        this.props.history.push('/')
+      }, 2000)
+      return toast.success("Welcome back! Redirecting you home 🤠", {
+        autoClose: 2000
+      })
+    }
+  }
 
-      const loginResult = await this.props.usersService
-        .login(username, password);
-
-      if (loginResult.isLeft()) {
-        return toast.error(`Yeahhhhh, ${loginResult.value} 🤠`, {
-          autoClose: 3000
-        })
-      }
-
-      try {
-        const user = await this.props.usersService.getCurrentUserProfile();
-      } catch (err) {
-        console.log(err);
-      }
-
-      toast.success("You're in! 🤠", {
+  afterFailedLogin (prevProps: LoginPageProps) {
+    const currentProps: LoginPageProps = this.props;
+    if (currentProps.users.isLoggingInFailure === !prevProps.users.isLoggingInFailure) {
+      const error: string = currentProps.users.error;
+      return toast.error(`Yeahhhhh, ${error} 🤠`, {
         autoClose: 3000
       })
     }
   }
 
+  async onSubmit () {
+    if (this.isFormValid()) {
+      const { username, password } = this.state;
+      this.props.login(username, password);
+    }
+  }
+  
+  componentDidUpdate (prevProps: LoginPageProps) {
+    this.afterSuccessfulLogin(prevProps);
+    this.afterFailedLogin(prevProps)
+  }
+
   render () {
+    console.log(this.props)
     return (
       <Layout>
         <div className="flex flex-row flex-center flex-even">
@@ -99,4 +115,19 @@ class LoginPage extends React.Component<LoginPageProps, LoginPageState> {
   }
 }
 
-export default withUsersService(LoginPage);
+function mapStateToProps ({ users }: { users: UsersState }) {
+  return {
+    users
+  };
+}
+
+function mapActionCreatorsToProps(dispatch: any) {
+  return bindActionCreators(
+    {
+      ...usersOperators,
+    }, dispatch);
+}
+
+export default connect(mapStateToProps, mapActionCreatorsToProps)(
+  LoginPage
+);
