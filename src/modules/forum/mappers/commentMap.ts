@@ -6,6 +6,7 @@ export class CommentMap implements Mapper<Comment> {
 
   public static toPersistence (comment: Comment): any {
     return {
+      post_id: comment.postId.id.toString(),
       comment_id: comment.commentId.id.toString(),
       member_id: comment.memberId.id.toString(),
       parent_comment_id: comment.parentCommentId ? comment.parentCommentId.id.toString() : null,

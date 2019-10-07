@@ -174,6 +174,16 @@ export default {
           onDelete: 'cascade',
           onUpdate: 'cascade',
         },
+        post_id: {
+          type: Sequelize.UUID,
+          allowNull: false,
+          references: {
+            model: 'post',
+            key: 'post_id'
+          }, 
+          onDelete: 'cascade',
+          onUpdate: 'cascade',
+        },
         text: {
           type: Sequelize.TEXT,
           allowNull: false

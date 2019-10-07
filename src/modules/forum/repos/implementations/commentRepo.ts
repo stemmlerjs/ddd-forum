@@ -4,6 +4,7 @@ import { Comment } from "../../domain/comment";
 import { CommentDetails } from "../../domain/commentDetails";
 import { CommentMap } from "../../mappers/commentMap";
 import { CommentId } from "../../domain/commentId";
+import { CommentDetailsMap } from "../../mappers/commentDetailsMap";
 
 export class CommentRepo implements ICommentRepo {
   private models: any;
@@ -19,8 +20,21 @@ export class CommentRepo implements ICommentRepo {
   }
 
   private createBaseDetailsQuery (): any {
+    const models = this.models;
     return {
       where: {},
+      include: [
+        { model: models.Post, as: 'Post', where: {} },
+        { 
+          model: models.Member, 
+          as: 'Member', 
+          include: [
+            { model: models.BaseUser, as: 'BaseUser' }
+          ] 
+        },
+      ],
+      limit: 15,
+      offset: 0
     }
   }
 
@@ -28,8 +42,12 @@ export class CommentRepo implements ICommentRepo {
     return null;
   }
 
-  getCommentDetailsByPostSlug (slug: string): Promise<CommentDetails[]> {
-    return null;
+  async getCommentDetailsByPostSlug (slug: string): Promise<CommentDetails[]> {
+    const CommentModel = this.models.Comment;
+    const detailsQuery = this.createBaseDetailsQuery();
+    detailsQuery.include[0].where['slug'] = slug;
+    const comments = await CommentModel.findAll(detailsQuery);
+    return comments.map((c) => CommentDetailsMap.toDomain(c));
   }
 
   async deleteComment (commentId: CommentId): Promise<void> {

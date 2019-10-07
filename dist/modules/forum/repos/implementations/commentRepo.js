@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const commentMap_1 = require("../../mappers/commentMap");
+const commentDetailsMap_1 = require("../../mappers/commentDetailsMap");
 class CommentRepo {
     constructor(models) {
         this.models = models;
@@ -11,15 +12,33 @@ class CommentRepo {
         };
     }
     createBaseDetailsQuery() {
+        const models = this.models;
         return {
             where: {},
+            include: [
+                {
+                    model: models.Member,
+                    as: 'Member',
+                    include: [
+                        { model: models.BaseUser, as: 'BaseUser' }
+                    ]
+                },
+                { model: models.Post, as: 'Post' }
+            ],
+            limit: 15,
+            offset: 0
         };
     }
     exists(commentId) {
         return null;
     }
-    getCommentDetailsByPostSlug(slug) {
-        return null;
+    async getCommentDetailsByPostSlug(slug) {
+        const CommentModel = this.models.Comment;
+        const detailsQuery = this.createBaseDetailsQuery();
+        detailsQuery.where['slug'] = slug;
+        const comments = await CommentModel.findAll(detailsQuery);
+        console.log(comments);
+        return comments.map((c) => commentDetailsMap_1.CommentDetailsMap.toDomain(c));
     }
     async deleteComment(commentId) {
         const CommentModel = this.models.Comment;

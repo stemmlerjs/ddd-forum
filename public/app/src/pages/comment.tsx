@@ -30,14 +30,20 @@ interface CommentState {
 const comment: Comment = {
   commentId: '0',
   text: "Yeah yo, that's pretty cool and all but uhhh",
-  postAuthor: "elonmusk",
+  member: {
+    username: "elonmusk",
+    reputation: 0
+  },
   createdAt: DateUtil.createPreviousDate(0, 0, 10),
   childComments: [{
     commentId: '2',
     text: `Whoa, Elon Musk is on here?.
     `,
     parentCommentId: '0',
-    postAuthor: "dondraper",
+    member: {
+      username: "dondraper",
+      reputation: 0
+    },
     createdAt: DateUtil.createPreviousDate(0, 0, 10),
     childComments: [],
     postSlug: '/discuss/where-to-do-ddd',
@@ -47,7 +53,10 @@ const comment: Comment = {
     text: `Whoa, Don Draper is on here?.
     `,
     parentCommentId: '2',
-    postAuthor: "tonysoprano",
+    member: {
+      username: "tonysoprano",
+      reputation: 0
+    },
     createdAt: DateUtil.createPreviousDate(0, 0, 10),
     childComments: [],
     postSlug: '/discuss/where-to-do-ddd',

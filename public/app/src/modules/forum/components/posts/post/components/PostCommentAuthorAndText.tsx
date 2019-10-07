@@ -10,7 +10,7 @@ interface PostCommentAuthorAndTextProps extends Comment {
 const PostCommentAuthorAndText: React.FC<PostCommentAuthorAndTextProps> = (props) => (
   <div>
     <div className="comment-meta">
-      {props.postAuthor} | <a href={`/comment/${props.commentId}`}>{moment(props.createdAt).fromNow()}</a>
+      {props.member.username} | <a href={`/comment/${props.commentId}`}>{moment(props.createdAt).fromNow()}</a>
     </div>
     <p className="comment-text"><b>{props.text}</b></p>
   </div>

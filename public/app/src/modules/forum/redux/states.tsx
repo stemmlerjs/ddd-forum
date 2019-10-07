@@ -1,5 +1,6 @@
-import { Post } from "../models/Post";
 
+import { Post } from "../models/Post";
+import { Comment } from "../models/Comment";
 
 export interface ForumState {
   isSubmittingPost: boolean;
@@ -14,10 +15,20 @@ export interface ForumState {
   isGettingPostBySlugSuccess: boolean;
   isGettingPostBySlugFailure: boolean;
 
+  isCreatingReplyToPost: boolean;
+  isCreatingReplyToPostSuccess: boolean;
+  isCreatingReplyToPostFailure: boolean;
+
+  isGettingComments: boolean;
+  isGettingCommentsSuccess: boolean;
+  isGettingCommentsFailure: boolean;
+
   recentPosts: Post[];
   popularPosts: Post[];
 
   post: Post | {};
+
+  comments: Comment[];
 
   error: string;
 }
@@ -34,6 +45,16 @@ const initialForumState: ForumState = {
   isGettingPostBySlug: false,
   isGettingPostBySlugSuccess: false,
   isGettingPostBySlugFailure: false,
+
+  isCreatingReplyToPost: false,
+  isCreatingReplyToPostSuccess: false,
+  isCreatingReplyToPostFailure: false,
+
+  isGettingComments: false,
+  isGettingCommentsSuccess: false,
+  isGettingCommentsFailure: false,
+
+  comments: [],
 
   recentPosts: [],
   popularPosts: [],

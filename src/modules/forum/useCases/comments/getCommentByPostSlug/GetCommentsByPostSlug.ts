@@ -29,7 +29,7 @@ export class GetCommentsByPostSlug implements UseCase<any, Promise<Response>> {
       try {
         comments = await this.commentRepo.getCommentDetailsByPostSlug(slug, offset);
       } catch (err) {
-        return left(new GetCommentsByPostSlugErrors.PostNotFoundError(slug));
+        return left(new AppError.UnexpectedError(err));
       }
 
       return right(Result.ok<CommentDetails[]>(comments));

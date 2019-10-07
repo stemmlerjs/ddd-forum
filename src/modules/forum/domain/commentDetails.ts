@@ -3,14 +3,14 @@ import { ValueObject } from "../../../shared/domain/ValueObject";
 import { Result } from "../../../shared/core/Result";
 import { CommentText } from "./commentText";
 import { CommentId } from "./commentId";
-import { Member } from "./member";
 import { PostSlug } from "./postSlug";
 import { Guard } from "../../../shared/core/Guard";
+import { MemberDetails } from "./memberDetails";
 
 interface CommentDetailsProps {
   commentId: CommentId;
   text: CommentText;
-  member: Member;
+  member: MemberDetails;
   createdAt: Date | string;
   postSlug: PostSlug;
   parentCommentId?: CommentId;
@@ -26,7 +26,7 @@ export class CommentDetails extends ValueObject<CommentDetailsProps> {
     return this.props.text;
   }
 
-  get member (): Member {
+  get member (): MemberDetails {
     return this.props.member;
   }
 
@@ -52,8 +52,7 @@ export class CommentDetails extends ValueObject<CommentDetailsProps> {
       { argument: props.text, argumentName: 'text' },
       { argument: props.member, argumentName: 'member' },
       { argument: props.createdAt, argumentName: 'createdAt' },
-      { argument: props.postSlug, argumentName: 'postSlug' },
-      { argument: props.parentCommentId, argumentName: 'parentCommentId' }
+      { argument: props.postSlug, argumentName: 'postSlug' }
     ]);
 
     if (!nullGuard.succeeded) {

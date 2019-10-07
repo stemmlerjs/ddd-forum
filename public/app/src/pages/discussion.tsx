@@ -4,6 +4,7 @@ import { Layout } from '../shared/layout';
 import Header from '../shared/components/header/components/Header';
 import { Post } from '../modules/forum/models/Post';
 import { DateUtil } from '../shared/utils/DateUtil';
+import { toast } from 'react-toastify';
 import PostSummary from '../modules/forum/components/posts/post/components/PostSummary';
 import PostComment from '../modules/forum/components/posts/post/components/PostComment';
 import { Comment } from '../modules/forum/models/Comment';
@@ -21,69 +22,13 @@ import * as forumOperators from '../modules/forum/redux/operators'
 import { ForumState } from '../modules/forum/redux/states';
 import Editor from '../modules/forum/components/comments/components/Editor';
 import { SubmitButton } from '../shared/components/button';
-
-const post: Post = { 
-  title: "Where the hell do I even start with Domain-Driven Design?",
-  createdAt: DateUtil.createPreviousDate(0, 0, 10),
-  postAuthor: 'stemmlerjs',
-  points: 143,
-  numComments: 150,
-  slug: '/discuss/where-to-do-ddd',
-  type: 'text',
-  text: `
-    Despite the domain that they belong to, when domain events 
-    are created and dispatched, they provide the opportunity 
-    for other (decoupled) parts of our application to execute 
-    some code after that event.
-  `
-}
-
-const comments: Comment[] = [
-  {
-    commentId: '0',
-    text: "Yeah yo, that's pretty cool and all but uhhh",
-    postAuthor: "elonmusk",
-    createdAt: DateUtil.createPreviousDate(0, 0, 10),
-    childComments: [],
-    postSlug: '/discuss/where-to-do-ddd',
-  },
-  {
-    commentId: '1',
-    text: `Great article dude. Here's a bunch of random text.
-      Hello what's good? lkjsjjs lkjfksdjlf they provide the opportunity 
-      for other (decoupled) parts of our application to execute 
-      some code after that event.
-    `,
-    postAuthor: "elonmusk",
-    createdAt: DateUtil.createPreviousDate(0, 0, 10),
-    childComments: [],
-    postSlug: '/discuss/where-to-do-ddd',
-  },
-  {
-    commentId: '2',
-    text: `Whoa, Elon Musk is on here?.
-    `,
-    parentCommentId: '0',
-    postAuthor: "dondraper",
-    createdAt: DateUtil.createPreviousDate(0, 0, 10),
-    childComments: [],
-    postSlug: '/discuss/where-to-do-ddd',
-  },
-  {
-    commentId: '3',
-    text: `Whoa, Don Draper is on here?.
-    `,
-    parentCommentId: '2',
-    postAuthor: "tonysoprano",
-    createdAt: DateUtil.createPreviousDate(0, 0, 10),
-    childComments: [],
-    postSlug: '/discuss/where-to-do-ddd',
-  }
-]
+import { TextUtil } from '../shared/utils/TextUtil';
+import { FullPageLoader } from '../shared/components/loader';
 
 interface DiscussionPageProps extends usersOperators.IUserOperators, forumOperators.IForumOperations {
   users: UsersState;
   forum: ForumState;
+  history: any;
 }
 
 interface DiscussionState {
@@ -101,25 +46,29 @@ class DiscussionPage extends React.Component<DiscussionPageProps, DiscussionStat
     }
   }
 
-  async getCommentsFromAPI () {
-    // TODO: Actually use an API for this :)
-    this.setState({
-      ...this.state,
-      comments: comments
-    })
-  }
-
-  getPost (): void {
+  getSlugFromWindow (): string {
     if (typeof window !== 'undefined') {
       var pathname = window.location.pathname;
       var slug = pathname.substring(pathname.lastIndexOf("/") + 1);
-      this.props.getPostBySlug(slug);
+      return slug;
+    } else {
+      return "";
     }
   }
 
+  getPost (): void {
+    const slug = this.getSlugFromWindow();
+    this.props.getPostBySlug(slug);
+  }
+
+  getComments (offset?: number): void {
+    const slug = this.getSlugFromWindow();
+    this.props.getComments(slug, offset);
+  }
+
   componentDidMount () {
-    this.getCommentsFromAPI();
     this.getPost();
+    this.getComments();
   }
 
   updateValue (fieldName: string, newValue: any) {
@@ -129,12 +78,60 @@ class DiscussionPage extends React.Component<DiscussionPageProps, DiscussionStat
     })
   }
 
-  onSubmitComment () {
+  isFormValid () : boolean {
+    const { newCommentText } = this.state;
 
+    if (!!newCommentText === false || 
+      TextUtil.atLeast(newCommentText, CommentUtil.minCommentLength) ||
+      TextUtil.atMost(newCommentText, CommentUtil.maxCommentLength)
+    ) {
+      toast.error(`Yeahhhhh, comments should be ${CommentUtil.minCommentLength} to ${CommentUtil.maxCommentLength} characters. Yours was ${newCommentText.length}. 🤠`, {
+        autoClose: 3000
+      })
+      return false;
+    }
+
+    return true;
+  }
+
+  onSubmitComment () {
+    if (this.isFormValid()) {
+      const text = this.state.newCommentText;
+      const slug  = (this.props.forum.post as Post).slug;
+      this.props.createReplyToPost(text, slug);
+    }
+  }
+
+  afterSuccessfulCommentPost (prevProps: DiscussionPageProps) {
+    const currentProps: DiscussionPageProps = this.props;
+    if (currentProps.forum.isCreatingReplyToPostSuccess === !prevProps.forum.isCreatingReplyToPostSuccess) {
+      toast.success(`Done-zo! 🤠`, {
+        autoClose: 2000
+      });
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000)
+    }
+  }
+
+  afterFailedCommentPost (prevProps: DiscussionPageProps) {
+    const currentProps: DiscussionPageProps = this.props;
+    if (currentProps.forum.isCreatingReplyToPostFailure === !prevProps.forum.isCreatingReplyToPostFailure) {
+      const error: string = currentProps.forum.error;
+      return toast.error(`Yeahhhhh, ${error} 🤠`, {
+        autoClose: 3000
+      })
+    }
+  } 
+
+  componentDidUpdate (prevProps: DiscussionPageProps) {
+    this.afterSuccessfulCommentPost(prevProps);
+    this.afterFailedCommentPost(prevProps);
   }
 
   render () {
     const post = this.props.forum.post as Post;
+    const comments = this.props.forum.comments;
 
     return (
       <Layout>
@@ -175,9 +172,11 @@ class DiscussionPage extends React.Component<DiscussionPageProps, DiscussionStat
         )}
         
         <br/>
-        {/* {comments.map((c, i) => (
+        {comments.map((c, i) => (
           <PostComment key={i} {...c}/>
-        ))} */}
+        ))}
+
+        {this.props.forum.isCreatingReplyToPost ? <FullPageLoader/> : '' }
       </Layout>
     )
   }

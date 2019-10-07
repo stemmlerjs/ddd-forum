@@ -15,6 +15,7 @@ class GetCommentsByPostSlug {
                 comments = await this.commentRepo.getCommentDetailsByPostSlug(slug, offset);
             }
             catch (err) {
+                console.log(err);
                 return Result_1.left(new GetCommentsByPostSlugErrors_1.GetCommentsByPostSlugErrors.PostNotFoundError(slug));
             }
             return Result_1.right(Result_1.Result.ok(comments));

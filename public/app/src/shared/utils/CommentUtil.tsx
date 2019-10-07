@@ -1,11 +1,26 @@
 
 import { Comment } from "../../modules/forum/models/Comment";
+import { CommentDTO } from "../../modules/forum/dtos/commentDTO";
 
 export class CommentUtil {
 
   public static maxCommentLength: number = 10000;
   public static minCommentLength: number = 20;
 
+  public static toViewModel (dto: CommentDTO): Comment {
+    return {
+      postSlug: dto.postSlug,
+      commentId: dto.commentId,
+      parentCommentId: dto.parentCommentId,
+      text: dto.text,
+      member: {
+        username: dto.member.user.username,
+        reputation: dto.member.reputation,
+      },
+      createdAt: dto.createdAt,
+      childComments: []
+    }
+  }
 
   public static getSortedComments (comments: Comment[]): Comment[] {
     comments.forEach((c) => {

@@ -63,6 +63,46 @@ export default function forum (state: ForumState = states,
         ...ReduxUtils.reportEventStatus("isGettingPostBySlug", false),
         error: action.error
       };
+
+    case actions.CREATING_REPLY_TO_POST:
+      return {
+        ...state,
+        ...ReduxUtils.reportEventStatus("isCreatingReplyToPost"),
+        error: ''
+      };  
+    case actions.CREATING_REPLY_TO_POST_SUCCESS:
+      return {
+        ...state,
+        ...ReduxUtils.reportEventStatus("isCreatingReplyToPost", true)
+      }; 
+    case actions.CREATING_REPLY_TO_POST_FAILURE:
+      return {
+        ...state,
+        ...ReduxUtils.reportEventStatus("isCreatingReplyToPost", false),
+        error: action.error
+      }; 
+
+    case actions.GETTING_COMMENTS:
+      return {
+        ...state,
+        ...ReduxUtils.reportEventStatus("isGettingComments"),
+        error: ''
+      };  
+
+    case actions.GETTING_COMMENTS_SUCCESS:
+      return {
+        ...state,
+        ...ReduxUtils.reportEventStatus("isGettingComments", true),
+        comments: action.comments
+      };  
+
+    case actions.GETTING_COMMENTS_FAILURE:
+      return {
+        ...state,
+        ...ReduxUtils.reportEventStatus("isGettingComments", false),
+        error: action.error
+      };  
+
     default:
       return state;
   }

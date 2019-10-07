@@ -1,6 +1,7 @@
 
 import * as actions from "./actions";
 import { Post } from "../models/Post";
+import { Comment } from "../models/Comment";
 
 
 export type ForumAction = { [key: string]: actions.ForumActionType | any };
@@ -64,6 +65,45 @@ function gettingPostBySlugFailure (error: string): ForumAction & { error: string
   }
 }
 
+function creatingReplyToPost (): ForumAction {
+  return {
+    type: actions.CREATING_REPLY_TO_POST
+  }
+}
+
+function creatingReplyToPostSuccess (): ForumAction {
+  return {
+    type: actions.CREATING_REPLY_TO_POST_SUCCESS
+  }
+}
+
+function creatingReplyToPostFailure (error: string): ForumAction {
+  return {
+    type: actions.CREATING_REPLY_TO_POST_FAILURE,
+    error
+  }
+}
+
+function gettingComments (): ForumAction {
+  return {
+    type: actions.GETTING_COMMENTS
+  }
+}
+
+function gettingCommentsSuccess (comments: Comment[]): ForumAction {
+  return {
+    type: actions.GETTING_COMMENTS_SUCCESS,
+    comments
+  }
+}
+
+function gettingCommentsFailure (error: string): ForumAction {
+  return {
+    type: actions.GETTING_COMMENTS_FAILURE,
+    error
+  }
+}
+
 export {
   submittingPost,
   submittingPostSuccess,
@@ -75,5 +115,13 @@ export {
 
   gettingPostBySlug,
   gettingPostBySlugSuccess,
-  gettingPostBySlugFailure
+  gettingPostBySlugFailure,
+
+  creatingReplyToPost,
+  creatingReplyToPostSuccess,
+  creatingReplyToPostFailure,
+
+  gettingComments,
+  gettingCommentsSuccess,
+  gettingCommentsFailure
 }

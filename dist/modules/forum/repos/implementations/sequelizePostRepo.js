@@ -71,7 +71,8 @@ class PostRepo {
     }
     async save(post) {
         const PostModel = this.models.Post;
-        const isNewPost = await this.exists(post.postId);
+        const exists = await this.exists(post.postId);
+        const isNewPost = !exists;
         const rawSequelizePost = await postMap_1.PostMap.toPersistence(post);
         if (isNewPost) {
             try {

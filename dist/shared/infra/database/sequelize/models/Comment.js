@@ -18,6 +18,16 @@ exports.default = (sequelize, DataTypes) => {
             onDelete: 'cascade',
             onUpdate: 'cascade',
         },
+        post_id: {
+            type: DataTypes.UUID,
+            allowNull: false,
+            references: {
+                model: 'post',
+                key: 'post_id'
+            },
+            onDelete: 'cascade',
+            onUpdate: 'cascade',
+        },
         parent_comment_id: {
             type: DataTypes.UUID,
             allowNull: true,
@@ -43,6 +53,8 @@ exports.default = (sequelize, DataTypes) => {
         tableName: 'comment'
     });
     Comment.associate = (models) => {
+        Comment.belongsTo(models.Member, { foreignKey: 'member_id', targetKey: 'member_id', as: 'Member' });
+        Comment.belongsTo(models.Post, { foreignKey: 'post_id', targetKey: 'post_id', as: 'Post' });
     };
     return Comment;
 };

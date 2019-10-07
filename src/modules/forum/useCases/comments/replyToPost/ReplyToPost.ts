@@ -1,6 +1,6 @@
 import { UseCase } from "../../../../../shared/core/UseCase";
 import { IPostRepo } from "../../../repos/postRepo";
-import { Either, Result, left } from "../../../../../shared/core/Result";
+import { Either, Result, left, right } from "../../../../../shared/core/Result";
 import { AppError } from "../../../../../shared/core/AppError";
 import { ReplyToPostErrors } from "./ReplyToPostErrors";
 import { ReplyToPostDTO } from "./ReplyToPostDTO";
@@ -9,6 +9,7 @@ import { IMemberRepo } from "../../../repos/memberRepo";
 import { Member } from "../../../domain/member";
 import { Comment } from "../../../domain/comment";
 import { CommentText } from "../../../domain/commentText";
+import { PostSlug } from "../../../domain/postSlug";
 
 type Response = Either<
   ReplyToPostErrors.PostNotFoundError |
@@ -29,16 +30,26 @@ export class ReplyToPost implements UseCase<ReplyToPostDTO, Promise<Response>> {
   public async execute (req: ReplyToPostDTO): Promise<Response> {
     let post: Post;
     let member: Member;
-    const { slug, userId } = req;
+    let slug: PostSlug;
+    const { userId } = req;
     try {
 
+      const slugOrError = PostSlug.createFromExisting(req.slug);
+
+      if (slugOrError.isFailure) {
+        return left(slugOrError);
+      }
+
+      slug = slugOrError.getValue();
+
       try {
+        
         [ post, member ] = await Promise.all([
-          this.postRepo.getPostBySlug(slug),
+          this.postRepo.getPostBySlug(slug.value),
           this.memberRepo.getMemberByUserId(userId),
         ]);
       } catch (err) {
-        return left(new ReplyToPostErrors.PostNotFoundError(slug));
+        return left(new ReplyToPostErrors.PostNotFoundError(slug.value));
       }
 
       const commentTextOrError = CommentText.create({ value: req.comment });
@@ -62,6 +73,8 @@ export class ReplyToPost implements UseCase<ReplyToPostDTO, Promise<Response>> {
       post.addComment(comment);
 
       await this.postRepo.save(post);
+
+      return right(Result.ok<void>());
 
     } catch (err) {
       return left(new AppError.UnexpectedError(err));
