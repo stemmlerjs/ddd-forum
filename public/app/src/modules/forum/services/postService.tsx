@@ -11,12 +11,25 @@ import { PostDTO } from "../dtos/postDTO";
 export interface IPostService {
   createPost (title: string, type: PostType, text?: string, link?: string): Promise<APIResponse<void>>;
   getRecentPosts (offset?: number): Promise<APIResponse<Post[]>>
+  getPostBySlug (slug: string): Promise<APIResponse<Post>>;
 }
 
 export class PostService extends BaseAPI implements IPostService {
 
   constructor (authService: IAuthService) {
     super(authService);
+  }
+
+  public async getPostBySlug (slug: string): Promise<APIResponse<Post>> {
+    try {
+      const response = await this.get('/posts', { slug });
+
+      return right(Result.ok<Post>(
+        PostUtil.toViewModel(response.data.post)
+      ));
+    } catch (err) {
+      return left(err.response ? err.response.data.message : "Connection failed")
+    }
   }
 
   public async getRecentPosts (offset?: number): Promise<APIResponse<Post[]>> {

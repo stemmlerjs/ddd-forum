@@ -17,6 +17,8 @@ import * as usersOperators from '../modules/users/redux/operators'
 import { User } from '../modules/users/models/user';
 import { ProfileButton } from '../modules/users/components/profileButton';
 import withLogoutHandling from '../modules/users/hocs/withLogoutHandling';
+import * as forumOperators from '../modules/forum/redux/operators'
+import { ForumState } from '../modules/forum/redux/states';
 
 const post: Post = { 
   title: "Where the hell do I even start with Domain-Driven Design?",
@@ -77,8 +79,9 @@ const comments: Comment[] = [
   }
 ]
 
-interface DiscussionPageProps extends usersOperators.IUserOperators {
+interface DiscussionPageProps extends usersOperators.IUserOperators, forumOperators.IForumOperations {
   users: UsersState;
+  forum: ForumState;
 }
 
 interface DiscussionState {
@@ -102,11 +105,22 @@ class DiscussionPage extends React.Component<DiscussionPageProps, DiscussionStat
     })
   }
 
+  getPost (): void {
+    if (typeof window !== 'undefined') {
+      var pathname = window.location.pathname;
+      var slug = pathname.substring(pathname.lastIndexOf("/") + 1);
+      this.props.getPostBySlug(slug);
+    }
+  }
+  
+
   componentDidMount () {
     this.getCommentsFromAPI();
+    this.getPost();
   }
 
   render () {
+    const post = this.props.forum.post as Post;
     const comments = CommentUtil.getSortedComments(this.state.comments);
     return (
       <Layout>
@@ -121,15 +135,20 @@ class DiscussionPage extends React.Component<DiscussionPageProps, DiscussionStat
             onLogout={() => this.props.logout()}
           />
         </div>
-
-        <Header title={`"${post.title}"`} />
+       
+        {this.props.forum.isGettingPostBySlug ? (
+          ''
+        ) : (
+          <>
+            <Header title={`"${post.title}"`} />
+              <br/>
+              <br/>
+            <PostSummary
+              {...post as Post}
+            />
+          </>
+        )}
         
-        <br/>
-        <br/>
-        <PostSummary
-          {...post}
-        />
-        <br/>
         <br/>
         {comments.map((c, i) => (
           <PostComment key={i} {...c}/>
@@ -139,9 +158,11 @@ class DiscussionPage extends React.Component<DiscussionPageProps, DiscussionStat
   }
 }
 
-function mapStateToProps ({ users }: { users: UsersState }) {
+
+function mapStateToProps ({ users, forum }: { users: UsersState, forum: ForumState }) {
   return {
-    users
+    users,
+    forum
   };
 }
 
@@ -149,6 +170,7 @@ function mapActionCreatorsToProps(dispatch: any) {
   return bindActionCreators(
     {
       ...usersOperators,
+      ...forumOperators
     }, dispatch);
 }
 

@@ -10,8 +10,8 @@ interface PostProps extends Post {
 
 const PostSummary: React.FC<PostProps> = (props) => (
   <div className="post">
-    <PostMeta {...props} />
-    <p>{props.text}</p>
+    <PostMeta {...props} includeLink={false} />
+    <div dangerouslySetInnerHTML={{ __html: props.text }}/>
   </div>
 )
 

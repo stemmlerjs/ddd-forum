@@ -10,8 +10,14 @@ export interface ForumState {
   isGettingRecentPostsSuccess: boolean;
   isGettingRecentPostsFailure: boolean;
 
+  isGettingPostBySlug: boolean;
+  isGettingPostBySlugSuccess: boolean;
+  isGettingPostBySlugFailure: boolean;
+
   recentPosts: Post[];
   popularPosts: Post[];
+
+  post: Post | {};
 
   error: string;
 }
@@ -25,8 +31,14 @@ const initialForumState: ForumState = {
   isGettingRecentPostsSuccess: false,
   isGettingRecentPostsFailure: false,
 
+  isGettingPostBySlug: false,
+  isGettingPostBySlugSuccess: false,
+  isGettingPostBySlugFailure: false,
+
   recentPosts: [],
   popularPosts: [],
+
+  post: {},
 
   error: ''
 }

@@ -36,6 +36,16 @@ export class PostRepo implements IPostRepo {
     }
   }
 
+  public async getPostDetailsBySlug (slug: string): Promise<PostDetails> {
+    const PostModel = this.models.Post;
+    const detailsQuery = this.createBaseDetailsQuery();
+    detailsQuery.where['slug'] = slug;
+    const post = await PostModel.findOne(detailsQuery);
+    const found = !!post === true;
+    if (!found) throw new Error("Post not found");
+    return PostDetailsMap.toDomain(post)
+  }
+
   public async getRecentPosts (offset?: number): Promise<PostDetails[]> {
     const PostModel = this.models.Post;
     const detailsQuery = this.createBaseDetailsQuery();

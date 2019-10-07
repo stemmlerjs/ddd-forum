@@ -44,6 +44,26 @@ function getRecentPostsFailure (error: string): ForumAction & { error: string } 
   };
 }
 
+function gettingPostBySlug (): ForumAction {
+  return {
+    type: actions.GETTING_POST_BY_SLUG
+  }
+}
+
+function gettingPostBySlugSuccess (post: Post): ForumAction & { post: Post } {
+  return {
+    type: actions.GETTING_POST_BY_SLUG_SUCCESS,
+    post
+  }
+}
+
+function gettingPostBySlugFailure (error: string): ForumAction & { error: string} {
+  return {
+    type: actions.GETTING_POST_BY_SLUG_FAILURE,
+    error
+  }
+}
+
 export {
   submittingPost,
   submittingPostSuccess,
@@ -51,5 +71,9 @@ export {
 
   getRecentPosts,
   getRecentPostsSuccess,
-  getRecentPostsFailure
+  getRecentPostsFailure,
+
+  gettingPostBySlug,
+  gettingPostBySlugSuccess,
+  gettingPostBySlugFailure
 }

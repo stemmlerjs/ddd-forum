@@ -44,6 +44,25 @@ export default function forum (state: ForumState = states,
         ...ReduxUtils.reportEventStatus("isGettingRecentPosts", false),
         error: action.error
       };
+
+    case actions.GETTING_POST_BY_SLUG:
+      return {
+        ...state,
+        ...ReduxUtils.reportEventStatus("isGettingPostBySlug"),
+        error: ''
+      };
+    case actions.GETTING_POST_BY_SLUG_SUCCESS:
+      return {
+        ...state,
+        ...ReduxUtils.reportEventStatus("isGettingPostBySlug", true),
+        post: action.post
+      };
+    case actions.GETTING_POST_BY_SLUG_FAILURE:
+      return {
+        ...state,
+        ...ReduxUtils.reportEventStatus("isGettingPostBySlug", false),
+        error: action.error
+      };
     default:
       return state;
   }
