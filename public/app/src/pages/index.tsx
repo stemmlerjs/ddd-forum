@@ -64,6 +64,7 @@ const posts: Post[] = [
 
 interface IndexPageProps extends usersOperators.IUserOperators {
   users: UsersState;
+  location: any;
 }
 
 interface IndexPageState {
@@ -90,7 +91,40 @@ class IndexPage extends React.Component<IndexPageProps, IndexPageState> {
     })
   }
 
+  onFilterChanged (prevState: IndexPageState) {
+    const currentState: IndexPageState = this.state;
+    if (prevState.activeFilter !== currentState.activeFilter) {
+      // TODO: Filter changed
+      console.log('fiter changed');
+    }
+  }
+
+  setActiveFilterOnLoad () {
+    const showNewFilter = (this.props.location.search as string).includes('show=new');
+    const showPopularFilter = (this.props.location.search as string).includes('show=popular');
+
+    let activeFilter = this.state.activeFilter;
+
+    if (showNewFilter) {
+      activeFilter = 'NEW';
+    }
+
+    this.setState({
+      ...this.state,
+      activeFilter
+    })
+  }
+
+  componentDidUpdate (prevProps: IndexPageProps, prevState: IndexPageState) {
+    this.onFilterChanged(prevState)
+  }
+
+  componentDidMount () {
+    this.setActiveFilterOnLoad();
+  }
+
   render () {
+    console.log(this.props)
     const { activeFilter } = this.state;
 
     return (
