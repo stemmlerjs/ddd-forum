@@ -23,6 +23,7 @@ export class CommentUtil {
   }
 
   public static getSortedComments (comments: Comment[]): Comment[] {
+
     comments.forEach((c) => {
       const hasParentComment = !!c.parentCommentId === true;
       if (hasParentComment) {

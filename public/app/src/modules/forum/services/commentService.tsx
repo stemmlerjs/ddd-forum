@@ -38,9 +38,8 @@ export class CommentService extends BaseAPI implements ICommentService {
   async getCommentsBySlug (slug: string, offset?: number): Promise<APIResponse<Comment[]>> {
     try {
       const response = await this.get('/comments', { offset, slug });
-
       return right(Result.ok<Comment[]>(
-        response.data.posts.map((c: CommentDTO) => CommentUtil.toViewModel(c)))
+        response.data.comments.map((c: CommentDTO) => CommentUtil.toViewModel(c)))
       );
     } catch (err) {
       return left(err.response ? err.response.data.message : "Connection failed")

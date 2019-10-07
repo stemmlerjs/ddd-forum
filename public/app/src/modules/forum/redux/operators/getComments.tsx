@@ -12,9 +12,9 @@ function getComments (slug: string, offset?: number) {
 
     if (result.isLeft()) {
       const error: string = result.value;
-      dispatch(actionCreators.creatingReplyToPostFailure(error))
+      dispatch(actionCreators.gettingCommentsFailure(error))
     } else {
-      const comments = result.value.errorValue();
+      const comments = result.value.getValue();
 
       const sortedComments = CommentUtil.getSortedComments(comments);
 

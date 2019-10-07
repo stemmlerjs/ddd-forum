@@ -3,7 +3,6 @@ import React from 'react'
 import { Layout } from '../shared/layout';
 import Header from '../shared/components/header/components/Header';
 import { Post } from '../modules/forum/models/Post';
-import { DateUtil } from '../shared/utils/DateUtil';
 import { toast } from 'react-toastify';
 import PostSummary from '../modules/forum/components/posts/post/components/PostSummary';
 import PostComment from '../modules/forum/components/posts/post/components/PostComment';
@@ -133,6 +132,8 @@ class DiscussionPage extends React.Component<DiscussionPageProps, DiscussionStat
     const post = this.props.forum.post as Post;
     const comments = this.props.forum.comments;
 
+    console.log(this.props)
+
     return (
       <Layout>
         <div className="flex flex-row flex-center flex-between">
@@ -171,6 +172,8 @@ class DiscussionPage extends React.Component<DiscussionPageProps, DiscussionStat
           </>
         )}
         
+        <br/>
+        <br/>
         <br/>
         {comments.map((c, i) => (
           <PostComment key={i} {...c}/>
