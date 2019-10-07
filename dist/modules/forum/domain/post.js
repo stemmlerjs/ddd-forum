@@ -6,6 +6,7 @@ const postId_1 = require("./postId");
 const Guard_1 = require("../../../shared/core/Guard");
 const lodash_1 = require("lodash");
 const postCreated_1 = require("./events/postCreated");
+const commentCreated_1 = require("./events/commentCreated");
 class Post extends AggregateRoot_1.AggregateRoot {
     get postId() {
         return postId_1.PostId.create(this._id)
@@ -37,6 +38,11 @@ class Post extends AggregateRoot_1.AggregateRoot {
     }
     get type() {
         return this.props.type;
+    }
+    addComment(comment) {
+        this.comments.push(comment);
+        this.addDomainEvent(new commentCreated_1.CommentCreated(this, comment));
+        return Result_1.Result.ok();
     }
     isLinkPost() {
         return this.props.type === 'link';

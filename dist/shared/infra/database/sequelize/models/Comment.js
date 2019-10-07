@@ -31,6 +31,11 @@ exports.default = (sequelize, DataTypes) => {
         text: {
             type: DataTypes.TEXT,
             allowNull: false
+        },
+        points: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            defaultValue: 1
         }
     }, {
         timestamps: true,

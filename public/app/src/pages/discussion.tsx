@@ -19,6 +19,8 @@ import { ProfileButton } from '../modules/users/components/profileButton';
 import withLogoutHandling from '../modules/users/hocs/withLogoutHandling';
 import * as forumOperators from '../modules/forum/redux/operators'
 import { ForumState } from '../modules/forum/redux/states';
+import Editor from '../modules/forum/components/comments/components/Editor';
+import { SubmitButton } from '../shared/components/button';
 
 const post: Post = { 
   title: "Where the hell do I even start with Domain-Driven Design?",
@@ -85,7 +87,8 @@ interface DiscussionPageProps extends usersOperators.IUserOperators, forumOperat
 }
 
 interface DiscussionState {
-  comments: Comment[]
+  comments: Comment[];
+  newCommentText: string;
 }
 
 class DiscussionPage extends React.Component<DiscussionPageProps, DiscussionState> {
@@ -93,7 +96,8 @@ class DiscussionPage extends React.Component<DiscussionPageProps, DiscussionStat
     super(props);
 
     this.state = {
-      comments: []
+      comments: [],
+      newCommentText: '',
     }
   }
 
@@ -112,16 +116,26 @@ class DiscussionPage extends React.Component<DiscussionPageProps, DiscussionStat
       this.props.getPostBySlug(slug);
     }
   }
-  
 
   componentDidMount () {
     this.getCommentsFromAPI();
     this.getPost();
   }
 
+  updateValue (fieldName: string, newValue: any) {
+    this.setState({
+      ...this.state,
+      [fieldName]: newValue
+    })
+  }
+
+  onSubmitComment () {
+
+  }
+
   render () {
     const post = this.props.forum.post as Post;
-    const comments = CommentUtil.getSortedComments(this.state.comments);
+
     return (
       <Layout>
         <div className="flex flex-row flex-center flex-between">
@@ -141,18 +155,29 @@ class DiscussionPage extends React.Component<DiscussionPageProps, DiscussionStat
         ) : (
           <>
             <Header title={`"${post.title}"`} />
-              <br/>
-              <br/>
+            <br/>
+            <br/>
             <PostSummary
               {...post as Post}
+            />
+            <h3>Leave a comment</h3>
+            <Editor
+              text={this.state.newCommentText}
+              maxLength={CommentUtil.maxCommentLength}
+              placeholder="Post your reply"
+              handleChange={(v: any) => this.updateValue('newCommentText', v)}
+            />
+            <SubmitButton
+              text="Post comment"
+              onClick={() => this.onSubmitComment()}
             />
           </>
         )}
         
         <br/>
-        {comments.map((c, i) => (
+        {/* {comments.map((c, i) => (
           <PostComment key={i} {...c}/>
-        ))}
+        ))} */}
       </Layout>
     )
   }

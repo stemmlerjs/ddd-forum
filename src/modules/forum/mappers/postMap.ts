@@ -10,6 +10,7 @@ export class PostMap implements Mapper<Post> {
 
   public static toPersistence (post: Post): any {
     return {
+      updatedAt: new Date(),
       title: post.title.value,
       post_id: post.postId.id.toString(),
       member_id: post.memberId.id.toString(),

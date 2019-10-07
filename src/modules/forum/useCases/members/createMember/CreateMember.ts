@@ -9,7 +9,7 @@ import { CreateMemberErrors } from "./CreateMemberErrors";
 import { User } from "../../../../users/domain/user";
 import { Member } from "../../../domain/member";
 
-export type Response = Either<
+type Response = Either<
   CreateMemberErrors.MemberAlreadyExistsError |
   CreateMemberErrors.UserDoesntExistError |
   AppError.UnexpectedError |

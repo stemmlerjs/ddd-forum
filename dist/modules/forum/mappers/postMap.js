@@ -7,6 +7,7 @@ class PostMap {
     }
     static toPersistence(post) {
         return {
+            updatedAt: new Date(),
             title: post.title.value,
             post_id: post.postId.id.toString(),
             member_id: post.memberId.id.toString(),

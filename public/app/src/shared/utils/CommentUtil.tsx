@@ -2,6 +2,11 @@
 import { Comment } from "../../modules/forum/models/Comment";
 
 export class CommentUtil {
+
+  public static maxCommentLength: number = 10000;
+  public static minCommentLength: number = 20;
+
+
   public static getSortedComments (comments: Comment[]): Comment[] {
     comments.forEach((c) => {
       const hasParentComment = !!c.parentCommentId === true;

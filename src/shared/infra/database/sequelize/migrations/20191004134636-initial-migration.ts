@@ -178,6 +178,11 @@ export default {
           type: Sequelize.TEXT,
           allowNull: false
         },
+        points: {
+          type: Sequelize.INTEGER,
+          allowNull: false,
+          defaultValue: 1
+        },
         created_at: {
           type: Sequelize.DATE,
           allowNull: false,

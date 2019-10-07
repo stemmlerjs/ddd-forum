@@ -49,6 +49,7 @@ exports.default = (sequelize, DataTypes) => {
         tableName: 'post'
     });
     Post.associate = (models) => {
+        Post.belongsTo(models.Member, { foreignKey: 'member_id', targetKey: 'member_id', as: 'Member' });
     };
     return Post;
 };

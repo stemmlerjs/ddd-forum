@@ -13,6 +13,7 @@ import { has } from 'lodash'
 import { PostCreated } from "./events/postCreated";
 import { PostType } from "./postType";
 import { PostLink } from "./postLink";
+import { CommentCreated } from "./events/commentCreated";
 
 export interface PostProps {
   memberId: MemberId;
@@ -67,6 +68,12 @@ export class Post extends AggregateRoot<PostProps> {
 
   get type (): PostType {
     return this.props.type;
+  }
+
+  public addComment (comment: Comment): Result<void> {
+    this.comments.push(comment);
+    this.addDomainEvent(new CommentCreated(this, comment));
+    return Result.ok<void>();
   }
 
   public isLinkPost (): boolean {

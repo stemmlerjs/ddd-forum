@@ -15,4 +15,5 @@ v1Router.get('/', (req, res) => {
 v1Router.use('/users', routes_1.userRouter);
 v1Router.use('/members', routes_2.memberRouter);
 v1Router.use('/posts', post_1.postRouter);
+v1Router.use('/comments', routes_2.commentRouter);
 //# sourceMappingURL=v1.js.map

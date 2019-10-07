@@ -6,11 +6,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const sequelizeMemberRepo_1 = require("./implementations/sequelizeMemberRepo");
 const models_1 = __importDefault(require("../../../shared/infra/database/sequelize/models"));
 const sequelizePostRepo_1 = require("./implementations/sequelizePostRepo");
+const commentRepo_1 = require("./implementations/commentRepo");
 const memberRepo = new sequelizeMemberRepo_1.MemberRepo(models_1.default);
 exports.memberRepo = memberRepo;
-const postRepo = new sequelizePostRepo_1.PostRepo(models_1.default);
+const commentRepo = new commentRepo_1.CommentRepo(models_1.default);
+exports.commentRepo = commentRepo;
+const postRepo = new sequelizePostRepo_1.PostRepo(models_1.default, commentRepo);
 exports.postRepo = postRepo;
-postRepo.getRecentPosts()
-    .then((posts) => console.log(posts))
-    .catch((er) => console.log(er));
 //# sourceMappingURL=index.js.map
