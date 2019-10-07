@@ -1,3 +1,5 @@
+import { Post } from "../models/Post";
+import { PostDTO } from "../dtos/postDTO";
 
 export class PostUtil {
   public static maxTextLength: number = 10000;
@@ -8,4 +10,17 @@ export class PostUtil {
 
   public static maxLinkLength: number = 500;
   public static minLinkLength: number = 8;
+
+  public static toViewModel (dto: PostDTO): Post {
+    return {
+      slug: dto.slug,
+      title: dto.title,
+      createdAt: dto.createdAt,
+      postAuthor: dto.memberPostedBy.user.username,
+      numComments: dto.numComments,
+      points: dto.points,
+      type: dto.type,
+      text: dto.text
+    }
+  }
 }

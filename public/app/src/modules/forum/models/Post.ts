@@ -10,7 +10,6 @@ export interface Post {
   postAuthor: string;
   numComments: number;
   points: number;
-  comments: Comment[];
   type: PostType;
   text: string;
 }

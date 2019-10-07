@@ -24,7 +24,26 @@ export default function forum (state: ForumState = states,
       return {
         ...state,
         ...ReduxUtils.reportEventStatus("isSubmittingPost", false)
-      };     
+      };    
+      
+    case actions.GETTING_RECENT_POSTS:
+      return {
+        ...state,
+        ...ReduxUtils.reportEventStatus("isGettingRecentPosts"),
+        error: ''
+      };
+    case actions.GETTING_RECENT_POSTS_SUCCESS:
+      return {
+        ...state,
+        ...ReduxUtils.reportEventStatus("isGettingRecentPosts", true),
+        recentPosts: action.posts
+      };
+    case actions.GETTING_RECENT_POSTS_FAILURE:
+      return {
+        ...state,
+        ...ReduxUtils.reportEventStatus("isGettingRecentPosts", false),
+        error: action.error
+      };
     default:
       return state;
   }

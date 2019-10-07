@@ -12,8 +12,10 @@ import { UsersState } from '../modules/users/redux/states';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as usersOperators from '../modules/users/redux/operators'
+import * as forumOperators from '../modules/forum/redux/operators'
 import { User } from '../modules/users/models/user';
 import withLogoutHandling from '../modules/users/hocs/withLogoutHandling';
+import { ForumState } from '../modules/forum/redux/states';
 
 const posts: Post[] = [
   { 
@@ -24,7 +26,6 @@ const posts: Post[] = [
     points: 143,
     numComments: 150,
     slug: '/discuss/where-to-do-ddd',
-    comments: [],
     text: 'content goes here :)'
   },
   { 
@@ -35,7 +36,6 @@ const posts: Post[] = [
     points: 50,
     numComments: 60,
     slug: '/discuss/help-with-aggregate-design',
-    comments: [],
     text: 'content goes here :)'
   },
   { 
@@ -46,7 +46,6 @@ const posts: Post[] = [
     points: 42,
     numComments: 32,
     slug: '/discuss/cqrs-killed-my-app',
-    comments: [],
     text: 'content goes here :)'
   },
   { 
@@ -57,13 +56,13 @@ const posts: Post[] = [
     points: 12,
     numComments: 32,
     slug: '/discuss/ddd-redux',
-    comments: [],
     text: 'content goes here :)'
   }
 ]
 
-interface IndexPageProps extends usersOperators.IUserOperators {
+interface IndexPageProps extends usersOperators.IUserOperators, forumOperators.IForumOperations {
   users: UsersState;
+  forum: ForumState;
   location: any;
 }
 
@@ -94,8 +93,13 @@ class IndexPage extends React.Component<IndexPageProps, IndexPageState> {
   onFilterChanged (prevState: IndexPageState) {
     const currentState: IndexPageState = this.state;
     if (prevState.activeFilter !== currentState.activeFilter) {
-      // TODO: Filter changed
-      console.log('fiter changed');
+      const activeFilter = currentState.activeFilter;
+
+      if (activeFilter === 'NEW') {
+        this.props.getRecentPosts();
+      } else {
+        // TODO: Get popular posts
+      }
     }
   }
 
@@ -113,6 +117,14 @@ class IndexPage extends React.Component<IndexPageProps, IndexPageState> {
       ...this.state,
       activeFilter
     })
+  }
+  
+  getPostsFromActiveFilterGroup (): Post[] {
+    if (this.state.activeFilter === 'NEW') {
+      return this.props.forum.recentPosts;
+    } else {
+      return this.props.forum.popularPosts;
+    }
   }
 
   componentDidUpdate (prevProps: IndexPageProps, prevState: IndexPageState) {
@@ -148,7 +160,7 @@ class IndexPage extends React.Component<IndexPageProps, IndexPageState> {
           onClick={(filter) => this.setActiveFilter(filter)}
         />
 
-        {posts.map((p, i) => (
+        {this.getPostsFromActiveFilterGroup().map((p, i) => (
           <PostRow key={i} {...p}/>
         ))}
 
@@ -157,9 +169,10 @@ class IndexPage extends React.Component<IndexPageProps, IndexPageState> {
   }
 }
 
-function mapStateToProps ({ users }: { users: UsersState }) {
+function mapStateToProps ({ users, forum }: { users: UsersState, forum: ForumState }) {
   return {
-    users
+    users,
+    forum
   };
 }
 
@@ -167,6 +180,7 @@ function mapActionCreatorsToProps(dispatch: any) {
   return bindActionCreators(
     {
       ...usersOperators,
+      ...forumOperators
     }, dispatch);
 }
 

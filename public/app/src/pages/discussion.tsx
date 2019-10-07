@@ -26,48 +26,6 @@ const post: Post = {
   numComments: 150,
   slug: '/discuss/where-to-do-ddd',
   type: 'text',
-  comments: [
-    {
-      commentId: '0',
-      text: "Yeah yo, that's pretty cool and all but uhhh",
-      postAuthor: "elonmusk",
-      createdAt: DateUtil.createPreviousDate(0, 0, 10),
-      childComments: [],
-      postSlug: '/discuss/where-to-do-ddd',
-    },
-    {
-      commentId: '1',
-      text: `Great article dude. Here's a bunch of random text.
-        Hello what's good? lkjsjjs lkjfksdjlf they provide the opportunity 
-        for other (decoupled) parts of our application to execute 
-        some code after that event.
-      `,
-      postAuthor: "elonmusk",
-      createdAt: DateUtil.createPreviousDate(0, 0, 10),
-      childComments: [],
-      postSlug: '/discuss/where-to-do-ddd',
-    },
-    {
-      commentId: '2',
-      text: `Whoa, Elon Musk is on here?.
-      `,
-      parentCommentId: '0',
-      postAuthor: "dondraper",
-      createdAt: DateUtil.createPreviousDate(0, 0, 10),
-      childComments: [],
-      postSlug: '/discuss/where-to-do-ddd',
-    },
-    {
-      commentId: '3',
-      text: `Whoa, Don Draper is on here?.
-      `,
-      parentCommentId: '2',
-      postAuthor: "tonysoprano",
-      createdAt: DateUtil.createPreviousDate(0, 0, 10),
-      childComments: [],
-      postSlug: '/discuss/where-to-do-ddd',
-    }
-  ],
   text: `
     Despite the domain that they belong to, when domain events 
     are created and dispatched, they provide the opportunity 
@@ -75,6 +33,49 @@ const post: Post = {
     some code after that event.
   `
 }
+
+const comments: Comment[] = [
+  {
+    commentId: '0',
+    text: "Yeah yo, that's pretty cool and all but uhhh",
+    postAuthor: "elonmusk",
+    createdAt: DateUtil.createPreviousDate(0, 0, 10),
+    childComments: [],
+    postSlug: '/discuss/where-to-do-ddd',
+  },
+  {
+    commentId: '1',
+    text: `Great article dude. Here's a bunch of random text.
+      Hello what's good? lkjsjjs lkjfksdjlf they provide the opportunity 
+      for other (decoupled) parts of our application to execute 
+      some code after that event.
+    `,
+    postAuthor: "elonmusk",
+    createdAt: DateUtil.createPreviousDate(0, 0, 10),
+    childComments: [],
+    postSlug: '/discuss/where-to-do-ddd',
+  },
+  {
+    commentId: '2',
+    text: `Whoa, Elon Musk is on here?.
+    `,
+    parentCommentId: '0',
+    postAuthor: "dondraper",
+    createdAt: DateUtil.createPreviousDate(0, 0, 10),
+    childComments: [],
+    postSlug: '/discuss/where-to-do-ddd',
+  },
+  {
+    commentId: '3',
+    text: `Whoa, Don Draper is on here?.
+    `,
+    parentCommentId: '2',
+    postAuthor: "tonysoprano",
+    createdAt: DateUtil.createPreviousDate(0, 0, 10),
+    childComments: [],
+    postSlug: '/discuss/where-to-do-ddd',
+  }
+]
 
 interface DiscussionPageProps extends usersOperators.IUserOperators {
   users: UsersState;
@@ -97,7 +98,7 @@ class DiscussionPage extends React.Component<DiscussionPageProps, DiscussionStat
     // TODO: Actually use an API for this :)
     this.setState({
       ...this.state,
-      comments: post.comments
+      comments: comments
     })
   }
 
