@@ -7,10 +7,11 @@ import { CreatePostDTO } from "./CreatePostDTO";
 import { IMemberRepo } from "../../../repos/memberRepo";
 import { Member } from "../../../domain/member";
 import { CreatePostErrors } from "./CreatePostErrors";
-import { Post } from "../../../domain/post";
+import { Post, PostProps } from "../../../domain/post";
 import { PostTitle } from "../../../domain/postTitle";
 import { PostText } from "../../../domain/postText";
 import { PostSlug } from "../../../domain/postSlug";
+import { PostLink } from "../../../domain/postLink";
 
 type Response = Either<
   CreatePostErrors.MemberDoesntExistError |
@@ -32,6 +33,7 @@ export class CreatePost implements UseCase<CreatePostDTO, Promise<Response>> {
     let member: Member;
     let title: PostTitle;
     let text: PostText;
+    let link: PostLink;
     let slug: PostSlug;
     let post: Post;
 
@@ -46,19 +48,30 @@ export class CreatePost implements UseCase<CreatePostDTO, Promise<Response>> {
       }
 
       const titleOrError = PostTitle.create({ value: request.title });
-      const textOrError = PostText.create({ value: request.text });
 
-      const titleAndTextResult = Result.combine([
-        titleOrError, textOrError
-      ]);
+      if (titleOrError.isFailure) {
+        return left(titleOrError);
+      }
 
-      if (titleAndTextResult.isFailure) {
-        return left(titleAndTextResult);
+      if (request.postType === 'text') {
+        const textOrError = PostText.create({ value: request.text });
+
+        if (textOrError.isFailure) {
+          return left(textOrError);
+        }
+        
+        text = textOrError.getValue();
+      } else {
+        const linkOrError = PostLink.create({ url: request.link });
+
+        if (linkOrError.isFailure) {
+          return left(linkOrError);
+        }
+        
+        link = linkOrError.getValue();
       }
 
       title = titleOrError.getValue();
-      text = textOrError.getValue();
-
       const slugOrError = PostSlug.create(title);
 
       if (slugOrError.isFailure) {
@@ -67,11 +80,16 @@ export class CreatePost implements UseCase<CreatePostDTO, Promise<Response>> {
 
       slug = slugOrError.getValue();
 
-      const postOrError = Post.create({
-        text, title, slug, 
-        memberId: member.memberId, 
-        type: request.postType
-      });
+      const postProps: PostProps = {
+        title,
+        slug,
+        type: request.postType,
+        memberId: member.memberId,
+        text,
+        link
+      }
+
+      const postOrError = Post.create(postProps);
 
       if (postOrError.isFailure) {
         return left(postOrError);

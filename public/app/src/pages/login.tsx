@@ -68,7 +68,6 @@ class LoginPage extends React.Component<LoginPageProps, LoginPageState> {
   }
 
   render () {
-    console.log(this.props)
     return (
       <Layout>
         <div className="flex flex-row flex-center flex-even">

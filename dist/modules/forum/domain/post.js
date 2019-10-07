@@ -29,18 +29,48 @@ class Post extends AggregateRoot_1.AggregateRoot {
     get points() {
         return this.props.points;
     }
+    get link() {
+        return this.props.link;
+    }
+    get text() {
+        return this.props.text;
+    }
+    get type() {
+        return this.props.type;
+    }
+    isLinkPost() {
+        return this.props.type === 'link';
+    }
+    isTextPost() {
+        return this.props.type === 'text';
+    }
     constructor(props, id) {
         super(props, id);
     }
+    static isValidPostType(rawType) {
+        const linkType = 'link';
+        const textType = 'text';
+        return rawType === textType || rawType === linkType;
+    }
     static create(props, id) {
-        const guardResult = Guard_1.Guard.againstNullOrUndefinedBulk([
+        const guardArgs = [
             { argument: props.memberId, argumentName: 'memberId' },
             { argument: props.slug, argumentName: 'slug' },
             { argument: props.title, argumentName: 'title' },
-            { argument: props.text, argumentName: 'text' },
-        ]);
+            { argument: props.type, argumentName: 'type' }
+        ];
+        if (props.type === 'link') {
+            guardArgs.push({ argument: props.link, argumentName: 'link' });
+        }
+        else {
+            guardArgs.push({ argument: props.text, argumentName: 'text' });
+        }
+        const guardResult = Guard_1.Guard.againstNullOrUndefinedBulk(guardArgs);
         if (!guardResult.succeeded) {
             return Result_1.Result.fail(guardResult.message);
+        }
+        if (!this.isValidPostType(props.type)) {
+            return Result_1.Result.fail("Invalid post type provided.");
         }
         const defaultValues = Object.assign(Object.assign({}, props), { comments: props.comments ? props.comments : [], points: lodash_1.has(props, 'points') ? props.points : 1, dateTimePosted: props.dateTimePosted ? props.dateTimePosted : new Date() });
         const isNewPost = !!id === false;

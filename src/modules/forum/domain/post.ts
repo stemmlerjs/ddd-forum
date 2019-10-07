@@ -14,7 +14,7 @@ import { PostCreated } from "./events/postCreated";
 import { PostType } from "./postType";
 import { PostLink } from "./postLink";
 
-interface PostProps {
+export interface PostProps {
   memberId: MemberId;
   slug: PostSlug;
   title: PostTitle;
@@ -59,6 +59,10 @@ export class Post extends AggregateRoot<PostProps> {
 
   get link (): PostLink {
     return this.props.link;
+  }
+
+  get text (): PostText {
+    return this.props.text;
   }
 
   get type (): PostType {

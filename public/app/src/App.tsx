@@ -18,8 +18,8 @@ const App: React.FC = () => {
       <Route path="/discuss/:slug" component={DiscussionPage}/>
       <Route path="/comment/:commentId" component={CommentPage}/>
       <AuthenticatedRoute path="/submit" component={SubmitPage}/>
-      <UnauthenticatedRoute path="/join" component={JoinPage}/>
-      <UnauthenticatedRoute path="/login" component={LoginPage}/>
+      <Route path="/join" component={JoinPage}/>
+      <Route path="/login" component={LoginPage}/>
     </Router>
   );
 }

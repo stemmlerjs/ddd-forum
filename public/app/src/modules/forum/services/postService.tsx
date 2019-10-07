@@ -23,7 +23,7 @@ export class PostService extends BaseAPI implements IPostService {
       });
       return right(Result.ok<void>());
     } catch (err) {
-      return left(err.response.data.message)
+      return left(err.response ? err.response.data.message : "Connection failed")
     }
   }
 }

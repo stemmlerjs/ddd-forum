@@ -5,7 +5,6 @@ import Header from '../shared/components/header/components/Header'
 import { toast } from 'react-toastify';
 import { OnboardTemplate } from '../modules/users/components/onboarding/onboardTemplate'
 import { TextUtil } from '../shared/utils/TextUtil';
-import { LoginDTO } from '../modules/users/dtos/loginDTO';
 import { IUserOperators } from '../modules/users/redux/operators';
 import { UsersState } from '../modules/users/redux/states';
 //@ts-ignore
@@ -60,7 +59,7 @@ class JoinPage extends React.Component<JoinPageProps, JoinPageState> {
       return false;
     }
 
-    if (!!password === false || !TextUtil.atLeast(password, 6)) {
+    if (!!password === false || TextUtil.atLeast(password, 6)) {
       toast.error("Yeahhhhh, your password should be at least 6 chars 🤠", {
         autoClose: 3000
       })

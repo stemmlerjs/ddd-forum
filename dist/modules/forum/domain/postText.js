@@ -7,6 +7,9 @@ class PostText extends ValueObject_1.ValueObject {
     constructor(props) {
         super(props);
     }
+    get value() {
+        return this.props.value;
+    }
     static create(props) {
         const nullGuardResult = Guard_1.Guard.againstNullOrUndefined(props.value, 'postText');
         if (!nullGuardResult.succeeded) {

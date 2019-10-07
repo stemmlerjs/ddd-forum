@@ -18,12 +18,24 @@ exports.default = (sequelize, DataTypes) => {
             onDelete: 'cascade',
             onUpdate: 'cascade',
         },
-        text: {
-            type: DataTypes.TEXT,
+        type: {
+            type: DataTypes.STRING(30),
             allowNull: false
         },
+        title: {
+            type: DataTypes.TEXT,
+            allowNull: true
+        },
+        text: {
+            type: DataTypes.TEXT,
+            allowNull: true
+        },
+        link: {
+            type: DataTypes.TEXT,
+            allowNull: true
+        },
         slug: {
-            type: DataTypes.STRING(150),
+            type: DataTypes.STRING(300),
             allowNull: false,
         },
         points: {

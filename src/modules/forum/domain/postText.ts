@@ -11,6 +11,10 @@ export class PostText extends ValueObject<PostTextProps> {
   public static minLength: number = 2;
   public static maxLength: number = 10000;
 
+  get value (): string {
+    return this.props.value;
+  }
+
   private constructor (props: PostTextProps) {
     super(props);
   }

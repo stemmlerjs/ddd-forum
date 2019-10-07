@@ -10,4 +10,7 @@ const memberRepo = new sequelizeMemberRepo_1.MemberRepo(models_1.default);
 exports.memberRepo = memberRepo;
 const postRepo = new sequelizePostRepo_1.PostRepo(models_1.default);
 exports.postRepo = postRepo;
+postRepo.getRecentPosts()
+    .then((posts) => console.log(posts))
+    .catch((er) => console.log(er));
 //# sourceMappingURL=index.js.map

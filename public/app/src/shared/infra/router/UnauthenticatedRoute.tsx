@@ -1,15 +1,25 @@
 
 import React from 'react'
 import { Redirect, Route } from 'react-router-dom'
-import { authService } from '../../../modules/users/services';
+//@ts-ignore
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as usersOperators from '../../../modules/users/redux/operators'
+import { UsersState } from '../../../modules/users/redux/states';
+
+interface UnAuthenticatedRouteProps {
+  users: UsersState;
+  component: any;
+  path: any;
+}
 
 /** 
  * This route is only visible to users who are not currently authenticted.
 */
 
-const UnauthenticatedRoute: React.FC<any> = ({ component: Component, ...rest }) => {
+const UnauthenticatedRoute: React.FC<UnAuthenticatedRouteProps> = ({ users, component: Component, ...rest }) => {
   // Add your own authentication on the below line.
-  const isLoggedIn = authService.isAuthenticated();
+  const isLoggedIn = users.isAuthenticated;
 
   return (
     <Route
@@ -25,5 +35,19 @@ const UnauthenticatedRoute: React.FC<any> = ({ component: Component, ...rest }) 
   )
 }
 
+function mapStateToProps ({ users }: { users: UsersState }) {
+  return {
+    users
+  };
+}
 
-export default UnauthenticatedRoute;
+function mapActionCreatorsToProps(dispatch: any) {
+  return bindActionCreators(
+    {
+      ...usersOperators,
+    }, dispatch);
+}
+
+export default connect(mapStateToProps, mapActionCreatorsToProps)(
+  UnauthenticatedRoute
+);

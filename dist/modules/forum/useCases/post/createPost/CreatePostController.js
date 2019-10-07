@@ -13,7 +13,9 @@ class CreatePostController extends BaseController_1.BaseController {
         const dto = {
             title: this.req.body.title,
             text: this.req.body.text,
-            userId: userId
+            userId: userId,
+            postType: this.req.body.postType,
+            link: this.req.body.link
         };
         try {
             const result = await this.useCase.execute(dto);

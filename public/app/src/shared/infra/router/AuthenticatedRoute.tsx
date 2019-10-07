@@ -1,11 +1,21 @@
 
 import React from 'react'
 import { Redirect, Route } from 'react-router-dom'
-import { authService } from '../../../modules/users/services';
+import { UsersState } from '../../../modules/users/redux/states';
+//@ts-ignore
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as usersOperators from '../../../modules/users/redux/operators'
 
-const AuthenticatedRoute: React.FC<any> = ({ component: Component, ...rest }) => {
+interface AuthenticatedRouteProps {
+  users: UsersState;
+  component: any;
+  path: any;
+}
+
+const AuthenticatedRoute: React.FC<AuthenticatedRouteProps> = ({ users, component: Component, ...rest }) => {
   // Add your own authentication on the below line.
-  const isLoggedIn = authService.isAuthenticated();
+  const isLoggedIn = users.isAuthenticated;
 
   return (
     <Route
@@ -21,5 +31,19 @@ const AuthenticatedRoute: React.FC<any> = ({ component: Component, ...rest }) =>
   )
 }
 
+function mapStateToProps ({ users }: { users: UsersState }) {
+  return {
+    users
+  };
+}
 
-export default AuthenticatedRoute;
+function mapActionCreatorsToProps(dispatch: any) {
+  return bindActionCreators(
+    {
+      ...usersOperators,
+    }, dispatch);
+}
+
+export default connect(mapStateToProps, mapActionCreatorsToProps)(
+  AuthenticatedRoute
+);

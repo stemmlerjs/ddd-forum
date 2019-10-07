@@ -7,11 +7,14 @@ class PostMap {
     }
     static toPersistence(post) {
         return {
+            title: post.title.value,
             post_id: post.postId.id.toString(),
             member_id: post.memberId.id.toString(),
-            text: post.title.value,
+            text: post.isTextPost() ? post.text.value : null,
             slug: post.slug.value,
-            points: post.points
+            points: post.points,
+            type: post.type,
+            link: post.isLinkPost() ? post.link.url : null,
         };
     }
 }

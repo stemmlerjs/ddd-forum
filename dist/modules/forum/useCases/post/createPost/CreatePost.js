@@ -7,6 +7,7 @@ const post_1 = require("../../../domain/post");
 const postTitle_1 = require("../../../domain/postTitle");
 const postText_1 = require("../../../domain/postText");
 const postSlug_1 = require("../../../domain/postSlug");
+const postLink_1 = require("../../../domain/postLink");
 class CreatePost {
     constructor(postRepo, memberRepo) {
         this.postRepo = postRepo;
@@ -16,6 +17,7 @@ class CreatePost {
         let member;
         let title;
         let text;
+        let link;
         let slug;
         let post;
         const { userId } = request;
@@ -27,29 +29,43 @@ class CreatePost {
                 return Result_1.left(new CreatePostErrors_1.CreatePostErrors.MemberDoesntExistError());
             }
             const titleOrError = postTitle_1.PostTitle.create({ value: request.title });
-            const textOrError = postText_1.PostText.create({ value: request.text });
-            const titleAndTextResult = Result_1.Result.combine([
-                titleOrError, textOrError
-            ]);
-            if (titleAndTextResult.isFailure) {
-                return Result_1.left(titleAndTextResult);
+            if (titleOrError.isFailure) {
+                return Result_1.left(titleOrError);
+            }
+            if (request.postType === 'text') {
+                const textOrError = postText_1.PostText.create({ value: request.text });
+                if (textOrError.isFailure) {
+                    return Result_1.left(textOrError);
+                }
+                text = textOrError.getValue();
+            }
+            else {
+                const linkOrError = postLink_1.PostLink.create({ url: request.link });
+                if (linkOrError.isFailure) {
+                    return Result_1.left(linkOrError);
+                }
+                link = linkOrError.getValue();
             }
             title = titleOrError.getValue();
-            text = textOrError.getValue();
             const slugOrError = postSlug_1.PostSlug.create(title);
             if (slugOrError.isFailure) {
                 return Result_1.left(slugOrError);
             }
             slug = slugOrError.getValue();
-            const postOrError = post_1.Post.create({
-                text, title, slug, memberId: member.memberId
-            });
+            const postProps = {
+                title,
+                slug,
+                type: request.postType,
+                memberId: member.memberId,
+                text,
+                link
+            };
+            const postOrError = post_1.Post.create(postProps);
             if (postOrError.isFailure) {
                 return Result_1.left(postOrError);
             }
             post = postOrError.getValue();
             await this.postRepo.save(post);
-            console.log(post);
             return Result_1.right(Result_1.Result.ok());
         }
         catch (err) {

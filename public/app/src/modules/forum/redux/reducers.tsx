@@ -12,7 +12,8 @@ export default function forum (state: ForumState = states,
     case actions.SUBMITTING_POST:
       return {
         ...state,
-        ...ReduxUtils.reportEventStatus("isSubmittingPost")
+        ...ReduxUtils.reportEventStatus("isSubmittingPost"),
+        error: ''
       };
     case actions.SUBMITTING_POST_SUCCESS:
       return {

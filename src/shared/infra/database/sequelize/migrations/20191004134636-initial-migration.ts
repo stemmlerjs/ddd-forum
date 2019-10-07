@@ -108,9 +108,21 @@ export default {
           onDelete: 'cascade',
           onUpdate: 'cascade',
         },
+        type: {
+          type: Sequelize.STRING(30),
+          allowNull: false
+        },
+        title: {
+          type: Sequelize.TEXT,
+          allowNull: true
+        },
         text: {
           type: Sequelize.TEXT,
-          allowNull: false
+          allowNull: true
+        },
+        link: {
+          type: Sequelize.TEXT,
+          allowNull: true
         },
         slug: {
           type: Sequelize.STRING(150),

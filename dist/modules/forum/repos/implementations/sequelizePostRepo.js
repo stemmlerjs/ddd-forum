@@ -12,6 +12,23 @@ class PostRepo {
             include: []
         };
     }
+    createBaseDetailsQuery() {
+        const models = this.models;
+        return {
+            where: {},
+            include: [],
+            limit: 15,
+            offset: 0
+        };
+    }
+    async getRecentPosts(offset) {
+        const PostModel = this.models.Post;
+        const detailsQuery = this.createBaseDetailsQuery();
+        detailsQuery.offset = offset ? offset : detailsQuery.offset;
+        const posts = await PostModel.findAll(detailsQuery);
+        console.log(posts);
+        return [];
+    }
     async exists(postId) {
         const PostModel = this.models.Post;
         const baseQuery = this.createBaseQuery();

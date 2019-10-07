@@ -21,7 +21,8 @@ export class CreatePostController extends BaseController {
       title: this.req.body.title,
       text: this.req.body.text,
       userId: userId,
-      postType: this.req.body.postType
+      postType: this.req.body.postType,
+      link: this.req.body.link
     }
   
     try {
