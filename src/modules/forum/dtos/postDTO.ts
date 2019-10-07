@@ -1,5 +1,6 @@
 
 import { MemberDTO } from "./memberDTO";
+import { PostType } from "../domain/postType";
 
 export interface PostDTO {
   slug: string;
@@ -9,5 +10,6 @@ export interface PostDTO {
   numComments: number;
   points: number;
   text: string;
+  type: PostType;
 }
 

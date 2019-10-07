@@ -25,6 +25,7 @@ const post: Post = {
   points: 143,
   numComments: 150,
   slug: '/discuss/where-to-do-ddd',
+  type: 'text',
   comments: [
     {
       commentId: '0',

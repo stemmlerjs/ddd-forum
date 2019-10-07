@@ -8,15 +8,19 @@ import { PostTitle } from "./postTitle";
 import { PostId } from "./postId";
 import { PostText } from "./postText";
 import { Comment } from "./comment";
-import { Guard } from "../../../shared/core/Guard";
+import { Guard, IGuardArgument } from "../../../shared/core/Guard";
 import { has } from 'lodash'
 import { PostCreated } from "./events/postCreated";
+import { PostType } from "./postType";
+import { PostLink } from "./postLink";
 
 interface PostProps {
   memberId: MemberId;
   slug: PostSlug;
   title: PostTitle;
-  text: PostText;
+  type: PostType;
+  text?: PostText;
+  link?: PostLink;
   comments?: Comment[];
   points?: number; // posts can have negative or positive valued points
   dateTimePosted?: string | Date;
@@ -53,20 +57,54 @@ export class Post extends AggregateRoot<PostProps> {
     return this.props.points;
   }
 
+  get link (): PostLink {
+    return this.props.link;
+  }
+
+  get type (): PostType {
+    return this.props.type;
+  }
+
+  public isLinkPost (): boolean {
+    return this.props.type === 'link';
+  }
+
+  public isTextPost (): boolean {
+    return this.props.type === 'text';
+  }
+
   private constructor (props: PostProps, id?: UniqueEntityID) {
     super(props, id);
   }
 
+  public static isValidPostType (rawType: string): boolean {
+    const linkType: PostType = 'link';
+    const textType: PostType = 'text';
+    return rawType === textType || rawType === linkType;
+  }
+
   public static create (props: PostProps, id?: UniqueEntityID): Result<Post> {
-    const guardResult = Guard.againstNullOrUndefinedBulk([
+    const guardArgs: IGuardArgument[] = [
       { argument: props.memberId, argumentName: 'memberId' },
       { argument: props.slug, argumentName: 'slug' },
       { argument: props.title, argumentName: 'title' },
-      { argument: props.text, argumentName: 'text' },
-    ]);
+      { argument: props.type, argumentName: 'type' }
+    ];
+
+    if (props.type === 'link') {
+      guardArgs.push({ argument: props.link, argumentName: 'link' })
+    } else {
+      guardArgs.push({ argument: props.text, argumentName: 'text' })
+    }
+
+    const guardResult = Guard.againstNullOrUndefinedBulk(guardArgs);
 
     if (!guardResult.succeeded) {
       return Result.fail<Post>(guardResult.message);
+    }
+
+    if (!this.isValidPostType(props.type)) {
+      return Result.fail<Post>("Invalid post type provided.")
     }
 
     const defaultValues: PostProps = {

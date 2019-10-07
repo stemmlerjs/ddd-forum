@@ -8,6 +8,8 @@ import CommentPage from './pages/comment';
 import LoginPage from './pages/login';
 import JoinPage from './pages/join';
 import UnauthenticatedRoute from './shared/infra/router/UnauthenticatedRoute';
+import AuthenticatedRoute from './shared/infra/router/AuthenticatedRoute';
+import SubmitPage from './pages/submit';
 
 const App: React.FC = () => {
   return (
@@ -15,6 +17,7 @@ const App: React.FC = () => {
       <Route path="/" exact component={IndexPage} />
       <Route path="/discuss/:slug" component={DiscussionPage}/>
       <Route path="/comment/:commentId" component={CommentPage}/>
+      <AuthenticatedRoute path="/submit" component={SubmitPage}/>
       <UnauthenticatedRoute path="/join" component={JoinPage}/>
       <UnauthenticatedRoute path="/login" component={LoginPage}/>
     </Router>

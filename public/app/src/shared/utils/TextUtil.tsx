@@ -7,7 +7,12 @@ export class TextUtil {
   }
 
   public static atLeast (text: string, length: number): boolean {
-    if (!!text === false || text.length < length) return false;
+    if (!!text === false || text.length >= length) return false;
+    return true;
+  }
+
+  public static atMost (text: string, length: number): boolean {
+    if (!!text === false || text.length <= length) return false;
     return true;
   }
 }

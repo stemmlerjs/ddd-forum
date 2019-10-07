@@ -68,7 +68,9 @@ export class CreatePost implements UseCase<CreatePostDTO, Promise<Response>> {
       slug = slugOrError.getValue();
 
       const postOrError = Post.create({
-        text, title, slug, memberId: member.memberId
+        text, title, slug, 
+        memberId: member.memberId, 
+        type: request.postType
       });
 
       if (postOrError.isFailure) {

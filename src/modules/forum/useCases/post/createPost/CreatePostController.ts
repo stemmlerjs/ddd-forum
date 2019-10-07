@@ -20,7 +20,8 @@ export class CreatePostController extends BaseController {
     const dto: CreatePostDTO = {
       title: this.req.body.title,
       text: this.req.body.text,
-      userId: userId
+      userId: userId,
+      postType: this.req.body.postType
     }
   
     try {

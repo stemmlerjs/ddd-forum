@@ -17,6 +17,7 @@ import withLogoutHandling from '../modules/users/hocs/withLogoutHandling';
 
 const posts: Post[] = [
   { 
+    type: 'text',
     title: "Where the hell do I even start with Domain-Driven Design?",
     createdAt: DateUtil.createPreviousDate(0, 0, 10),
     postAuthor: 'stemmlerjs',
@@ -27,6 +28,7 @@ const posts: Post[] = [
     text: 'content goes here :)'
   },
   { 
+    type: 'text',
     title: "Help with Aggregate Design",
     createdAt: DateUtil.createPreviousDate(0, 0, 15),
     postAuthor: 'jimmyuringer',
@@ -37,6 +39,7 @@ const posts: Post[] = [
     text: 'content goes here :)'
   },
   { 
+    type: 'text',
     title: "CQRS Killed My App and I Don’t Like It",
     createdAt: DateUtil.createPreviousDate(0, 0, 30),
     postAuthor: 'wesbos',
@@ -47,6 +50,7 @@ const posts: Post[] = [
     text: 'content goes here :)'
   },
   { 
+    type: 'text',
     title: "Guys, it’s REDUX for DDD (Domain Events)",
     createdAt: DateUtil.createPreviousDate(0, 1, 0),
     postAuthor: 'danabramov',

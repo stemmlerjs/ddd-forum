@@ -73,6 +73,7 @@
     "sinon": "^7.5.0",
     "sinon-chai": "^3.3.0",
     "slug": "^1.1.0",
-    "typescript": "^3.6.3"
+    "typescript": "^3.6.3",
+    "validator": "^11.1.0"
   }
 }
