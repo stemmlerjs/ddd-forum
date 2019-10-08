@@ -7,6 +7,8 @@ import { createReplyToPost } from "./createReplyToPost";
 import { getComments } from "./getComments";
 import { getPopularPosts } from "./getPopularPosts";
 import { getCommentByCommentId } from "./getCommentByCommentId";
+import { creatingReplyToComment } from "../actionCreators";
+import { getCommentReplies } from "./getCommentReplies";
 
 export interface IForumOperations {
   submitPost: (title: string, type: PostType, text?: string, link?: string) => void;
@@ -16,6 +18,8 @@ export interface IForumOperations {
   getComments (slug: string, offset?: number): void;
   getPopularPosts (offset?: number): void;
   getCommentByCommentId (commentId: string): void;
+  createReplyToComment (comment: string, parentCommentId: string, slug: string): void;
+  getCommentReplies (slug: string, commentId: string, offset?: number): void;
 } 
 
 export {
@@ -25,5 +29,7 @@ export {
   createReplyToPost,
   getComments,
   getPopularPosts,
-  getCommentByCommentId
+  getCommentByCommentId,
+  creatingReplyToComment,
+  getCommentReplies
 }

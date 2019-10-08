@@ -31,6 +31,10 @@ export interface ForumState {
   isGettingCommentByCommentIdSuccess: boolean;
   isGettingCommentByCommentIdFailure: boolean;
 
+  isCreatingReplyToComment: boolean;
+  isCreatingReplyToCommentSuccess: boolean;
+  isCreatingReplyToCommentFailure: boolean;
+
   recentPosts: Post[];
   popularPosts: Post[];
 
@@ -71,6 +75,10 @@ const initialForumState: ForumState = {
   isGettingCommentByCommentId: false,
   isGettingCommentByCommentIdSuccess: false,
   isGettingCommentByCommentIdFailure: false,
+
+  isCreatingReplyToComment: false,
+  isCreatingReplyToCommentSuccess: false,
+  isCreatingReplyToCommentFailure: false,
 
   comments: [],
 

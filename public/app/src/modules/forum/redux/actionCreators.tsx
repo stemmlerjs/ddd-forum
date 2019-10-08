@@ -144,6 +144,25 @@ function gettingCommentByCommentIdFailure (error: string): ForumAction {
   };
 }
 
+function creatingReplyToComment (): ForumAction {
+  return {
+    type: actions.CREATING_REPLY_TO_COMMENT
+  }
+}
+
+function creatingReplyToCommentSuccess (): ForumAction {
+  return {
+    type: actions.CREATING_REPLY_TO_COMMENT_SUCCESS
+  }
+}
+
+function creatingReplyToCommentFailure (error: string): ForumAction {
+  return {
+    type: actions.CREATING_REPLY_TO_COMMENT_FAILURE,
+    error
+  }
+}
+
 export {
   submittingPost,
   submittingPostSuccess,
@@ -171,5 +190,9 @@ export {
 
   gettingCommentByCommentId,
   gettingCommentByCommentIdSuccess,
-  gettingCommentByCommentIdFailure
+  gettingCommentByCommentIdFailure,
+
+  creatingReplyToComment,
+  creatingReplyToCommentSuccess,
+  creatingReplyToCommentFailure
 }

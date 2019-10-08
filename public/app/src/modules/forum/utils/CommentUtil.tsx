@@ -41,7 +41,7 @@ export class CommentUtil {
     return comments.filter((c) => !!c.parentCommentId === false);
   }
 
-  public static getThread (comments: Comment[]): Comment[] {
+  public static getThread (parentCommentId: string, comments: Comment[]): Comment[] {
     comments.forEach((c, cIndex) => {
       const hasParentComment = !!c.parentCommentId === true;
       if (hasParentComment) {
@@ -58,7 +58,21 @@ export class CommentUtil {
       }
     });
 
-    return comments.filter((c) => !!c.parentCommentId === true);
+    const parentComment = this.traverseToComment(parentCommentId, comments);
+    return !!parentComment === true 
+      ? parentComment.childComments.filter((c) => c.commentId !== parentCommentId)
+      : [];
+  }
+
+  private static traverseToComment (targetCommentId: string, comments: Comment[]): Comment {
+    return comments.find((comment) => {
+      const found = comment.commentId === targetCommentId
+      if (found) {
+        return comment;
+      } else {
+        return this.traverseToComment(targetCommentId, comment.childComments);
+      }
+    }) as Comment;
   }
 
 }

@@ -10,6 +10,7 @@ import PostCommentAuthorAndText from '../modules/forum/components/posts/post/com
 import PostComment from '../modules/forum/components/posts/post/components/PostComment';
 import { CommentUtil } from '../modules/forum/utils/CommentUtil';
 import { UsersState } from '../modules/users/redux/states';
+import { toast } from 'react-toastify';
 //@ts-ignore
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -20,13 +21,12 @@ import withLogoutHandling from '../modules/users/hocs/withLogoutHandling';
 import { ForumState } from '../modules/forum/redux/states';
 import * as forumOperators from '../modules/forum/redux/operators'
 import { Loader } from '../shared/components/loader';
+import { TextUtil } from '../shared/utils/TextUtil';
 
 interface CommentState {
-  comment: Comment | {};
   newCommentText: string;
-  isGettingComment: boolean;
-  isGettingCommentSuccess: boolean;
-  isGettingCommentFailure: boolean;
+  commentFetched: boolean;
+
 }
 
 interface CommentPageProps extends usersOperators.IUserOperators, forumOperators.IForumOperations {
@@ -39,11 +39,8 @@ class CommentPage extends React.Component<CommentPageProps, CommentState> {
     super(props);
 
     this.state = {
-      comment: {},
-      newCommentText: '',
-      isGettingComment: false,
-      isGettingCommentSuccess: false,
-      isGettingCommentFailure: false,
+      commentFetched: false,
+      newCommentText: ''
     }
   }
 
@@ -68,19 +65,6 @@ class CommentPage extends React.Component<CommentPageProps, CommentState> {
     })
   }
 
-  updateFetchState (
-    isGettingComment: boolean,
-    isGettingCommentSuccess: boolean,
-    isGettingCommentFailure: boolean, cb?: Function): void {
-
-      this.setState({
-        ...this.state,
-        isGettingComment,
-        isGettingCommentSuccess,
-        isGettingCommentFailure
-      }, () => cb ? cb() : '')
-  }
-
   getCommentIdFromWindow (): string {
     if (typeof window !== 'undefined') {
       var pathname = window.location.pathname;
@@ -96,8 +80,41 @@ class CommentPage extends React.Component<CommentPageProps, CommentState> {
     this.props.getCommentByCommentId(commentId);
   }
 
+  afterCommentFetched (prevProps: CommentPageProps) {
+    const currentProps: CommentPageProps = this.props;
+    if (
+      currentProps.forum.isGettingCommentByCommentIdSuccess &&
+      !this.state.commentFetched
+    ) {  
+
+      this.setState({ ...this.state, commentFetched: true });
+      const currentComment = this.props.forum.comment as Comment;
+      this.props.getCommentReplies(currentComment.postSlug, currentComment.commentId);
+    }
+  }
+
+  componentDidUpdate (prevProps: CommentPageProps) {
+    this.afterCommentFetched(prevProps);
+  }
+
   componentDidMount () {
     this.getComment();
+  }
+
+  isFormValid () : boolean {
+    const { newCommentText } = this.state;
+
+    if (!!newCommentText === false || 
+      TextUtil.atLeast(newCommentText, CommentUtil.minCommentLength) ||
+      TextUtil.atMost(newCommentText, CommentUtil.maxCommentLength)
+    ) {
+      toast.error(`Yeahhhhh, comments should be ${CommentUtil.minCommentLength} to ${CommentUtil.maxCommentLength} characters. Yours was ${newCommentText.length}. 🤠`, {
+        autoClose: 3000
+      })
+      return false;
+    }
+
+    return true;
   }
 
   async submitComment () {
@@ -107,6 +124,7 @@ class CommentPage extends React.Component<CommentPageProps, CommentState> {
   render () {
     const comment = this.props.forum.comment as Comment;
     const isCommentFetched = this.props.forum.isGettingCommentByCommentIdSuccess;
+    
     return (
       <Layout>
         <div className="header-container flex flex-row flex-center flex-even">
@@ -143,7 +161,7 @@ class CommentPage extends React.Component<CommentPageProps, CommentState> {
                 handleChange={(v: any) => this.updateValue('newCommentText', v)}
               />
               <SubmitButton
-                text="Submit"
+                text="Submit reply"
                 onClick={() => this.submitComment()}
               />
               <br/>
@@ -152,13 +170,9 @@ class CommentPage extends React.Component<CommentPageProps, CommentState> {
           )
         }
 
-        
-        
-
-        {/* {comments.map((c, i) => (
+        {this.props.forum.comments.map((c, i) => (
           <PostComment key={i} {...c}/>
-        ))} */}
-
+        ))}
 
       </Layout>
     )

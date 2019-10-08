@@ -143,6 +143,24 @@ export default function forum (state: ForumState = states,
         error: action.error
       };
 
+    case actions.CREATING_REPLY_TO_COMMENT:
+      return {
+        ...state,
+        ...ReduxUtils.reportEventStatus("isCreatingReplyToComment"),
+        error: ''
+      };  
+    case actions.CREATING_REPLY_TO_COMMENT_SUCCESS:
+      return {
+        ...state,
+        ...ReduxUtils.reportEventStatus("isCreatingReplyToComment", true)
+      }; 
+    case actions.CREATING_REPLY_TO_COMMENT_FAILURE:
+      return {
+        ...state,
+        ...ReduxUtils.reportEventStatus("isCreatingReplyToComment", false),
+        error: action.error
+      }; 
+
     default:
       return state;
   }

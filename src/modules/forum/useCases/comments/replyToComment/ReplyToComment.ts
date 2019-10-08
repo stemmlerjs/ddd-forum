@@ -12,6 +12,7 @@ import { ReplyToCommentErrors } from "./ReplyToCommentErrors";
 import { Comment } from "../../../domain/comment";
 import { ICommentRepo } from "../../../repos/commentRepo";
 import { CommentText } from "../../../domain/commentText";
+import { ReplyToCommentService } from "../../../domain/services/replyToComment";
 
 type Response = Either<
   ReplyToCommentErrors.CommentNotFoundError |
@@ -26,11 +27,18 @@ export class ReplyToComment implements UseCase<ReplyToCommentDTO, Promise<Respon
   private memberRepo: IMemberRepo;
   private postRepo: IPostRepo;
   private commentRepo: ICommentRepo;
+  private replyToCommentDomainService: ReplyToCommentService;
 
-  constructor (memberRepo: IMemberRepo, postRepo: IPostRepo, commentRepo: ICommentRepo) {
+  constructor (
+    memberRepo: IMemberRepo, 
+    postRepo: IPostRepo, 
+    commentRepo: ICommentRepo,
+    replyToCommentDomainService: ReplyToCommentService
+  ) {
     this.memberRepo = memberRepo;
     this.postRepo = postRepo;
     this.commentRepo = commentRepo;
+    this.replyToCommentDomainService = replyToCommentDomainService;
   }
 
   private async getPost (slug: PostSlug): Promise<Either<ReplyToCommentErrors.PostNotFoundError, Result<Post>>> {
@@ -101,20 +109,15 @@ export class ReplyToComment implements UseCase<ReplyToCommentDTO, Promise<Respon
         return left(commentTextOrError);
       }
 
-      const commentOrError = Comment.create({
-        memberId: member.memberId,
-        text: commentTextOrError.getValue(),
-        postId: post.postId,
-        parentCommentId: parentComment.commentId
-      });
+      const commentText: CommentText = commentTextOrError.getValue();
 
-      if (commentOrError.isFailure) {
-        return left(commentOrError);
+      const replyToCommentResult: Either<Result<any>, Result<Post>> = this.replyToCommentDomainService.execute(post, member, parentComment, commentText);
+
+      if (replyToCommentResult.isRight()) {
+        post = replyToCommentResult.value.getValue();
+      } else {
+        return left(replyToCommentResult.value);
       }
-
-      const comment: Comment = commentOrError.getValue();
-
-      post.addComment(comment);
 
       await this.postRepo.save(post);
 

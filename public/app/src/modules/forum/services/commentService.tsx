@@ -10,7 +10,7 @@ import { CommentUtil } from "../utils/CommentUtil";
 
 export interface ICommentService {
   createReplyToPost (text: string, slug: string): Promise<APIResponse<void>>;
-  createReplyToComment (text: string, parentCommentId: string): Promise<APIResponse<void>>;
+  createReplyToComment (comment: string, parentCommentId: string, slug: string): Promise<APIResponse<void>>;
   getCommentsBySlug (slug: string, offset?: number): Promise<APIResponse<Comment[]>>;
   getCommentByCommentId (commentId: string): Promise<APIResponse<Comment>>
 }
@@ -32,8 +32,15 @@ export class CommentService extends BaseAPI implements ICommentService {
     }
   }
 
-  async createReplyToComment (text: string, parentCommentId: string): Promise<APIResponse<void>> {
-    return right(Result.ok<void>());
+  async createReplyToComment (comment: string, parentCommentId: string, slug: string): Promise<APIResponse<void>> {
+    try {
+      await this.post(`/comments/${parentCommentId}`, { comment }, { slug }, { 
+        authorization: this.authService.getToken('access-token') 
+      });
+      return right(Result.ok<void>());
+    } catch (err) {
+      return left(err.response ? err.response.data.message : "Connection failed")
+    }
   }
 
   async getCommentsBySlug (slug: string, offset?: number): Promise<APIResponse<Comment[]>> {
