@@ -13,7 +13,7 @@ import { has } from 'lodash'
 import { PostCreated } from "./events/postCreated";
 import { PostType } from "./postType";
 import { PostLink } from "./postLink";
-import { CommentCreated } from "./events/commentCreated";
+import { CommentPosted } from "./events/commentPosted";
 
 export interface PostProps {
   memberId: MemberId;
@@ -23,6 +23,7 @@ export interface PostProps {
   text?: PostText;
   link?: PostLink;
   comments?: Comment[];
+  totalNumComments?: number;
   points?: number; // posts can have negative or positive valued points
   dateTimePosted?: string | Date;
 }
@@ -70,9 +71,27 @@ export class Post extends AggregateRoot<PostProps> {
     return this.props.type;
   }
 
+  get totalNumComments (): number {
+    return this.props.totalNumComments;
+  }
+
+  public updateTotalNumberComments (numComments: number): void {
+    if (numComments >= 0) {
+      this.props.totalNumComments = numComments;
+    }
+  }
+
+  public setPoints (numComments: number, numPostUpvotes: number, numCommentUpvotes): void {
+    // TODO: 
+    this.props.points = Math.max(0, numComments) 
+      + Math.max(0, numPostUpvotes) 
+      + Math.max(0, numCommentUpvotes)
+  }
+
   public addComment (comment: Comment): Result<void> {
-    this.comments.push(comment);
-    this.addDomainEvent(new CommentCreated(this, comment));
+    this.props.comments.push(comment);
+    this.props.totalNumComments++;
+    this.addDomainEvent(new CommentPosted(this, comment));
     return Result.ok<void>();
   }
 
@@ -99,7 +118,7 @@ export class Post extends AggregateRoot<PostProps> {
       { argument: props.memberId, argumentName: 'memberId' },
       { argument: props.slug, argumentName: 'slug' },
       { argument: props.title, argumentName: 'title' },
-      { argument: props.type, argumentName: 'type' }
+      { argument: props.type, argumentName: 'type' },
     ];
 
     if (props.type === 'link') {
@@ -122,7 +141,8 @@ export class Post extends AggregateRoot<PostProps> {
       ...props,
       comments: props.comments ? props.comments : [],
       points: has(props, 'points') ? props.points : 1,
-      dateTimePosted: props.dateTimePosted ? props.dateTimePosted : new Date()
+      dateTimePosted: props.dateTimePosted ? props.dateTimePosted : new Date(),
+      totalNumComments: props.totalNumComments ? props.totalNumComments : 0
     };
 
     const isNewPost = !!id === false;

@@ -35,7 +35,7 @@ export class PostDetailsMap implements Mapper<PostDetails> {
       title,
       type: raw.type,
       points: raw.points,
-      numComments: 0,
+      numComments: raw.total_num_comments,
       dateTimePosted: raw.createdAt,
       member: memberDetails,
       text: postType === 'text' ? PostText.create({ value: raw.text }).getValue() : null,

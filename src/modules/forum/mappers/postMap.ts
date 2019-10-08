@@ -1,3 +1,4 @@
+
 import { Mapper } from "../../../shared/infra/Mapper";
 import { Post } from "../domain/post";
 import { UniqueEntityID } from "../../../shared/domain/UniqueEntityID";
@@ -20,7 +21,8 @@ export class PostMap implements Mapper<Post> {
       type: postType,
       text: postType === 'text' ? PostText.create({ value: raw.text }).getValue() : null,
       link: postType === 'link' ? PostLink.create({ url: raw.link }).getValue() : null,
-      points: raw.points
+      points: raw.points,
+      totalNumComments: raw.total_num_comments
     }, new UniqueEntityID(raw.post_id))
 
     postOrError.isFailure ? console.log(postOrError.error) : '';
@@ -30,7 +32,8 @@ export class PostMap implements Mapper<Post> {
 
   public static toPersistence (post: Post): any {
     return {
-      updatedAt: new Date(),
+      total_num_comments: post.totalNumComments,
+      updatedAt: new Date().toString(),
       title: post.title.value,
       post_id: post.postId.id.toString(),
       member_id: post.memberId.id.toString(),

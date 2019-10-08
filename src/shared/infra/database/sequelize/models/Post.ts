@@ -41,6 +41,11 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue: 0
+    },
+    total_num_comments: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 0
     }
   },{
     timestamps: true,

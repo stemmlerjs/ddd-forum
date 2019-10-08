@@ -40,6 +40,31 @@ export class PostRepo implements IPostRepo {
     }
   }
 
+  public async getPostByPostId (postId: PostId | string): Promise<Post> {
+    postId  = postId instanceof PostId 
+    ? (<PostId>postId).id.toString() 
+    : postId;
+    const PostModel = this.models.Post;
+    const detailsQuery = this.createBaseQuery();
+    detailsQuery.where['post_id'] = postId;
+    const post = await PostModel.findOne(detailsQuery);
+    const found = !!post === true;
+    if (!found) throw new Error("Post not found");
+    return PostMap.toDomain(post);
+  }
+
+  public async getNumberOfCommentsByPostId (postId: PostId | string): Promise<number> {
+    postId  = postId instanceof PostId 
+    ? (<PostId>postId).id.toString() 
+    : postId;
+
+    const result = await this.models.sequelize.query(
+      `SELECT COUNT(*) FROM comment WHERE post_id = "${postId}";`
+    );
+    const count = result[0][0]['COUNT(*)'];
+    return count;
+  }
+
   public async getPostDetailsBySlug (slug: string, offset?: number): Promise<PostDetails> {
     const PostModel = this.models.Post;
     const detailsQuery = this.createBaseDetailsQuery();
@@ -107,11 +132,14 @@ export class PostRepo implements IPostRepo {
       // Save non-aggregate tables before saving the aggregate
       // so that any domain events on the aggregate get dispatched
       await this.saveComments(post.comments);
-
-      const sequelizePostInstance = await PostModel.findOne({ 
+      
+      await PostModel.update(rawSequelizePost, { 
+        // To make sure your hooks always run, make sure to include this in
+        // the query
+        individualHooks: true,  
+        hooks: true,
         where: { post_id: post.postId.id.toString() }
       });
-      await sequelizePostInstance.update(rawSequelizePost);
     }
   }
 }

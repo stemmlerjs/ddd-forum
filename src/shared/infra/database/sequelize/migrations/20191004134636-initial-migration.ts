@@ -133,6 +133,11 @@ export default {
           allowNull: false,
           defaultValue: 0
         },
+        total_num_comments: {
+          type: Sequelize.INTEGER,
+          allowNull: false,
+          defaultValue: 0
+        },
         created_at: {
           type: Sequelize.DATE,
           allowNull: false,

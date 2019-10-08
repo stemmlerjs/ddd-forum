@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const postId_1 = require("../../domain/postId");
 const postMap_1 = require("../../mappers/postMap");
 const postDetailsMap_1 = require("../../mappers/postDetailsMap");
 class PostRepo {
@@ -26,6 +27,27 @@ class PostRepo {
             limit: 15,
             offset: 0
         };
+    }
+    async getPostByPostId(postId) {
+        postId = postId instanceof postId_1.PostId
+            ? postId.id.toString()
+            : postId;
+        const PostModel = this.models.Post;
+        const detailsQuery = this.createBaseQuery();
+        detailsQuery.where['post_id'] = postId;
+        const post = await PostModel.findOne(detailsQuery);
+        const found = !!post === true;
+        if (!found)
+            throw new Error("Post not found");
+        return postMap_1.PostMap.toDomain(post);
+    }
+    async getNumberOfCommentsByPostId(postId) {
+        postId = postId instanceof postId_1.PostId
+            ? postId.id.toString()
+            : postId;
+        const result = await this.models.sequelize.query(`SELECT COUNT(*) FROM comment WHERE post_id = "${postId}";`);
+        const count = result[0][0]['COUNT(*)'];
+        return count;
     }
     async getPostDetailsBySlug(slug, offset) {
         const PostModel = this.models.Post;

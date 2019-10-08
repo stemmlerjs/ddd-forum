@@ -4,7 +4,7 @@ import { UniqueEntityID } from "../../../../shared/domain/UniqueEntityID";
 import { Comment } from "../comment";
 import { Post } from "../post";
 
-export class CommentCreated implements IDomainEvent {
+export class CommentPosted implements IDomainEvent {
   public dateTimeOccurred: Date;
   public post: Post;
   public comment: Comment;

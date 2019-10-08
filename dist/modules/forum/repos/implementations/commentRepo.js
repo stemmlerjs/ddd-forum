@@ -16,6 +16,7 @@ class CommentRepo {
         return {
             where: {},
             include: [
+                { model: models.Post, as: 'Post', where: {} },
                 {
                     model: models.Member,
                     as: 'Member',
@@ -23,7 +24,6 @@ class CommentRepo {
                         { model: models.BaseUser, as: 'BaseUser' }
                     ]
                 },
-                { model: models.Post, as: 'Post' }
             ],
             limit: 15,
             offset: 0
@@ -35,9 +35,8 @@ class CommentRepo {
     async getCommentDetailsByPostSlug(slug) {
         const CommentModel = this.models.Comment;
         const detailsQuery = this.createBaseDetailsQuery();
-        detailsQuery.where['slug'] = slug;
+        detailsQuery.include[0].where['slug'] = slug;
         const comments = await CommentModel.findAll(detailsQuery);
-        console.log(comments);
         return comments.map((c) => commentDetailsMap_1.CommentDetailsMap.toDomain(c));
     }
     async deleteComment(commentId) {

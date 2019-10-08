@@ -31,8 +31,7 @@ class CommentDetails extends ValueObject_1.ValueObject {
             { argument: props.text, argumentName: 'text' },
             { argument: props.member, argumentName: 'member' },
             { argument: props.createdAt, argumentName: 'createdAt' },
-            { argument: props.postSlug, argumentName: 'postSlug' },
-            { argument: props.parentCommentId, argumentName: 'parentCommentId' }
+            { argument: props.postSlug, argumentName: 'postSlug' }
         ]);
         if (!nullGuard.succeeded) {
             return Result_1.Result.fail(nullGuard.message);

@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 class CommentMap {
     static toPersistence(comment) {
         return {
+            post_id: comment.postId.id.toString(),
             comment_id: comment.commentId.id.toString(),
             member_id: comment.memberId.id.toString(),
             parent_comment_id: comment.parentCommentId ? comment.parentCommentId.id.toString() : null,
