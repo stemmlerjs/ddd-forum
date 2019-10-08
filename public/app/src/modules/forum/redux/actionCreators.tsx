@@ -124,6 +124,26 @@ function getPopularPostsFailure (error: string): ForumAction & { error: string }
   };
 }
 
+function gettingCommentByCommentId (): ForumAction {
+  return {
+    type: actions.GETTING_COMMENT_BY_COMMENT_ID
+  };
+}
+
+function gettingCommentByCommentIdSuccess (comment: Comment): ForumAction {
+  return {
+    type: actions.GETTING_COMMENT_BY_COMMENT_ID_SUCCESS,
+    comment
+  };
+}
+
+function gettingCommentByCommentIdFailure (error: string): ForumAction {
+  return {
+    type: actions.GETTING_COMMENT_BY_COMMENT_ID_FAILURE,
+    error
+  };
+}
+
 export {
   submittingPost,
   submittingPostSuccess,
@@ -147,5 +167,9 @@ export {
 
   getPopularPosts,
   getPopularPostsSuccess,
-  getPopularPostsFailure
+  getPopularPostsFailure,
+
+  gettingCommentByCommentId,
+  gettingCommentByCommentIdSuccess,
+  gettingCommentByCommentIdFailure
 }

@@ -6,6 +6,7 @@ import { CommentId } from "./commentId";
 import { PostSlug } from "./postSlug";
 import { Guard } from "../../../shared/core/Guard";
 import { MemberDetails } from "./memberDetails";
+import { PostTitle } from "./postTitle";
 
 interface CommentDetailsProps {
   commentId: CommentId;
@@ -13,6 +14,7 @@ interface CommentDetailsProps {
   member: MemberDetails;
   createdAt: Date | string;
   postSlug: PostSlug;
+  postTitle: PostTitle;
   parentCommentId?: CommentId;
 }
 
@@ -38,6 +40,10 @@ export class CommentDetails extends ValueObject<CommentDetailsProps> {
     return this.props.postSlug
   }
 
+  get postTitle (): PostTitle {
+    return this.props.postTitle;
+  }
+
   get parentCommentId (): CommentId {
     return this.props.parentCommentId;
   }
@@ -52,7 +58,8 @@ export class CommentDetails extends ValueObject<CommentDetailsProps> {
       { argument: props.text, argumentName: 'text' },
       { argument: props.member, argumentName: 'member' },
       { argument: props.createdAt, argumentName: 'createdAt' },
-      { argument: props.postSlug, argumentName: 'postSlug' }
+      { argument: props.postSlug, argumentName: 'postSlug' },
+      { argument: props.postTitle, argumentName: 'postTitle' }
     ]);
 
     if (!nullGuard.succeeded) {

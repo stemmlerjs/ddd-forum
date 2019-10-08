@@ -27,12 +27,18 @@ export interface ForumState {
   isGettingPopularPostsSuccess: boolean;
   isGettingPopularPostsFailure: boolean;
 
+  isGettingCommentByCommentId: boolean;
+  isGettingCommentByCommentIdSuccess: boolean;
+  isGettingCommentByCommentIdFailure: boolean;
+
   recentPosts: Post[];
   popularPosts: Post[];
 
   post: Post | {};
 
   comments: Comment[];
+
+  comment: Comment | {};
 
   error: string;
 }
@@ -62,12 +68,18 @@ const initialForumState: ForumState = {
   isGettingPopularPostsSuccess: false,
   isGettingPopularPostsFailure: false,
 
+  isGettingCommentByCommentId: false,
+  isGettingCommentByCommentIdSuccess: false,
+  isGettingCommentByCommentIdFailure: false,
+
   comments: [],
 
   recentPosts: [],
   popularPosts: [],
 
   post: {},
+
+  comment: {},
 
   error: ''
 }

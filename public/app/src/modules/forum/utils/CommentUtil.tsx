@@ -1,6 +1,6 @@
 
-import { Comment } from "../../modules/forum/models/Comment";
-import { CommentDTO } from "../../modules/forum/dtos/commentDTO";
+import { Comment } from "../models/Comment";
+import { CommentDTO } from "../dtos/commentDTO";
 
 export class CommentUtil {
 
@@ -9,6 +9,7 @@ export class CommentUtil {
 
   public static toViewModel (dto: CommentDTO): Comment {
     return {
+      
       postSlug: dto.postSlug,
       commentId: dto.commentId,
       parentCommentId: dto.parentCommentId,
@@ -18,7 +19,8 @@ export class CommentUtil {
         reputation: dto.member.reputation,
       },
       createdAt: dto.createdAt,
-      childComments: []
+      childComments: [],
+      postTitle: dto.postTitle
     }
   }
 

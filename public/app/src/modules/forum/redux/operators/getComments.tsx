@@ -1,7 +1,7 @@
 
 import * as actionCreators from '../actionCreators'
 import { commentService } from '../../services';
-import { CommentUtil } from '../../../../shared/utils/CommentUtil';
+import { CommentUtil } from '../../utils/CommentUtil';
 
 function getComments (slug: string, offset?: number) {
   return async (dispatch: any, getState: Function) => {

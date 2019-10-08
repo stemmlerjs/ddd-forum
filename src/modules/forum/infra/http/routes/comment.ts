@@ -1,9 +1,10 @@
 
 
 import express from 'express'
-import { getCommentsByPostSlugContainer } from '../../../useCases/comments/getCommentByPostSlug';
+import { getCommentsByPostSlugContainer } from '../../../useCases/comments/getCommentsByPostSlug';
 import { middleware } from '../../../../../shared/infra/http';
 import { replyToPostController } from '../../../useCases/comments/replyToPost';
+import { getCommentByCommentIdController } from '../../../useCases/comments/getCommentByCommentId';
 
 const commentRouter = express.Router();
 
@@ -17,7 +18,10 @@ commentRouter.post('/',
 )
 
 commentRouter.post('/:commentId/reply') // post reply
-commentRouter.get('/:commentId')        // get comment by id
+
+commentRouter.get('/:commentId',
+  (req, res) => getCommentByCommentIdController.execute(req, res)
+)
 
 
 

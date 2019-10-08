@@ -8,6 +8,7 @@ export interface Comment {
   member: Member;
   createdAt: string | Date;
   childComments: Comment[];
+  postTitle: string;
 }
 
 

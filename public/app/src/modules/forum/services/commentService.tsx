@@ -6,12 +6,13 @@ import { Comment } from "../models/Comment";
 import { Result } from "../../../shared/core/Result";
 import { right, left } from "../../../shared/core/Either";
 import { CommentDTO } from "../dtos/commentDTO";
-import { CommentUtil } from "../../../shared/utils/CommentUtil";
+import { CommentUtil } from "../utils/CommentUtil";
 
 export interface ICommentService {
   createReplyToPost (text: string, slug: string): Promise<APIResponse<void>>;
   createReplyToComment (text: string, parentCommentId: string): Promise<APIResponse<void>>;
-  getCommentsBySlug (slug: string, offset?: number): Promise<APIResponse<Comment[]>>
+  getCommentsBySlug (slug: string, offset?: number): Promise<APIResponse<Comment[]>>;
+  getCommentByCommentId (commentId: string): Promise<APIResponse<Comment>>
 }
 
 export class CommentService extends BaseAPI implements ICommentService {
@@ -41,6 +42,15 @@ export class CommentService extends BaseAPI implements ICommentService {
       return right(Result.ok<Comment[]>(
         response.data.comments.map((c: CommentDTO) => CommentUtil.toViewModel(c)))
       );
+    } catch (err) {
+      return left(err.response ? err.response.data.message : "Connection failed")
+    }
+  }
+
+  async getCommentByCommentId (commentId: string): Promise<APIResponse<Comment>> {
+    try {
+      const response = await this.get(`/comments/${commentId}`);
+      return right(Result.ok<Comment>(CommentUtil.toViewModel(response.data.comment)));
     } catch (err) {
       return left(err.response ? err.response.data.message : "Connection failed")
     }

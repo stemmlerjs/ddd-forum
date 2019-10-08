@@ -8,7 +8,7 @@ import PostSummary from '../modules/forum/components/posts/post/components/PostS
 import PostComment from '../modules/forum/components/posts/post/components/PostComment';
 import { Comment } from '../modules/forum/models/Comment';
 import { BackNavigation } from '../shared/components/header';
-import { CommentUtil } from '../shared/utils/CommentUtil';
+import { CommentUtil } from '../modules/forum/utils/CommentUtil';
 import { UsersState } from '../modules/users/redux/states';
 //@ts-ignore
 import { connect } from "react-redux";

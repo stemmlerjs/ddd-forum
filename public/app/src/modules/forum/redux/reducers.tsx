@@ -123,6 +123,26 @@ export default function forum (state: ForumState = states,
         error: action.error
       };
 
+
+    case actions.GETTING_COMMENT_BY_COMMENT_ID:
+      return {
+        ...state,
+        ...ReduxUtils.reportEventStatus("isGettingCommentByCommentId"),
+        error: ''
+      };
+    case actions.GETTING_COMMENT_BY_COMMENT_ID_SUCCESS:
+      return {
+        ...state,
+        ...ReduxUtils.reportEventStatus("isGettingCommentByCommentId", true),
+        comment: action.comment,
+      };
+    case actions.GETTING_COMMENT_BY_COMMENT_ID_FAILURE:
+      return {
+        ...state,
+        ...ReduxUtils.reportEventStatus("isGettingCommentByCommentId", false),
+        error: action.error
+      };
+
     default:
       return state;
   }

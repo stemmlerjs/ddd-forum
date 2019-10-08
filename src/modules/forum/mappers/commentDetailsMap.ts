@@ -7,11 +7,13 @@ import { CommentId } from "../domain/commentId";
 import { CommentText } from "../domain/commentText";
 import { MemberDetailsMap } from "./memberDetailsMap";
 import { PostSlug } from "../domain/postSlug";
+import { PostTitle } from "../domain/postTitle";
 
 export class CommentDetailsMap implements Mapper<CommentDetails> {
 
   public static toDomain (raw: any): CommentDetails {
     const commentDetailsOrError = CommentDetails.create({
+      postTitle: PostTitle.create({ value: raw.Post.title }).getValue(),
       commentId: CommentId.create(new UniqueEntityID(raw.comment_id)).getValue(),
       text: CommentText.create({ value: raw.text }).getValue(),
       member: MemberDetailsMap.toDomain(raw.Member),
@@ -33,7 +35,8 @@ export class CommentDetailsMap implements Mapper<CommentDetails> {
       text: commentDetails.text.value,
       member: MemberDetailsMap.toDTO(commentDetails.member),
       createdAt: commentDetails.createdAt,
-      childComments: []
+      childComments: [],
+      postTitle: commentDetails.postTitle.value
     }
   } 
 }
