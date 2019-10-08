@@ -10,7 +10,8 @@ import { PostDTO } from "../dtos/postDTO";
 
 export interface IPostService {
   createPost (title: string, type: PostType, text?: string, link?: string): Promise<APIResponse<void>>;
-  getRecentPosts (offset?: number): Promise<APIResponse<Post[]>>
+  getRecentPosts (offset?: number): Promise<APIResponse<Post[]>>;
+  getPopularPosts (offset?: number): Promise<APIResponse<Post[]>>
   getPostBySlug (slug: string): Promise<APIResponse<Post>>;
 }
 
@@ -35,6 +36,18 @@ export class PostService extends BaseAPI implements IPostService {
   public async getRecentPosts (offset?: number): Promise<APIResponse<Post[]>> {
     try {
       const response = await this.get('/posts/recent', { offset });
+
+      return right(Result.ok<Post[]>(
+        response.data.posts.map((p: PostDTO) => PostUtil.toViewModel(p)))
+      );
+    } catch (err) {
+      return left(err.response ? err.response.data.message : "Connection failed")
+    }
+  }
+
+  public async getPopularPosts (offset?: number): Promise<APIResponse<Post[]>> {
+    try {
+      const response = await this.get('/posts/popular', { offset });
 
       return right(Result.ok<Post[]>(
         response.data.posts.map((p: PostDTO) => PostUtil.toViewModel(p)))

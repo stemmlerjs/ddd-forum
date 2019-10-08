@@ -11,5 +11,6 @@ export interface PostDTO {
   points: number;
   text: string;
   type: PostType;
+  link: string;
 }
 

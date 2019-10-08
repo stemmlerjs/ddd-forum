@@ -12,7 +12,7 @@ const PostCommentAuthorAndText: React.FC<PostCommentAuthorAndTextProps> = (props
     <div className="comment-meta">
       {props.member.username} | <a href={`/comment/${props.commentId}`}>{moment(props.createdAt).fromNow()}</a>
     </div>
-    <p className="comment-text"><b>{props.text}</b></p>
+    <p className="comment-text"><b dangerouslySetInnerHTML={{ __html: props.text }}/></p>
   </div>
 )
 

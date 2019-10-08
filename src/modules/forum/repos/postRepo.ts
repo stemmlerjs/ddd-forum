@@ -6,6 +6,7 @@ export interface IPostRepo {
   getPostDetailsBySlug (slug: string): Promise<PostDetails>;
   getPostBySlug (slug: string): Promise<Post>;
   getRecentPosts (offset?: number): Promise<PostDetails[]>;
+  getPopularPosts (offset?: number): Promise<PostDetails[]>;
   getNumberOfCommentsByPostId (postId: PostId | string): Promise<number>;
   getPostByPostId (postId: PostId | string): Promise<Post>;
   exists (postId: PostId): Promise<boolean>;

@@ -136,7 +136,7 @@ class DiscussionPage extends React.Component<DiscussionPageProps, DiscussionStat
 
     return (
       <Layout>
-        <div className="flex flex-row flex-center flex-between">
+        <div className="header-container flex flex-row flex-center flex-between">
           <BackNavigation
             text="Back to all discussions"
             to="/"

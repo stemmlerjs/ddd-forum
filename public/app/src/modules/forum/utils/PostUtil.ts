@@ -20,7 +20,8 @@ export class PostUtil {
       numComments: dto.numComments,
       points: dto.points,
       type: dto.type,
-      text: dto.text
+      text: dto.text,
+      link: dto.link
     }
   }
 }

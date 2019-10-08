@@ -105,7 +105,7 @@ class JoinPage extends React.Component<JoinPageProps, JoinPageState> {
   render () {
     return (
       <Layout>
-        <div className="flex flex-row flex-center flex-even">
+        <div className="header-container flex flex-row flex-center flex-even">
           <Header
             title="Domain-Driven Designers"
             subtitle="Where awesome Domain-Driven Designers are made"

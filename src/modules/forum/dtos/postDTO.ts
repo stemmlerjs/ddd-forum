@@ -10,6 +10,7 @@ export interface PostDTO {
   numComments: number;
   points: number;
   text: string;
+  link: string;
   type: PostType;
 }
 

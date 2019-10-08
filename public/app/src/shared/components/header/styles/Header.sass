@@ -1,4 +1,6 @@
 
+@import "../../../../assets/styles/variables"
+  
 .header
   display: flex;
   flex-direction: row;
@@ -10,6 +12,12 @@
 
   .logo-container
     margin-right: 2rem;
+
+    @media (max-width: $mobile-breakpoint-large) 
+      margin-right: 0.5rem;
+
+      img 
+        max-width: 3rem;
 
   .content-container
     width: 100%;

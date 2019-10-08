@@ -4,6 +4,7 @@ import { middleware } from '../../../../../shared/infra/http';
 import { createPostController } from '../../../useCases/post/createPost';
 import { getRecentPostsController } from '../../../useCases/post/getRecentPosts';
 import { getPostBySlugController } from '../../../useCases/post/getPostBySlug';
+import { getPopularPostsController } from '../../../useCases/post/getPopularPosts';
 
 const postRouter = express.Router();
 
@@ -14,6 +15,10 @@ postRouter.post('/',
 
 postRouter.get('/recent',
   (req, res) => getRecentPostsController.execute(req, res)
+)
+
+postRouter.get('/popular',
+  (req, res) => getPopularPostsController.execute(req, res)
 )
 
 postRouter.get('/',

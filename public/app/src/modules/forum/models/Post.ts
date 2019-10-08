@@ -1,6 +1,4 @@
 
-import { Comment } from "./Comment";
-
 export type PostType = 'text' | 'link';
 
 export interface Post {
@@ -12,6 +10,7 @@ export interface Post {
   points: number;
   type: PostType;
   text: string;
+  link: string;
 }
 
 

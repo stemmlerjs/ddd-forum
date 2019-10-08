@@ -5,6 +5,7 @@ import { getRecentPosts } from "./getRecentPosts";
 import { getPostBySlug } from "./getPostBySlug";
 import { createReplyToPost } from "./createReplyToPost";
 import { getComments } from "./getComments";
+import { getPopularPosts } from "./getPopularPosts";
 
 export interface IForumOperations {
   submitPost: (title: string, type: PostType, text?: string, link?: string) => void;
@@ -12,6 +13,7 @@ export interface IForumOperations {
   getPostBySlug (slug: string): void;
   createReplyToPost (text: string, slug: string): void;
   getComments (slug: string, offset?: number): void;
+  getPopularPosts (offset?: number): void;
 } 
 
 export {
@@ -19,5 +21,6 @@ export {
   getRecentPosts,
   getPostBySlug,
   createReplyToPost,
-  getComments
+  getComments,
+  getPopularPosts
 }

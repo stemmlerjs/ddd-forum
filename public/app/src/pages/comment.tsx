@@ -151,7 +151,7 @@ class CommentPage extends React.Component<CommentPageProps, CommentState> {
     console.log(comments);
     return (
       <Layout>
-        <div className="flex flex-row flex-center flex-even">
+        <div className="header-container flex flex-row flex-center flex-even">
           <Header title={``} />
           <BackNavigation
             to={`/discuss${commentUnderFocus.postSlug}`}

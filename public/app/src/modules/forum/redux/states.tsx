@@ -23,6 +23,10 @@ export interface ForumState {
   isGettingCommentsSuccess: boolean;
   isGettingCommentsFailure: boolean;
 
+  isGettingPopularPosts: boolean;
+  isGettingPopularPostsSuccess: boolean;
+  isGettingPopularPostsFailure: boolean;
+
   recentPosts: Post[];
   popularPosts: Post[];
 
@@ -53,6 +57,10 @@ const initialForumState: ForumState = {
   isGettingComments: false,
   isGettingCommentsSuccess: false,
   isGettingCommentsFailure: false,
+
+  isGettingPopularPosts: false,
+  isGettingPopularPostsSuccess: false,
+  isGettingPopularPostsFailure: false,
 
   comments: [],
 

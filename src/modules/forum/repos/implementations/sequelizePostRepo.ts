@@ -83,6 +83,17 @@ export class PostRepo implements IPostRepo {
     return posts.map((p) => PostDetailsMap.toDomain(p))
   }
 
+  public async getPopularPosts (offset?: number): Promise<PostDetails[]> {
+    const PostModel = this.models.Post;
+    const detailsQuery = this.createBaseDetailsQuery();
+    detailsQuery.offset = offset ? offset : detailsQuery.offset;
+    detailsQuery['order'] = [
+      ['points', 'DESC'],
+    ];
+    const posts = await PostModel.findAll(detailsQuery);
+    return posts.map((p) => PostDetailsMap.toDomain(p))
+  }
+
   public async getPostBySlug (slug: string): Promise<Post> {
     const PostModel = this.models.Post;
     const detailsQuery = this.createBaseQuery();

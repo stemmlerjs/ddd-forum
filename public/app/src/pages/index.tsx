@@ -17,49 +17,6 @@ import { User } from '../modules/users/models/user';
 import withLogoutHandling from '../modules/users/hocs/withLogoutHandling';
 import { ForumState } from '../modules/forum/redux/states';
 
-const posts: Post[] = [
-  { 
-    type: 'text',
-    title: "Where the hell do I even start with Domain-Driven Design?",
-    createdAt: DateUtil.createPreviousDate(0, 0, 10),
-    postAuthor: 'stemmlerjs',
-    points: 143,
-    numComments: 150,
-    slug: '/discuss/where-to-do-ddd',
-    text: 'content goes here :)'
-  },
-  { 
-    type: 'text',
-    title: "Help with Aggregate Design",
-    createdAt: DateUtil.createPreviousDate(0, 0, 15),
-    postAuthor: 'jimmyuringer',
-    points: 50,
-    numComments: 60,
-    slug: '/discuss/help-with-aggregate-design',
-    text: 'content goes here :)'
-  },
-  { 
-    type: 'text',
-    title: "CQRS Killed My App and I Don’t Like It",
-    createdAt: DateUtil.createPreviousDate(0, 0, 30),
-    postAuthor: 'wesbos',
-    points: 42,
-    numComments: 32,
-    slug: '/discuss/cqrs-killed-my-app',
-    text: 'content goes here :)'
-  },
-  { 
-    type: 'text',
-    title: "Guys, it’s REDUX for DDD (Domain Events)",
-    createdAt: DateUtil.createPreviousDate(0, 1, 0),
-    postAuthor: 'danabramov',
-    points: 12,
-    numComments: 32,
-    slug: '/discuss/ddd-redux',
-    text: 'content goes here :)'
-  }
-]
-
 interface IndexPageProps extends usersOperators.IUserOperators, forumOperators.IForumOperations {
   users: UsersState;
   forum: ForumState;
@@ -90,16 +47,20 @@ class IndexPage extends React.Component<IndexPageProps, IndexPageState> {
     })
   }
 
+  getPosts () {
+    const activeFilter = this.state.activeFilter;
+
+    if (activeFilter === 'NEW') {
+      this.props.getRecentPosts();
+    } else {
+      this.props.getPopularPosts();
+    }
+  }
+
   onFilterChanged (prevState: IndexPageState) {
     const currentState: IndexPageState = this.state;
     if (prevState.activeFilter !== currentState.activeFilter) {
-      const activeFilter = currentState.activeFilter;
-
-      if (activeFilter === 'NEW') {
-        this.props.getRecentPosts();
-      } else {
-        // TODO: Get popular posts
-      }
+      this.getPosts();
     }
   }
 
@@ -133,6 +94,7 @@ class IndexPage extends React.Component<IndexPageProps, IndexPageState> {
 
   componentDidMount () {
     this.setActiveFilterOnLoad();
+    this.getPosts();
   }
 
   render () {
@@ -141,7 +103,7 @@ class IndexPage extends React.Component<IndexPageProps, IndexPageState> {
 
     return (
       <Layout>
-        <div className="flex flex-row flex-center flex-even">
+        <div className="header-container flex flex-row flex-center flex-even">
           <Header
             title="Domain-Driven Designers"
             subtitle="Where awesome Domain-Driven Designers are made"

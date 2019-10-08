@@ -9,18 +9,6 @@ import { PostType } from "../domain/postType";
 import { PostText } from "../domain/postText";
 import { PostLink } from "../domain/postLink";
 
-/**
- * member: MemberDetails;
-  slug: PostSlug;
-  title: PostTitle;
-  type: PostType;
-  text?: PostText;
-  link?: PostLink;
-  numComments: number;
-  points: number;
-  dateTimePosted: string | Date;
- */
-
 export class PostDetailsMap implements Mapper<PostDetails> {
 
   public static toDomain (raw: any): PostDetails {
@@ -55,7 +43,8 @@ export class PostDetailsMap implements Mapper<PostDetails> {
       memberPostedBy: MemberDetailsMap.toDTO(postDetails.member),
       numComments: postDetails.numComments,
       points: postDetails.points,
-      text: postDetails.text.value,
+      text: postDetails.text ? postDetails.text.value : '',
+      link: postDetails.link ? postDetails.link.url : '',
       type: postDetails.postType
     }
   } 

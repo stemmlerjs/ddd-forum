@@ -136,7 +136,7 @@ class SubmitPage extends React.Component<SubmitPageProps, SubmitPageState> {
   render () {
     return (
       <Layout>
-        <div className="flex flex-row flex-center flex-even">
+        <div className="header-container flex flex-row flex-center flex-even">
           <Header
             title="New submission"
             subtitle=""

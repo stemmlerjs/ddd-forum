@@ -104,6 +104,26 @@ function gettingCommentsFailure (error: string): ForumAction {
   }
 }
 
+function getPopularPosts (): ForumAction {
+  return {
+    type: actions.GETTING_POPULAR_POSTS
+  };
+}
+
+function getPopularPostsSuccess (posts: Post[]): ForumAction {
+  return {
+    type: actions.GETTING_POPULAR_POSTS_SUCCESS,
+    posts
+  };
+}
+
+function getPopularPostsFailure (error: string): ForumAction & { error: string } {
+  return {
+    type: actions.GETTING_POPULAR_POSTS_FAILURE,
+    error
+  };
+}
+
 export {
   submittingPost,
   submittingPostSuccess,
@@ -123,5 +143,9 @@ export {
 
   gettingComments,
   gettingCommentsSuccess,
-  gettingCommentsFailure
+  gettingCommentsFailure,
+
+  getPopularPosts,
+  getPopularPostsSuccess,
+  getPopularPostsFailure
 }

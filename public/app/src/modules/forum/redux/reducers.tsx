@@ -103,6 +103,26 @@ export default function forum (state: ForumState = states,
         error: action.error
       };  
 
+
+    case actions.GETTING_POPULAR_POSTS:
+      return {
+        ...state,
+        ...ReduxUtils.reportEventStatus("isGettingPopularPosts"),
+        error: ''
+      };
+    case actions.GETTING_POPULAR_POSTS_SUCCESS:
+      return {
+        ...state,
+        ...ReduxUtils.reportEventStatus("isGettingPopularPosts", true),
+        popularPosts: action.posts,
+      };
+    case actions.GETTING_POPULAR_POSTS_FAILURE:
+      return {
+        ...state,
+        ...ReduxUtils.reportEventStatus("isGettingPopularPosts", false),
+        error: action.error
+      };
+
     default:
       return state;
   }
