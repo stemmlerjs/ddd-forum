@@ -14,6 +14,7 @@ import { PostCreated } from "./events/postCreated";
 import { PostType } from "./postType";
 import { PostLink } from "./postLink";
 import { CommentPosted } from "./events/commentPosted";
+import { CommentText } from "./commentText";
 
 export interface PostProps {
   memberId: MemberId;
