@@ -4,6 +4,8 @@ import * as actions from "./actions";
 
 import { ReduxUtils } from "../../../shared/utils/ReduxUtils";
 import { ForumAction } from "./actionCreators";
+import { Post } from "../models/Post";
+import { PostUtil } from "../utils/PostUtil";
 
 export default function forum (state: ForumState = states,
   action: ForumAction
@@ -160,6 +162,34 @@ export default function forum (state: ForumState = states,
         ...ReduxUtils.reportEventStatus("isCreatingReplyToComment", false),
         error: action.error
       }; 
+
+    case actions.UPVOTING_POST_SUCCESS:
+      return {
+        ...state,
+        recentPosts: state.recentPosts.map((p) => p.slug === action.postSlug 
+          ? PostUtil.computePostAfterUpvote(p) 
+          : p),
+        popularPosts: state.popularPosts.map((p) => p.slug === action.postSlug 
+          ? PostUtil.computePostAfterUpvote(p) 
+          : p),
+        post: Object.keys(state.post).length !== 0 && (state.post as Post).slug === action.postSlug 
+          ? PostUtil.computePostAfterUpvote(state.post as Post)  
+          : state.post
+      }
+
+    case actions.DOWNVOTING_POST_SUCCESS:
+      return {
+        ...state,
+        recentPosts: state.recentPosts.map((p) => p.slug === action.postSlug 
+          ? PostUtil.computePostAfterDownvote(p) 
+          : p),
+        popularPosts: state.popularPosts.map((p) => p.slug === action.postSlug 
+          ? PostUtil.computePostAfterDownvote(p) 
+          : p),
+        post: Object.keys(state.post).length !== 0 && (state.post as Post).slug === action.postSlug 
+          ? PostUtil.computePostAfterDownvote(state.post as Post)  
+          : state.post
+      }
 
     default:
       return state;

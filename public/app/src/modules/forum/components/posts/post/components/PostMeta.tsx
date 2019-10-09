@@ -13,7 +13,7 @@ const PostMeta: React.FC<PostMetaProps> = (props) => (
   <div className="post-row-content">
     {props.includeLink === false ? '' : <Link to={`/discuss/${props.slug}`} className="title">"{props.title}" {props.link ? <span className="link">[link]</span> : ''}</Link>}
     <div className="post-row-meta">
-      {moment(props.createdAt).fromNow()} | {`by `} <Link to={`/author/${props.postAuthor}`}>{props.postAuthor}</Link> | {`${props.numComments} comments`}
+      {moment(props.createdAt).fromNow()} | {`by `} <Link to={`/member/${props.postAuthor}`}>{props.postAuthor}</Link> | {`${props.numComments} comments`}
     </div>
   </div>
 )

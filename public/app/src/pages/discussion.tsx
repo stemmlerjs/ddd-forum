@@ -24,6 +24,7 @@ import { SubmitButton } from '../shared/components/button';
 import { TextUtil } from '../shared/utils/TextUtil';
 import { FullPageLoader } from '../shared/components/loader';
 import withVoting from '../modules/forum/hocs/withVoting';
+import { Points } from '../modules/forum/components/posts/points';
 
 interface DiscussionPageProps extends usersOperators.IUserOperators, forumOperators.IForumOperations {
   users: UsersState;
@@ -151,7 +152,15 @@ class DiscussionPage extends React.Component<DiscussionPageProps, DiscussionStat
           ''
         ) : (
           <>
-            <Header title={`"${post.title}"`} />
+            
+            <Header 
+              title={`"${post.title}"`} 
+              isUpvotable={true}
+              onUpvoteClicked={() => this.props.upvotePost(post.slug)}
+              onDownvoteClicked={() => this.props.downvotePost(post.slug)}
+              points={post.points}
+            />
+            
             <br/>
             <br/>
             <PostSummary

@@ -12,6 +12,22 @@ export class PostUtil {
   public static maxLinkLength: number = 500;
   public static minLinkLength: number = 8;
 
+  public static computePostAfterUpvote (post: Post): Post {
+    return {
+      ...post,
+      wasUpvotedByMe: post.wasUpvotedByMe ? false : true,
+      points: post.wasUpvotedByMe ? (post.points - 1) : (post.points + 1)
+    } 
+  }
+
+  public static computePostAfterDownvote (post: Post): Post {
+    return {
+      ...post,
+      wasDownvotedByMe: post.wasDownvotedByMe ? false : true,
+      points: post.wasDownvotedByMe ? (post.points + 1) : (post.points - 1)
+    } 
+  }
+
   public static toViewModel (dto: PostDTO): Post {
     return {
       slug: dto.slug,
