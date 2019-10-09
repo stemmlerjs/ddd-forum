@@ -16,7 +16,7 @@ userRouter.post('/',
 );
 
 userRouter.get('/me',
-  middleware.authenticateRequests(),
+  middleware.ensureAuthenticated(),
   (req, res) => getCurrentUserController.execute(req, res)
 )
 
@@ -25,7 +25,7 @@ userRouter.post('/login',
 )
 
 userRouter.post('/logout',
-  middleware.authenticateRequests(),
+  middleware.ensureAuthenticated(),
   (req, res) => logoutController.execute(req, res)
 )
 
@@ -34,12 +34,12 @@ userRouter.post('/token/refresh',
 )
 
 userRouter.delete('/:userId',
-  middleware.authenticateRequests(),
+  middleware.ensureAuthenticated(),
   (req, res) => deleteUserController.execute(req, res)
 )
 
 userRouter.get('/:username',
-  middleware.authenticateRequests(),
+  middleware.ensureAuthenticated(),
   (req, res) => getUserByUserNameController.execute(req, res)
 )
 

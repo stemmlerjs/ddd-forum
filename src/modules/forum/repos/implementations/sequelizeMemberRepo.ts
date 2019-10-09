@@ -4,6 +4,9 @@ import { Member } from "../../domain/member";
 import { MemberMap } from "../../mappers/memberMap";
 import { MemberDetails } from "../../domain/memberDetails";
 import { MemberDetailsMap } from "../../mappers/memberDetailsMap";
+import { MemberId } from "../../domain/memberId";
+import { UniqueEntityID } from "../../../../shared/domain/UniqueEntityID";
+import { MemberIdMap } from "../../mappers/memberIdMap";
 
 export class MemberRepo implements IMemberRepo {
   private models: any;
@@ -29,6 +32,16 @@ export class MemberRepo implements IMemberRepo {
     const member = await MemberModel.findOne(baseQuery);
     const found = !!member === true;
     return found;
+  }
+
+  public async getMemberIdByUserId (userId: string): Promise<MemberId> {
+    const MemberModel = this.models.Member;
+    const baseQuery = this.createBaseQuery();
+    baseQuery.where['member_base_id'] = userId;
+    const member = await MemberModel.findOne(baseQuery);
+    const found = !!member === true;
+    if (!found) throw new Error('Member id not found');
+    return MemberIdMap.toDomain(member);
   }
 
   public async getMemberByUserId (userId: string): Promise<Member> {

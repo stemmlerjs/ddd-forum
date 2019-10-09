@@ -11,29 +11,32 @@ import { downvotePostController } from '../../../useCases/post/downvotePost';
 const postRouter = express.Router();
 
 postRouter.post('/',
-  middleware.authenticateRequests(),
+  middleware.ensureAuthenticated(),
   (req, res) => createPostController.execute(req, res)
 )
 
 postRouter.get('/recent',
+  middleware.includeDecodedTokenIfExists(),
   (req, res) => getRecentPostsController.execute(req, res)
 )
 
 postRouter.get('/popular',
+  middleware.includeDecodedTokenIfExists(),
   (req, res) => getPopularPostsController.execute(req, res)
 )
 
 postRouter.get('/',
+  middleware.includeDecodedTokenIfExists(),
   (req, res) => getPostBySlugController.execute(req, res)
 )
 
 postRouter.post('/upvote',
-  middleware.authenticateRequests(),
+  middleware.ensureAuthenticated(),
   (req, res) => upvotePostController.execute(req, res)
 )
 
 postRouter.post('/downvote',
-  middleware.authenticateRequests(),
+  middleware.ensureAuthenticated(),
   (req, res) => downvotePostController.execute(req, res)
 )
 

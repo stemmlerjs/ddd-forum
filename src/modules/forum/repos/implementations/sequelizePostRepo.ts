@@ -10,6 +10,7 @@ import { Comment } from "../../domain/comment";
 import { IPostVotesRepo } from "../postVotesRepo";
 import { PostVote } from "../../domain/postVote";
 import { PostVotes } from "../../domain/postVotes";
+import { MemberId } from "../../domain/memberId";
 
 export class PostRepo implements IPostRepo {
 
@@ -84,21 +85,41 @@ export class PostRepo implements IPostRepo {
     return PostDetailsMap.toDomain(post)
   }
 
-  public async getRecentPosts (offset?: number): Promise<PostDetails[]> {
+  public async getRecentPosts (memberId?: MemberId, offset?: number): Promise<PostDetails[]> {
     const PostModel = this.models.Post;
     const detailsQuery = this.createBaseDetailsQuery();
     detailsQuery.offset = offset ? offset : detailsQuery.offset;
+
+    if (!!memberId === true) {
+      detailsQuery.include.push({ 
+        model: this.models.PostVote,
+        as: 'Votes',
+        where: { member_id: memberId.id.toString() },
+        required: false
+      })
+    }
+    
     const posts = await PostModel.findAll(detailsQuery);
     return posts.map((p) => PostDetailsMap.toDomain(p))
   }
 
-  public async getPopularPosts (offset?: number): Promise<PostDetails[]> {
+  public async getPopularPosts (memberId?: MemberId, offset?: number): Promise<PostDetails[]> {
     const PostModel = this.models.Post;
     const detailsQuery = this.createBaseDetailsQuery();
     detailsQuery.offset = offset ? offset : detailsQuery.offset;
     detailsQuery['order'] = [
       ['points', 'DESC'],
     ];
+
+    if (!!memberId === true) {
+      detailsQuery.include.push({ 
+        model: this.models.PostVote,
+        as: 'Votes',
+        where: { member_id: memberId.id.toString() },
+        required: false
+      })
+    }
+
     const posts = await PostModel.findAll(detailsQuery);
     return posts.map((p) => PostDetailsMap.toDomain(p))
   }

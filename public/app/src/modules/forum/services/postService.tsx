@@ -25,7 +25,9 @@ export class PostService extends BaseAPI implements IPostService {
 
   public async getPostBySlug (slug: string): Promise<APIResponse<Post>> {
     try {
-      const response = await this.get('/posts', { slug });
+      const response = await this.get('/posts', { slug }, {
+        authorization: this.authService.getToken('access-token') 
+      });
 
       return right(Result.ok<Post>(
         PostUtil.toViewModel(response.data.post)
@@ -37,7 +39,9 @@ export class PostService extends BaseAPI implements IPostService {
 
   public async getRecentPosts (offset?: number): Promise<APIResponse<Post[]>> {
     try {
-      const response = await this.get('/posts/recent', { offset });
+      const response = await this.get('/posts/recent', { offset }, {
+        authorization: this.authService.getToken('access-token') 
+      });
 
       return right(Result.ok<Post[]>(
         response.data.posts.map((p: PostDTO) => PostUtil.toViewModel(p)))
@@ -49,7 +53,9 @@ export class PostService extends BaseAPI implements IPostService {
 
   public async getPopularPosts (offset?: number): Promise<APIResponse<Post[]>> {
     try {
-      const response = await this.get('/posts/popular', { offset });
+      const response = await this.get('/posts/popular', { offset }, {
+        authorization: this.authService.getToken('access-token') 
+      });
 
       return right(Result.ok<Post[]>(
         response.data.posts.map((p: PostDTO) => PostUtil.toViewModel(p)))

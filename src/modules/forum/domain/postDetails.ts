@@ -20,6 +20,8 @@ interface PostDetailsProps {
   numComments: number;
   points: number;
   dateTimePosted: string | Date;
+  wasUpvotedByMe: boolean;
+  wasDownvotedByMe: boolean;
 }
 
 export class PostDetails extends ValueObject<PostDetailsProps> {
@@ -60,6 +62,14 @@ export class PostDetails extends ValueObject<PostDetailsProps> {
     return this.props.dateTimePosted;
   }
 
+  get wasUpvotedByMe (): boolean {
+    return this.props.wasUpvotedByMe;
+  }
+
+  get wasDownvotedByMe (): boolean {
+    return this.props.wasDownvotedByMe;
+  }
+
   private constructor (props: PostDetailsProps) {
     super(props);
   }
@@ -72,7 +82,7 @@ export class PostDetails extends ValueObject<PostDetailsProps> {
       { argument: props.type, argumentName: 'type' },
       { argument: props.numComments, argumentName: 'numComments' },
       { argument: props.points, argumentName: 'points' },
-      { argument: props.dateTimePosted, argumentName: 'dateTimePosted' }
+      { argument: props.dateTimePosted, argumentName: 'dateTimePosted' },
     ];
 
     if (props.type === 'link') {
@@ -91,6 +101,10 @@ export class PostDetails extends ValueObject<PostDetailsProps> {
       return Result.fail<PostDetails>("Invalid post type provided.")
     }
 
-    return Result.ok<PostDetails>(new PostDetails(props));
+    return Result.ok<PostDetails>(new PostDetails({
+      ...props,
+      wasUpvotedByMe: props.wasUpvotedByMe ? props.wasUpvotedByMe : false,
+      wasDownvotedByMe: props.wasDownvotedByMe ? props.wasDownvotedByMe : false
+    }));
   }
 }

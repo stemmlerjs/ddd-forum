@@ -8,6 +8,8 @@ import { MemberDetailsMap } from "./memberDetailsMap";
 import { PostType } from "../domain/postType";
 import { PostText } from "../domain/postText";
 import { PostLink } from "../domain/postLink";
+import { PostVoteMap } from "./postVoteMap";
+import { PostVote } from "../domain/postVote";
 
 export class PostDetailsMap implements Mapper<PostDetails> {
 
@@ -18,6 +20,8 @@ export class PostDetailsMap implements Mapper<PostDetails> {
 
     const memberDetails = MemberDetailsMap.toDomain(raw.Member);
 
+    const votes: PostVote[] = raw.Votes ? raw.Votes.map((v) => PostVoteMap.toDomain(v)) : [];
+
     const postDetailsOrError = PostDetails.create({
       slug,
       title,
@@ -27,7 +31,9 @@ export class PostDetailsMap implements Mapper<PostDetails> {
       dateTimePosted: raw.createdAt,
       member: memberDetails,
       text: postType === 'text' ? PostText.create({ value: raw.text }).getValue() : null,
-      link: postType === 'link' ? PostLink.create({ url: raw.link }).getValue() : null
+      link: postType === 'link' ? PostLink.create({ url: raw.link }).getValue() : null,
+      wasUpvotedByMe: !!votes.find((v) => v.isUpvote()),
+      wasDownvotedByMe: !!votes.find((v) => v.isDownvote())
     })
 
     postDetailsOrError.isFailure ? console.log(postDetailsOrError.error) : '';
@@ -45,7 +51,9 @@ export class PostDetailsMap implements Mapper<PostDetails> {
       points: postDetails.points,
       text: postDetails.text ? postDetails.text.value : '',
       link: postDetails.link ? postDetails.link.url : '',
-      type: postDetails.postType
+      type: postDetails.postType,
+      wasUpvotedByMe: postDetails.wasUpvotedByMe,
+      wasDownvotedByMe: postDetails.wasDownvotedByMe
     }
   } 
 }

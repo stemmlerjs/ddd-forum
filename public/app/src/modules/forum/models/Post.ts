@@ -11,6 +11,8 @@ export interface Post {
   type: PostType;
   text: string;
   link: string;
+  wasUpvotedByMe: boolean;
+  wasDownvotedByMe: boolean;
 }
 
 

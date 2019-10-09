@@ -12,5 +12,7 @@ export interface PostDTO {
   text: string;
   type: PostType;
   link: string;
+  wasUpvotedByMe: boolean;
+  wasDownvotedByMe: boolean;
 }
 

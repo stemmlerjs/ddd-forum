@@ -4,6 +4,7 @@ import { GetPopularPostsRequestDTO } from "./GetPopularPostsRequestDTO";
 import { GetPopularPosts } from "./GetPopularPosts";
 import { GetPopularPostsResponseDTO } from "./GetPopularPostsResponseDTO";
 import { PostDetailsMap } from "../../../mappers/postDetailsMap";
+import { DecodedExpressRequest } from "../../../../users/infra/http/models/decodedRequest";
 
 export class GetPopularPostsController extends BaseController {
   private useCase: GetPopularPosts;
@@ -14,8 +15,11 @@ export class GetPopularPostsController extends BaseController {
   }
 
   async executeImpl (): Promise<any> {
+    const req = this.req as DecodedExpressRequest;
+
     const dto: GetPopularPostsRequestDTO = {
-      offset: this.req.query.offset
+      offset: this.req.query.offset,
+      userId: !!req.decoded === true ? req.decoded.userId : null
     }
 
     try {

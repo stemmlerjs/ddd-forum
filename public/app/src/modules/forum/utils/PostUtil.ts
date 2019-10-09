@@ -1,3 +1,4 @@
+
 import { Post } from "../models/Post";
 import { PostDTO } from "../dtos/postDTO";
 
@@ -21,7 +22,9 @@ export class PostUtil {
       points: dto.points,
       type: dto.type,
       text: dto.text,
-      link: dto.link
+      link: dto.link,
+      wasUpvotedByMe: dto.wasUpvotedByMe,
+      wasDownvotedByMe: dto.wasDownvotedByMe
     }
   }
 }

@@ -10,20 +10,22 @@ import { replyToCommentController } from '../../../useCases/comments/replyToComm
 const commentRouter = express.Router();
 
 commentRouter.get('/',
+  middleware.includeDecodedTokenIfExists(),
   (req, res) => getCommentsByPostSlugContainer.execute(req, res)
 )
 
 commentRouter.post('/',
-  middleware.authenticateRequests(),
+  middleware.ensureAuthenticated(),
   (req, res) => replyToPostController.execute(req, res)
 )
 
 commentRouter.post('/:commentId/reply',
-  middleware.authenticateRequests(),
+  middleware.ensureAuthenticated(),
   (req, res) => replyToCommentController.execute(req, res)
 )
 
 commentRouter.get('/:commentId',
+  middleware.includeDecodedTokenIfExists(),
   (req, res) => getCommentByCommentIdController.execute(req, res)
 )
 

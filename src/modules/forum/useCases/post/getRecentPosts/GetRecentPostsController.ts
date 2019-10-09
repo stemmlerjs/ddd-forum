@@ -4,6 +4,7 @@ import { GetRecentPostsRequestDTO } from "./GetRecentPostsRequestDTO";
 import { GetRecentPosts } from "./GetRecentPosts";
 import { GetRecentPostsResponseDTO } from "./GetRecentPostsResponseDTO";
 import { PostDetailsMap } from "../../../mappers/postDetailsMap";
+import { DecodedExpressRequest } from "../../../../users/infra/http/models/decodedRequest";
 
 export class GetRecentPostsController extends BaseController {
   private useCase: GetRecentPosts;
@@ -14,9 +15,13 @@ export class GetRecentPostsController extends BaseController {
   }
 
   async executeImpl (): Promise<any> {
+    const req = this.req as DecodedExpressRequest;
+
     const dto: GetRecentPostsRequestDTO = {
-      offset: this.req.query.offset
+      offset: this.req.query.offset,
+      userId: !!req.decoded === true ? req.decoded.userId : null
     }
+    
 
     try {
       const result = await this.useCase.execute(dto);
