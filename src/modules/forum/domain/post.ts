@@ -14,7 +14,8 @@ import { PostCreated } from "./events/postCreated";
 import { PostType } from "./postType";
 import { PostLink } from "./postLink";
 import { CommentPosted } from "./events/commentPosted";
-import { CommentText } from "./commentText";
+import { PostVote } from "./postVote";
+import { PostVoteCreated } from "./events/postVoteCreated";
 
 export interface PostProps {
   memberId: MemberId;
@@ -24,6 +25,7 @@ export interface PostProps {
   text?: PostText;
   link?: PostLink;
   comments?: Comment[];
+  votes?: PostVote[];
   totalNumComments?: number;
   points?: number; // posts can have negative or positive valued points
   dateTimePosted?: string | Date;
@@ -72,6 +74,10 @@ export class Post extends AggregateRoot<PostProps> {
     return this.props.type;
   }
 
+  get votes (): PostVote [] {
+    return this.props.votes;
+  }
+
   get totalNumComments (): number {
     return this.props.totalNumComments;
   }
@@ -87,6 +93,12 @@ export class Post extends AggregateRoot<PostProps> {
     this.props.points = Math.max(0, numComments) 
       + Math.max(0, numPostUpvotes) 
       + Math.max(0, numCommentUpvotes)
+  }
+
+  public addVote (vote: PostVote): Result<void> {
+    this.props.votes.push(vote);
+    this.addDomainEvent(new PostVoteCreated(this, vote));
+    return Result.ok<void>();
   }
 
   public addComment (comment: Comment): Result<void> {
@@ -143,7 +155,8 @@ export class Post extends AggregateRoot<PostProps> {
       comments: props.comments ? props.comments : [],
       points: has(props, 'points') ? props.points : 1,
       dateTimePosted: props.dateTimePosted ? props.dateTimePosted : new Date(),
-      totalNumComments: props.totalNumComments ? props.totalNumComments : 0
+      totalNumComments: props.totalNumComments ? props.totalNumComments : 0,
+      votes: props.votes ? props.votes : []
     };
 
     const isNewPost = !!id === false;

@@ -1,6 +1,6 @@
 
-import { ReplyToCommentService } from "./replyToComment";
+import { PostService } from "./postService"
 
-const replyToCommentService = new ReplyToCommentService();
+const postService = new PostService();
 
-export { replyToCommentService }
+export { postService }

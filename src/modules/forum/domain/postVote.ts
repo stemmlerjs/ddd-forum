@@ -1,0 +1,59 @@
+
+import { Entity } from "../../../shared/domain/Entity";
+import { UniqueEntityID } from "../../../shared/domain/UniqueEntityID";
+import { Result } from "../../../shared/core/Result";
+import { PostId } from "./postId";
+import { MemberId } from "./memberId";
+import { Guard } from "../../../shared/core/Guard";
+import { VoteType } from "./vote";
+
+interface PostVoteProps {
+  postId: PostId;
+  memberId: MemberId;
+  type: VoteType;
+}
+
+export class PostVote extends Entity<PostVoteProps> {
+
+  get id (): UniqueEntityID {
+    return this._id;
+  }
+
+  get postId (): PostId {
+    return this.props.postId;
+  }
+
+  get memberId (): MemberId {
+    return this.props.memberId;
+  }
+
+  get type (): VoteType {
+    return this.props.type;
+  }
+
+  public isUpvote (): boolean {
+    return this.props.type === 'UPVOTE';
+  }
+
+  public isDownvote (): boolean {
+    return this.props.type === 'DOWNVOTE';
+  }
+
+  private constructor (props: PostVoteProps, id?: UniqueEntityID) {
+    super(props, id);
+  }
+
+  public static create (props: PostVoteProps, id?: UniqueEntityID): Result<PostVote> {
+    const guardResult = Guard.againstNullOrUndefinedBulk([
+      { argument: props.memberId, argumentName: 'memberId' },
+      { argument: props.postId, argumentName: 'postId' },
+      { argument: props.type, argumentName: 'type' }
+    ]);
+
+    if (!guardResult.succeeded) {
+      return Result.fail<PostVote>(guardResult.message);
+    } else {
+      return Result.ok<PostVote>(new PostVote(props, id));
+    }
+  }
+}

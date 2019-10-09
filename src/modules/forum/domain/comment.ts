@@ -8,11 +8,13 @@ import { MemberId } from "./memberId";
 import { Guard } from "../../../shared/core/Guard";
 import { PostId } from "./postId";
 import { has } from 'lodash'
+import { CommentVote } from "./commentVote";
 
 export interface CommentProps {
   memberId: MemberId;
   text: CommentText;
   postId: PostId;
+  votes?: CommentVote[];
   parentCommentId?: CommentId;
   points?: number;
 }
@@ -61,7 +63,8 @@ export class Comment extends Entity<CommentProps> {
 
       return Result.ok<Comment>(new Comment({
         ...props,
-        points: has(props, 'points') ? props.points : 1
+        points: has(props, 'points') ? props.points : 1,
+        votes: props.votes ? props.votes : []
       }, id));
     }
   }

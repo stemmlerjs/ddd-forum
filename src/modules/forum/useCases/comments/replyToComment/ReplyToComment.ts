@@ -12,7 +12,7 @@ import { ReplyToCommentErrors } from "./ReplyToCommentErrors";
 import { Comment } from "../../../domain/comment";
 import { ICommentRepo } from "../../../repos/commentRepo";
 import { CommentText } from "../../../domain/commentText";
-import { ReplyToCommentService } from "../../../domain/services/replyToComment";
+import { PostService } from "../../../domain/services/postService";
 
 type Response = Either<
   ReplyToCommentErrors.CommentNotFoundError |
@@ -27,18 +27,18 @@ export class ReplyToComment implements UseCase<ReplyToCommentDTO, Promise<Respon
   private memberRepo: IMemberRepo;
   private postRepo: IPostRepo;
   private commentRepo: ICommentRepo;
-  private replyToCommentDomainService: ReplyToCommentService;
+  private postService: PostService;
 
   constructor (
     memberRepo: IMemberRepo, 
     postRepo: IPostRepo, 
     commentRepo: ICommentRepo,
-    replyToCommentDomainService: ReplyToCommentService
+    postService: PostService
   ) {
     this.memberRepo = memberRepo;
     this.postRepo = postRepo;
     this.commentRepo = commentRepo;
-    this.replyToCommentDomainService = replyToCommentDomainService;
+    this.postService = postService;
   }
 
   private async getPost (slug: PostSlug): Promise<Either<ReplyToCommentErrors.PostNotFoundError, Result<Post>>> {
@@ -111,7 +111,8 @@ export class ReplyToComment implements UseCase<ReplyToCommentDTO, Promise<Respon
 
       const commentText: CommentText = commentTextOrError.getValue();
 
-      const replyToCommentResult: Either<Result<any>, Result<Post>> = this.replyToCommentDomainService.execute(post, member, parentComment, commentText);
+      const replyToCommentResult: Either<Result<any>, Result<Post>> = this.postService
+        .replyToComment(post, member, parentComment, commentText);
 
       if (replyToCommentResult.isRight()) {
         post = replyToCommentResult.value.getValue();
