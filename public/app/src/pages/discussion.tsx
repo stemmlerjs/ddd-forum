@@ -133,8 +133,6 @@ class DiscussionPage extends React.Component<DiscussionPageProps, DiscussionStat
     const post = this.props.forum.post as Post;
     const comments = this.props.forum.comments;
 
-    console.log(this.props)
-
     return (
       <Layout>
         <div className="header-container flex flex-row flex-center flex-between">
