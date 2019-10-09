@@ -163,6 +163,86 @@ function creatingReplyToCommentFailure (error: string): ForumAction {
   }
 }
 
+function upvotingPost (): ForumAction {
+  return {
+    type: actions.UPVOTING_POST
+  }
+}
+
+function upvotingPostSuccess (postSlug: string): ForumAction {
+  return {
+    type: actions.UPVOTING_POST_SUCCESS,
+    postSlug
+  }
+}
+
+function upvotingPostFailure (error: string): ForumAction {
+  return {
+    type: actions.UPVOTING_POST_FAILURE,
+    error
+  }
+}
+
+function downvotingPost (): ForumAction {
+  return {
+    type: actions.DOWNVOTING_POST
+  }
+}
+
+function downvotingPostSuccess (postSlug: string): ForumAction {
+  return {
+    type: actions.DOWNVOTING_POST_SUCCESS,
+    postSlug
+  }
+}
+
+function downvotingPostFailure (error: string): ForumAction {
+  return {
+    type: actions.DOWNVOTING_POST_FAILURE,
+    error
+  }
+}
+
+function upvotingComment (): ForumAction {
+  return {
+    type: actions.UPVOTING_COMMENT
+  }
+}
+
+function upvotingCommentSuccess (commentId: string): ForumAction {
+  return {
+    type: actions.UPVOTING_COMMENT_SUCCESS,
+    commentId
+  }
+}
+
+function upvotingCommentFailure (error: string): ForumAction {
+  return {
+    type: actions.UPVOTING_COMMENT_FAILURE,
+    error
+  }
+}
+
+function downvotingComment (): ForumAction {
+  return {
+    type: actions.DOWNVOTING_COMMENT
+  }
+}
+
+function downvotingCommentSuccess (commentId: string): ForumAction {
+  return {
+    type: actions.DOWNVOTING_COMMENT_SUCCESS,
+    commentId
+  }
+}
+
+function downvotingCommentFailure (error: string): ForumAction {
+  return {
+    type: actions.DOWNVOTING_COMMENT_FAILURE,
+    error
+  }
+}
+
 export {
   submittingPost,
   submittingPostSuccess,
@@ -194,5 +274,21 @@ export {
 
   creatingReplyToComment,
   creatingReplyToCommentSuccess,
-  creatingReplyToCommentFailure
+  creatingReplyToCommentFailure,
+
+  upvotingPost,
+  upvotingPostSuccess,
+  upvotingPostFailure,
+
+  downvotingPost,
+  downvotingPostSuccess,
+  downvotingPostFailure,
+
+  upvotingComment,
+  upvotingCommentSuccess,
+  upvotingCommentFailure,
+
+  downvotingComment,
+  downvotingCommentSuccess,
+  downvotingCommentFailure
 }

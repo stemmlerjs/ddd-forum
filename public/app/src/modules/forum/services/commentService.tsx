@@ -12,7 +12,9 @@ export interface ICommentService {
   createReplyToPost (text: string, slug: string): Promise<APIResponse<void>>;
   createReplyToComment (comment: string, parentCommentId: string, slug: string): Promise<APIResponse<void>>;
   getCommentsBySlug (slug: string, offset?: number): Promise<APIResponse<Comment[]>>;
-  getCommentByCommentId (commentId: string): Promise<APIResponse<Comment>>
+  getCommentByCommentId (commentId: string): Promise<APIResponse<Comment>>;
+  upvoteComment (commentId: string): Promise<APIResponse<void>>;
+  downvoteComment (commentId: string): Promise<APIResponse<void>>;
 }
 
 export class CommentService extends BaseAPI implements ICommentService {
@@ -34,7 +36,7 @@ export class CommentService extends BaseAPI implements ICommentService {
 
   async createReplyToComment (comment: string, parentCommentId: string, slug: string): Promise<APIResponse<void>> {
     try {
-      await this.post(`/comments/${parentCommentId}`, { comment }, { slug }, { 
+      await this.post(`/comments/${parentCommentId}/reply`, { comment }, { slug }, { 
         authorization: this.authService.getToken('access-token') 
       });
       return right(Result.ok<void>());
@@ -58,6 +60,28 @@ export class CommentService extends BaseAPI implements ICommentService {
     try {
       const response = await this.get(`/comments/${commentId}`);
       return right(Result.ok<Comment>(CommentUtil.toViewModel(response.data.comment)));
+    } catch (err) {
+      return left(err.response ? err.response.data.message : "Connection failed")
+    }
+  }
+
+  async upvoteComment (commentId: string): Promise<APIResponse<void>> {
+    try {
+      await this.post(`/comments/${commentId}/upvote`, null, null, { 
+        authorization: this.authService.getToken('access-token') 
+      });
+      return right(Result.ok<void>());
+    } catch (err) {
+      return left(err.response ? err.response.data.message : "Connection failed")
+    }
+  }
+
+  async downvoteComment (commentId: string): Promise<APIResponse<void>> {
+    try {
+      await this.post(`/comments/${commentId}/downvote`, null, null, { 
+        authorization: this.authService.getToken('access-token') 
+      });
+      return right(Result.ok<void>());
     } catch (err) {
       return left(err.response ? err.response.data.message : "Connection failed")
     }

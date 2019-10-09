@@ -23,6 +23,7 @@ import Editor from '../modules/forum/components/comments/components/Editor';
 import { SubmitButton } from '../shared/components/button';
 import { TextUtil } from '../shared/utils/TextUtil';
 import { FullPageLoader } from '../shared/components/loader';
+import withVoting from '../modules/forum/hocs/withVoting';
 
 interface DiscussionPageProps extends usersOperators.IUserOperators, forumOperators.IForumOperations {
   users: UsersState;
@@ -176,7 +177,12 @@ class DiscussionPage extends React.Component<DiscussionPageProps, DiscussionStat
         <br/>
         <br/>
         {comments.map((c, i) => (
-          <PostComment key={i} {...c}/>
+          <PostComment 
+            key={i} 
+            onDownvoteClicked={() => this.props.downvoteComment(c.commentId)}
+            onUpvoteClicked={() => this.props.upvoteComment(c.commentId)}
+            {...c}
+          />
         ))}
 
         {this.props.forum.isCreatingReplyToPost ? <FullPageLoader/> : '' }
@@ -202,5 +208,7 @@ function mapActionCreatorsToProps(dispatch: any) {
 }
 
 export default connect(mapStateToProps, mapActionCreatorsToProps)(
-  withLogoutHandling(DiscussionPage)
+  withLogoutHandling(
+    withVoting(DiscussionPage)
+  )
 );

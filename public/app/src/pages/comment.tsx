@@ -22,6 +22,7 @@ import { ForumState } from '../modules/forum/redux/states';
 import * as forumOperators from '../modules/forum/redux/operators'
 import { Loader } from '../shared/components/loader';
 import { TextUtil } from '../shared/utils/TextUtil';
+import withVoting from '../modules/forum/hocs/withVoting';
 
 interface CommentState {
   newCommentText: string;
@@ -80,6 +81,28 @@ class CommentPage extends React.Component<CommentPageProps, CommentState> {
     this.props.getCommentByCommentId(commentId);
   }
 
+  afterSuccessfulCommentPost (prevProps: CommentPageProps) {
+    const currentProps: CommentPageProps = this.props;
+    if (currentProps.forum.isCreatingReplyToCommentSuccess === !prevProps.forum.isCreatingReplyToCommentSuccess) {
+      toast.success(`Done-zo! 🤠`, {
+        autoClose: 2000
+      });
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000)
+    }
+  }
+
+  afterFailedCommentPost (prevProps: CommentPageProps) {
+    const currentProps: CommentPageProps = this.props;
+    if (currentProps.forum.isCreatingReplyToCommentFailure === !prevProps.forum.isCreatingReplyToCommentFailure) {
+      const error: string = currentProps.forum.error;
+      return toast.error(`Yeahhhhh, ${error} 🤠`, {
+        autoClose: 3000
+      })
+    }
+  } 
+
   afterCommentFetched (prevProps: CommentPageProps) {
     const currentProps: CommentPageProps = this.props;
     if (
@@ -95,6 +118,8 @@ class CommentPage extends React.Component<CommentPageProps, CommentState> {
 
   componentDidUpdate (prevProps: CommentPageProps) {
     this.afterCommentFetched(prevProps);
+    this.afterSuccessfulCommentPost(prevProps);
+    this.afterFailedCommentPost(prevProps);
   }
 
   componentDidMount () {
@@ -118,7 +143,11 @@ class CommentPage extends React.Component<CommentPageProps, CommentState> {
   }
 
   async submitComment () {
-
+    if (this.isFormValid()) {
+      const text = this.state.newCommentText;
+      const comment  = (this.props.forum.comment) as Comment;
+      this.props.createReplyToComment(text, comment.commentId, comment.postSlug);
+    }
   }
 
   render () {
@@ -171,7 +200,12 @@ class CommentPage extends React.Component<CommentPageProps, CommentState> {
         }
 
         {this.props.forum.comments.map((c, i) => (
-          <PostComment key={i} {...c}/>
+          <PostComment 
+            key={i} 
+            onUpvoteClicked={() => this.props.upvoteComment(c.commentId)}
+            onDownvoteClicked={() => this.props.downvoteComment(c.commentId)}
+            {...c}
+          />
         ))}
 
       </Layout>
@@ -195,5 +229,7 @@ function mapActionCreatorsToProps(dispatch: any) {
 }
 
 export default connect(mapStateToProps, mapActionCreatorsToProps)(
-  withLogoutHandling(CommentPage)
+  withLogoutHandling(
+    withVoting(CommentPage)
+  )
 );

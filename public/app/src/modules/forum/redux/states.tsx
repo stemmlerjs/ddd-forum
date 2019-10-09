@@ -35,6 +35,22 @@ export interface ForumState {
   isCreatingReplyToCommentSuccess: boolean;
   isCreatingReplyToCommentFailure: boolean;
 
+  isUpvotingComment: boolean;
+  isUpvotingCommentSuccess: boolean;
+  isUpvotingCommentFailure: boolean;
+
+  isDownvotingComment: boolean;
+  isDownvotingCommentSuccess: boolean;
+  isDownvotingCommentFailure: boolean;
+
+  isUpvotingPost: boolean;
+  isUpvotingPostSuccess: boolean;
+  isUpvotingPostFailure: boolean;
+
+  isDownvotingPost: boolean;
+  isDownvotingPostSuccess: boolean;
+  isDownvotingPostFailure: boolean;
+
   recentPosts: Post[];
   popularPosts: Post[];
 
@@ -79,6 +95,22 @@ const initialForumState: ForumState = {
   isCreatingReplyToComment: false,
   isCreatingReplyToCommentSuccess: false,
   isCreatingReplyToCommentFailure: false,
+
+  isUpvotingComment: false,
+  isUpvotingCommentSuccess: false,
+  isUpvotingCommentFailure: false,
+
+  isDownvotingComment: false,
+  isDownvotingCommentSuccess: false,
+  isDownvotingCommentFailure: false,
+
+  isUpvotingPost: false,
+  isUpvotingPostSuccess: false,
+  isUpvotingPostFailure: false,
+
+  isDownvotingPost: false,
+  isDownvotingPostSuccess: false,
+  isDownvotingPostFailure: false,
 
   comments: [],
 

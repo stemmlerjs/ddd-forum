@@ -9,6 +9,11 @@ import { getPopularPosts } from "./getPopularPosts";
 import { getCommentByCommentId } from "./getCommentByCommentId";
 import { creatingReplyToComment } from "../actionCreators";
 import { getCommentReplies } from "./getCommentReplies";
+import { createReplyToComment } from "./createReplyToComment"
+import { downvotePost } from "./downvotePost";
+import { upvotePost } from "./upvotePost";
+import { upvoteComment } from "./upvoteComment";
+import { downvoteComment } from "./downvoteComment";
 
 export interface IForumOperations {
   submitPost: (title: string, type: PostType, text?: string, link?: string) => void;
@@ -20,6 +25,10 @@ export interface IForumOperations {
   getCommentByCommentId (commentId: string): void;
   createReplyToComment (comment: string, parentCommentId: string, slug: string): void;
   getCommentReplies (slug: string, commentId: string, offset?: number): void;
+  downvotePost (postSlug: string): void;
+  upvotePost (postSlug: string): void;
+  upvoteComment (commentId: string): void;
+  downvoteComment (commentId: string): void;
 } 
 
 export {
@@ -31,5 +40,10 @@ export {
   getPopularPosts,
   getCommentByCommentId,
   creatingReplyToComment,
-  getCommentReplies
+  getCommentReplies,
+  createReplyToComment,
+  downvotePost,
+  upvotePost,
+  upvoteComment,
+  downvoteComment
 }

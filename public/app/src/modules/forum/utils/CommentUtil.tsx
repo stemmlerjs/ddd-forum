@@ -7,6 +7,10 @@ export class CommentUtil {
   public static maxCommentLength: number = 10000;
   public static minCommentLength: number = 20;
 
+  private static sortByDateDesc (a: Comment, b: Comment) {
+    return Number(new Date(a.createdAt)) - Number(new Date(b.createdAt))
+  }
+
   public static toViewModel (dto: CommentDTO): Comment {
     return {
       
@@ -34,6 +38,10 @@ export class CommentUtil {
         
         if (parentCommentIndex !== -1) {
           comments[parentCommentIndex].childComments.push(c)
+
+          // Sort
+          comments[parentCommentIndex].childComments = comments[parentCommentIndex].childComments
+            .sort(this.sortByDateDesc);
         }
       }
     });
@@ -50,7 +58,12 @@ export class CommentUtil {
 
         if (foundParentComment) {
           // Add to thread
-          comments[parentCommentIndex].childComments.push(c)
+          comments[parentCommentIndex].childComments.push(c);
+
+          // Sort
+          comments[parentCommentIndex].childComments = comments[parentCommentIndex].childComments
+            .sort(this.sortByDateDesc);
+
           
           // Remove from root thread
           comments.splice(cIndex, 1)

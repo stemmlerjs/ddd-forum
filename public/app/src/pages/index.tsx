@@ -16,6 +16,7 @@ import * as forumOperators from '../modules/forum/redux/operators'
 import { User } from '../modules/users/models/user';
 import withLogoutHandling from '../modules/users/hocs/withLogoutHandling';
 import { ForumState } from '../modules/forum/redux/states';
+import withVoting from '../modules/forum/hocs/withVoting';
 
 interface IndexPageProps extends usersOperators.IUserOperators, forumOperators.IForumOperations {
   users: UsersState;
@@ -123,7 +124,12 @@ class IndexPage extends React.Component<IndexPageProps, IndexPageState> {
         />
 
         {this.getPostsFromActiveFilterGroup().map((p, i) => (
-          <PostRow key={i} {...p}/>
+          <PostRow 
+            key={i} 
+            onUpvoteClicked={() => this.props.upvotePost(p.slug)}
+            onDownvoteClicked={() => this.props.downvotePost(p.slug)}
+            {...p}
+          />
         ))}
 
       </Layout>
@@ -147,5 +153,7 @@ function mapActionCreatorsToProps(dispatch: any) {
 }
 
 export default connect(mapStateToProps, mapActionCreatorsToProps)(
-  withLogoutHandling(IndexPage)
+  withLogoutHandling(
+    withVoting(IndexPage)
+  )
 );
