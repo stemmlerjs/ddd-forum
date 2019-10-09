@@ -25,9 +25,15 @@ export class PostService extends BaseAPI implements IPostService {
 
   public async getPostBySlug (slug: string): Promise<APIResponse<Post>> {
     try {
-      const response = await this.get('/posts', { slug }, {
-        authorization: this.authService.getToken('access-token') 
-      });
+      const accessToken = this.authService.getToken('access-token');
+      const isAuthenticated = !!accessToken === true;
+      const auth = {
+        authorization: accessToken
+      };
+
+      const response = await this.get('/posts', { slug }, 
+        isAuthenticated ? auth : null
+      );
 
       return right(Result.ok<Post>(
         PostUtil.toViewModel(response.data.post)
@@ -39,9 +45,15 @@ export class PostService extends BaseAPI implements IPostService {
 
   public async getRecentPosts (offset?: number): Promise<APIResponse<Post[]>> {
     try {
-      const response = await this.get('/posts/recent', { offset }, {
-        authorization: this.authService.getToken('access-token') 
-      });
+      const accessToken = this.authService.getToken('access-token');
+      const isAuthenticated = !!accessToken === true;
+      const auth = {
+        authorization: accessToken
+      };
+
+      const response = await this.get('/posts/recent', { offset }, 
+        isAuthenticated ? auth : null
+      );
 
       return right(Result.ok<Post[]>(
         response.data.posts.map((p: PostDTO) => PostUtil.toViewModel(p)))
@@ -53,9 +65,14 @@ export class PostService extends BaseAPI implements IPostService {
 
   public async getPopularPosts (offset?: number): Promise<APIResponse<Post[]>> {
     try {
-      const response = await this.get('/posts/popular', { offset }, {
-        authorization: this.authService.getToken('access-token') 
-      });
+      const accessToken = this.authService.getToken('access-token');
+      const isAuthenticated = !!accessToken === true;
+      const auth = {
+        authorization: accessToken
+      };
+      const response = await this.get('/posts/popular', { offset }, 
+        isAuthenticated ? auth : null
+      );
 
       return right(Result.ok<Post[]>(
         response.data.posts.map((p: PostDTO) => PostUtil.toViewModel(p)))
