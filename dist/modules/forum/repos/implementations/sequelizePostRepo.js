@@ -66,6 +66,16 @@ class PostRepo {
         const posts = await PostModel.findAll(detailsQuery);
         return posts.map((p) => postDetailsMap_1.PostDetailsMap.toDomain(p));
     }
+    async getPopularPosts(offset) {
+        const PostModel = this.models.Post;
+        const detailsQuery = this.createBaseDetailsQuery();
+        detailsQuery.offset = offset ? offset : detailsQuery.offset;
+        detailsQuery['order'] = [
+            ['points', 'DESC'],
+        ];
+        const posts = await PostModel.findAll(detailsQuery);
+        return posts.map((p) => postDetailsMap_1.PostDetailsMap.toDomain(p));
+    }
     async getPostBySlug(slug) {
         const PostModel = this.models.Post;
         const detailsQuery = this.createBaseQuery();
@@ -110,10 +120,13 @@ class PostRepo {
             // Save non-aggregate tables before saving the aggregate
             // so that any domain events on the aggregate get dispatched
             await this.saveComments(post.comments);
-            const sequelizePostInstance = await PostModel.findOne({
+            await PostModel.update(rawSequelizePost, {
+                // To make sure your hooks always run, make sure to include this in
+                // the query
+                individualHooks: true,
+                hooks: true,
                 where: { post_id: post.postId.id.toString() }
             });
-            await sequelizePostInstance.update(rawSequelizePost);
         }
     }
 }

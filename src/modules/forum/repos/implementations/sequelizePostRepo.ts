@@ -7,15 +7,19 @@ import { PostDetails } from "../../domain/postDetails";
 import { PostDetailsMap } from "../../mappers/postDetailsMap";
 import { ICommentRepo } from "../commentRepo";
 import { Comment } from "../../domain/comment";
+import { IPostVotesRepo } from "../postVotesRepo";
+import { PostVote } from "../../domain/postVote";
 
 export class PostRepo implements IPostRepo {
 
   private models: any;
   private commentRepo: ICommentRepo;
+  private postVotesRepo: IPostVotesRepo;
 
-  constructor (models: any, commentRepo: ICommentRepo) {
+  constructor (models: any, commentRepo: ICommentRepo, postVotesRepo: IPostVotesRepo) {
     this.models = models;
     this.commentRepo = commentRepo;
+    this.postVotesRepo = postVotesRepo;
   }
 
   private createBaseQuery (): any {
@@ -122,6 +126,10 @@ export class PostRepo implements IPostRepo {
     return this.commentRepo.saveBulk(comments);
   }
 
+  private savePostVotes (postVotes: PostVote[]) {
+    return this.postVotesRepo.saveBulk(postVotes);
+  }
+
   public async save (post: Post): Promise<void> {
     const PostModel = this.models.Post;
     const exists = await this.exists(post.postId);
@@ -133,6 +141,7 @@ export class PostRepo implements IPostRepo {
       try {
         await PostModel.create(rawSequelizePost);
         await this.saveComments(post.comments);
+        await this.savePostVotes(post.votes);
         
       } catch (err) {
         await this.delete(post.postId);
@@ -143,6 +152,7 @@ export class PostRepo implements IPostRepo {
       // Save non-aggregate tables before saving the aggregate
       // so that any domain events on the aggregate get dispatched
       await this.saveComments(post.comments);
+      await this.savePostVotes(post.votes);
       
       await PostModel.update(rawSequelizePost, { 
         // To make sure your hooks always run, make sure to include this in

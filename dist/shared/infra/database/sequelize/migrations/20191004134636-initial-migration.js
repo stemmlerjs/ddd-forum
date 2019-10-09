@@ -204,11 +204,97 @@ exports.default = {
                 defaultValue: Sequelize.literal('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP')
             }
         }));
+        const CREATE_POST_VOTE = () => (queryInterface.createTable('post_vote', {
+            post_vote_id: {
+                type: Sequelize.UUID,
+                defaultValue: Sequelize.UUIDV4,
+                allowNull: false,
+                primaryKey: true
+            },
+            post_id: {
+                type: Sequelize.UUID,
+                allowNull: false,
+                references: {
+                    model: 'post',
+                    key: 'post_id'
+                },
+                onDelete: 'cascade',
+                onUpdate: 'cascade',
+            },
+            member_id: {
+                type: Sequelize.UUID,
+                allowNull: false,
+                references: {
+                    model: 'member',
+                    key: 'member_id'
+                },
+                onDelete: 'cascade',
+                onUpdate: 'cascade',
+            },
+            type: {
+                type: Sequelize.STRING(10),
+                allowNull: false
+            },
+            created_at: {
+                type: Sequelize.DATE,
+                allowNull: false,
+                defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+            },
+            updated_at: {
+                type: Sequelize.DATE,
+                allowNull: false,
+                defaultValue: Sequelize.literal('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP')
+            }
+        }));
+        const CREATE_COMMENT_VOTE = () => (queryInterface.createTable('comment_vote', {
+            comment_vote_id: {
+                type: Sequelize.UUID,
+                defaultValue: Sequelize.UUIDV4,
+                allowNull: false,
+                primaryKey: true
+            },
+            comment_id: {
+                type: Sequelize.UUID,
+                allowNull: false,
+                references: {
+                    model: 'comment',
+                    key: 'comment_id'
+                },
+                onDelete: 'cascade',
+                onUpdate: 'cascade',
+            },
+            member_id: {
+                type: Sequelize.UUID,
+                allowNull: false,
+                references: {
+                    model: 'member',
+                    key: 'member_id'
+                },
+                onDelete: 'cascade',
+                onUpdate: 'cascade',
+            },
+            type: {
+                type: Sequelize.STRING(10),
+                allowNull: false
+            },
+            created_at: {
+                type: Sequelize.DATE,
+                allowNull: false,
+                defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+            },
+            updated_at: {
+                type: Sequelize.DATE,
+                allowNull: false,
+                defaultValue: Sequelize.literal('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP')
+            }
+        }));
         await runner_1.default.run([
             () => CREATE_BASE_USER(),
             () => CREATE_MEMBER(),
             () => CREATE_POST(),
-            () => CREATE_COMMENT()
+            () => CREATE_COMMENT(),
+            () => CREATE_POST_VOTE(),
+            () => CREATE_COMMENT_VOTE()
         ]);
     },
     down: (queryInterface, Sequelize) => {

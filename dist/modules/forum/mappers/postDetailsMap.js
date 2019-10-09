@@ -6,17 +6,6 @@ const postTitle_1 = require("../domain/postTitle");
 const memberDetailsMap_1 = require("./memberDetailsMap");
 const postText_1 = require("../domain/postText");
 const postLink_1 = require("../domain/postLink");
-/**
- * member: MemberDetails;
-  slug: PostSlug;
-  title: PostTitle;
-  type: PostType;
-  text?: PostText;
-  link?: PostLink;
-  numComments: number;
-  points: number;
-  dateTimePosted: string | Date;
- */
 class PostDetailsMap {
     static toDomain(raw) {
         const slug = postSlug_1.PostSlug.createFromExisting(raw.slug).getValue();
@@ -28,7 +17,7 @@ class PostDetailsMap {
             title,
             type: raw.type,
             points: raw.points,
-            numComments: 0,
+            numComments: raw.total_num_comments,
             dateTimePosted: raw.createdAt,
             member: memberDetails,
             text: postType === 'text' ? postText_1.PostText.create({ value: raw.text }).getValue() : null,
@@ -45,7 +34,8 @@ class PostDetailsMap {
             memberPostedBy: memberDetailsMap_1.MemberDetailsMap.toDTO(postDetails.member),
             numComments: postDetails.numComments,
             points: postDetails.points,
-            text: postDetails.text.value,
+            text: postDetails.text ? postDetails.text.value : '',
+            link: postDetails.link ? postDetails.link.url : '',
             type: postDetails.postType
         };
     }

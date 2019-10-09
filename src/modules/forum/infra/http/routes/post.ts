@@ -5,6 +5,7 @@ import { createPostController } from '../../../useCases/post/createPost';
 import { getRecentPostsController } from '../../../useCases/post/getRecentPosts';
 import { getPostBySlugController } from '../../../useCases/post/getPostBySlug';
 import { getPopularPostsController } from '../../../useCases/post/getPopularPosts';
+import { upvotePostController } from '../../../useCases/post/upvotePost';
 
 const postRouter = express.Router();
 
@@ -23,6 +24,11 @@ postRouter.get('/popular',
 
 postRouter.get('/',
   (req, res) => getPostBySlugController.execute(req, res)
+)
+
+postRouter.post('/upvote',
+  middleware.authenticateRequests(),
+  (req, res) => upvotePostController.execute(req, res)
 )
 
 export {

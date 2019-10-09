@@ -17,14 +17,16 @@ class PostMap {
             type: postType,
             text: postType === 'text' ? postText_1.PostText.create({ value: raw.text }).getValue() : null,
             link: postType === 'link' ? postLink_1.PostLink.create({ url: raw.link }).getValue() : null,
-            points: raw.points
+            points: raw.points,
+            totalNumComments: raw.total_num_comments
         }, new UniqueEntityID_1.UniqueEntityID(raw.post_id));
         postOrError.isFailure ? console.log(postOrError.error) : '';
         return postOrError.isSuccess ? postOrError.getValue() : null;
     }
     static toPersistence(post) {
         return {
-            updatedAt: new Date(),
+            total_num_comments: post.totalNumComments,
+            updatedAt: new Date().toString(),
             title: post.title.value,
             post_id: post.postId.id.toString(),
             member_id: post.memberId.id.toString(),

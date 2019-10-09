@@ -39,6 +39,26 @@ class CommentRepo {
         const comments = await CommentModel.findAll(detailsQuery);
         return comments.map((c) => commentDetailsMap_1.CommentDetailsMap.toDomain(c));
     }
+    async getCommentByCommentId(commentId) {
+        const CommentModel = this.models.Comment;
+        const detailsQuery = this.createBaseQuery();
+        detailsQuery.where['comment_id'] = commentId;
+        const comment = await CommentModel.findOne(detailsQuery);
+        const found = !!comment === true;
+        if (!found)
+            throw new Error('Comment not found');
+        return commentMap_1.CommentMap.toDomain(comment);
+    }
+    async getCommentDetailsByCommentId(commentId) {
+        const CommentModel = this.models.Comment;
+        const detailsQuery = this.createBaseDetailsQuery();
+        detailsQuery.where['comment_id'] = commentId;
+        const comment = await CommentModel.findOne(detailsQuery);
+        const found = !!comment === true;
+        if (!found)
+            throw new Error('Comment not found');
+        return commentDetailsMap_1.CommentDetailsMap.toDomain(comment);
+    }
     async deleteComment(commentId) {
         const CommentModel = this.models.Comment;
         return CommentModel.destroy({ where: { comment_id: commentId.id.toString() } });

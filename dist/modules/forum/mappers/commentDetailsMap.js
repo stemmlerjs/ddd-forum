@@ -6,9 +6,11 @@ const commentId_1 = require("../domain/commentId");
 const commentText_1 = require("../domain/commentText");
 const memberDetailsMap_1 = require("./memberDetailsMap");
 const postSlug_1 = require("../domain/postSlug");
+const postTitle_1 = require("../domain/postTitle");
 class CommentDetailsMap {
     static toDomain(raw) {
         const commentDetailsOrError = commentDetails_1.CommentDetails.create({
+            postTitle: postTitle_1.PostTitle.create({ value: raw.Post.title }).getValue(),
             commentId: commentId_1.CommentId.create(new UniqueEntityID_1.UniqueEntityID(raw.comment_id)).getValue(),
             text: commentText_1.CommentText.create({ value: raw.text }).getValue(),
             member: memberDetailsMap_1.MemberDetailsMap.toDomain(raw.Member),
@@ -27,7 +29,8 @@ class CommentDetailsMap {
             text: commentDetails.text.value,
             member: memberDetailsMap_1.MemberDetailsMap.toDTO(commentDetails.member),
             createdAt: commentDetails.createdAt,
-            childComments: []
+            childComments: [],
+            postTitle: commentDetails.postTitle.value
         };
     }
 }

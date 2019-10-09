@@ -19,7 +19,7 @@ export class UpvotePostController extends BaseController {
 
     const dto: UpvotePostDTO = {
       userId: userId,
-      postId: this.req.body.postId
+      slug: this.req.body.slug
     }
   
     try {
@@ -29,6 +29,7 @@ export class UpvotePostController extends BaseController {
         const error = result.value;
   
         switch (error.constructor) {
+          case UpvotePostErrors.MemberNotFoundError:
           case UpvotePostErrors.PostNotFoundError:
             return this.notFound(error.errorValue().message)
           case UpvotePostErrors.AlreadyUpvotedError:

@@ -4,19 +4,45 @@ import { Member } from "../member";
 import { Comment } from "../comment";
 import { CommentText } from "../commentText";
 import { Either, Result, left, right } from "../../../../shared/core/Result";
+import { PostVote } from "../postVote";
+import { UpvotePostResponse } from "../../useCases/post/upvotePost/UpvotePostResponse";
+import { UpvotePostErrors } from "../../useCases/post/upvotePost/UpvotePostErrors";
 
 export class PostService {
 
-  // public upvotePost (): Either<Result<any>, Result<Post>> {
-    
-  // }
+  public upvotePost (
+    post: Post, 
+    member: Member, 
+    existingVotesOnPostByMember: PostVote[]
+  ): UpvotePostResponse {
+
+    const upvoteAlreadyExists = !!existingVotesOnPostByMember.find((v) => v.isUpvote());
+
+    if (upvoteAlreadyExists) {
+      return left(
+        new UpvotePostErrors.AlreadyUpvotedError(
+          post.postId.id.toString(), member.memberId.id.toString()
+        )
+      )
+    }
+
+    const upvoteOrError = PostVote.createUpvote(member.memberId, post.postId);
+
+    if (upvoteOrError.isFailure) {
+      return left(upvoteOrError);
+    }
+
+    post.addVote(upvoteOrError.getValue());
+
+    return right(Result.ok<void>());
+  }
 
   public replyToComment (
     post: Post, 
     member: Member, 
     parentComment: Comment, 
     newCommentText: CommentText
-  ): Either<Result<any>, Result<Post>> {
+  ): Either<Result<any>, Result<void>> {
 
     const commentOrError = Comment.create({
       memberId: member.memberId,
@@ -33,6 +59,6 @@ export class PostService {
 
     post.addComment(comment);
 
-    return right(Result.ok<Post>(post));
+    return right(Result.ok<void>());
   }
 }

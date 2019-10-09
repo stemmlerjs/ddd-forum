@@ -38,7 +38,7 @@ class Comment extends Entity_1.Entity {
             return Result_1.Result.fail(nullGuard.message);
         }
         else {
-            return Result_1.Result.ok(new Comment(Object.assign(Object.assign({}, props), { points: lodash_1.has(props, 'points') ? props.points : 1 }), id));
+            return Result_1.Result.ok(new Comment(Object.assign(Object.assign({}, props), { points: lodash_1.has(props, 'points') ? props.points : 1, votes: props.votes ? props.votes : [] }), id));
         }
     }
 }

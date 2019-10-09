@@ -13,17 +13,17 @@ export namespace UpvotePostErrors {
   }
 
   export class PostNotFoundError extends Result<UseCaseError> {
-    constructor (postId: string) {
+    constructor (slug: string) {
       super(false, {
-        message: `Couldn't find a post by postId {${postId}}.`
+        message: `Couldn't find a post by slug {${slug}}.`
       } as UseCaseError)
     }
   }
 
   export class AlreadyUpvotedError extends Result<UseCaseError> {
-    constructor (postId: string, userId: string) {
+    constructor (postId: string, memberId: string) {
       super(false, {
-        message: `This post was already upvoted postId {${postId}}, userId {${userId}}.`
+        message: `This post was already upvoted postId {${postId}}, memberId {${memberId}}.`
       } as UseCaseError)
     }
   }

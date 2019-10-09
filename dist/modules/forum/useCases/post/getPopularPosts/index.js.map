@@ -1,1 +1,1 @@
-{"version":3,"file":"index.js","sourceRoot":"","sources":["../../../../../../src/modules/forum/useCases/post/getPopularPosts/index.ts"],"names":[],"mappings":""}
+{"version":3,"file":"index.js","sourceRoot":"","sources":["../../../../../../src/modules/forum/useCases/post/getPopularPosts/index.ts"],"names":[],"mappings":";;AACA,uDAAoD;AACpD,0CAA0C;AAC1C,2EAAwE;AAExE,MAAM,eAAe,GAAG,IAAI,iCAAe,CAAC,gBAAQ,CAAC,CAAC;AAOpD,0CAAe;AALjB,MAAM,yBAAyB,GAAG,IAAI,qDAAyB,CAC7D,eAAe,CAChB,CAAA;AAIC,8DAAyB"}

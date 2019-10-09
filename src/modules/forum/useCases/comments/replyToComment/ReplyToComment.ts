@@ -111,12 +111,10 @@ export class ReplyToComment implements UseCase<ReplyToCommentDTO, Promise<Respon
 
       const commentText: CommentText = commentTextOrError.getValue();
 
-      const replyToCommentResult: Either<Result<any>, Result<Post>> = this.postService
+      const replyToCommentResult: Either<Result<any>, Result<void>> = this.postService
         .replyToComment(post, member, parentComment, commentText);
 
-      if (replyToCommentResult.isRight()) {
-        post = replyToCommentResult.value.getValue();
-      } else {
+      if (replyToCommentResult.isLeft()) {
         return left(replyToCommentResult.value);
       }
 

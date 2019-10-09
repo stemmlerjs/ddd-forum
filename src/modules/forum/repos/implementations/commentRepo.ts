@@ -78,7 +78,7 @@ export class CommentRepo implements ICommentRepo {
   async save (comment: Comment): Promise<void> {
     const CommentModel = this.models.Comment;
     const exists = await this.exists(comment.commentId.id.toString());
-    const rawSequelizeComment = await CommentMap.toPersistence(comment);
+    const rawSequelizeComment = CommentMap.toPersistence(comment);
 
       if (!exists) {
         

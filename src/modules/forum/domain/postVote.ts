@@ -56,4 +56,42 @@ export class PostVote extends Entity<PostVoteProps> {
       return Result.ok<PostVote>(new PostVote(props, id));
     }
   }
+
+  public static createUpvote (memberId: MemberId, postId: PostId): Result<PostVote> {
+    const memberGuard = Guard.againstNullOrUndefined(memberId, 'memberId');
+    const postGuard = Guard.againstNullOrUndefined(postId, 'postId');
+
+    if (!memberGuard.succeeded) {
+      return Result.fail<PostVote>(memberGuard.message);
+    }
+
+    if (!postGuard.succeeded) {
+      return Result.fail<PostVote>(postGuard.message);
+    }
+
+    return Result.ok<PostVote>(new PostVote({
+      memberId,
+      postId,
+      type: 'UPVOTE'
+    }));
+  }
+
+  public static createDownvote (memberId: MemberId, postId: PostId): Result<PostVote> {
+    const memberGuard = Guard.againstNullOrUndefined(memberId, 'memberId');
+    const postGuard = Guard.againstNullOrUndefined(postId, 'postId');
+
+    if (!memberGuard.succeeded) {
+      return Result.fail<PostVote>(memberGuard.message);
+    }
+
+    if (!postGuard.succeeded) {
+      return Result.fail<PostVote>(postGuard.message);
+    }
+
+    return Result.ok<PostVote>(new PostVote({
+      memberId,
+      postId,
+      type: 'DOWNVOTE'
+    }));
+  }
 }

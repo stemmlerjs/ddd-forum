@@ -88,15 +88,13 @@ export class Post extends AggregateRoot<PostProps> {
     }
   }
 
-  public setPoints (numComments: number, numPostUpvotes: number, numCommentUpvotes): void {
-    // TODO: 
-    this.props.points = Math.max(0, numComments) 
-      + Math.max(0, numPostUpvotes) 
-      + Math.max(0, numCommentUpvotes)
-  }
-
   public addVote (vote: PostVote): Result<void> {
     this.props.votes.push(vote);
+    if (vote.isUpvote()) {
+      this.props.points++;
+    } else {
+      this.props.points--;
+    }
     this.addDomainEvent(new PostVoteCreated(this, vote));
     return Result.ok<void>();
   }

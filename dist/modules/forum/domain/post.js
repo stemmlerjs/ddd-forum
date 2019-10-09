@@ -7,6 +7,7 @@ const Guard_1 = require("../../../shared/core/Guard");
 const lodash_1 = require("lodash");
 const postCreated_1 = require("./events/postCreated");
 const commentPosted_1 = require("./events/commentPosted");
+const postVoteCreated_1 = require("./events/postVoteCreated");
 class Post extends AggregateRoot_1.AggregateRoot {
     get postId() {
         return postId_1.PostId.create(this._id)
@@ -39,6 +40,9 @@ class Post extends AggregateRoot_1.AggregateRoot {
     get type() {
         return this.props.type;
     }
+    get votes() {
+        return this.props.votes;
+    }
     get totalNumComments() {
         return this.props.totalNumComments;
     }
@@ -53,8 +57,14 @@ class Post extends AggregateRoot_1.AggregateRoot {
             + Math.max(0, numPostUpvotes)
             + Math.max(0, numCommentUpvotes);
     }
+    addVote(vote) {
+        this.props.votes.push(vote);
+        this.addDomainEvent(new postVoteCreated_1.PostVoteCreated(this, vote));
+        return Result_1.Result.ok();
+    }
     addComment(comment) {
-        this.comments.push(comment);
+        this.props.comments.push(comment);
+        this.props.totalNumComments++;
         this.addDomainEvent(new commentPosted_1.CommentPosted(this, comment));
         return Result_1.Result.ok();
     }
@@ -92,7 +102,7 @@ class Post extends AggregateRoot_1.AggregateRoot {
         if (!this.isValidPostType(props.type)) {
             return Result_1.Result.fail("Invalid post type provided.");
         }
-        const defaultValues = Object.assign(Object.assign({}, props), { comments: props.comments ? props.comments : [], points: lodash_1.has(props, 'points') ? props.points : 1, dateTimePosted: props.dateTimePosted ? props.dateTimePosted : new Date(), totalNumComments: props.totalNumComments ? props.totalNumComments : 0 });
+        const defaultValues = Object.assign(Object.assign({}, props), { comments: props.comments ? props.comments : [], points: lodash_1.has(props, 'points') ? props.points : 1, dateTimePosted: props.dateTimePosted ? props.dateTimePosted : new Date(), totalNumComments: props.totalNumComments ? props.totalNumComments : 0, votes: props.votes ? props.votes : [] });
         const isNewPost = !!id === false;
         const post = new Post(defaultValues, id);
         if (isNewPost) {
