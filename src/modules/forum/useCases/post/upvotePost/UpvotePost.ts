@@ -45,10 +45,11 @@ export class UpvotePost implements UseCase<UpvotePostDTO, Promise<UpvotePostResp
         return left(new UpvotePostErrors.PostNotFoundError(req.slug));
       }
 
-      existingVotesOnPostByMember = await this.postVotesRepo.getVotesForPostByMemberId(post.postId,  member.memberId);
+      existingVotesOnPostByMember = await this.postVotesRepo
+        .getVotesForPostByMemberId(post.postId,  member.memberId);
 
       const upvotePostResult = this.postService
-        .togglePostUpvote(post, member, existingVotesOnPostByMember)
+        .togglePostUpvote(post, member, existingVotesOnPostByMember);
 
       if (upvotePostResult.isLeft()) {
         return left(upvotePostResult.value);

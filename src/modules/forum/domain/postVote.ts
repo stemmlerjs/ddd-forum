@@ -73,7 +73,6 @@ export class PostVote extends Entity<PostVoteProps> {
       memberId,
       postId,
       type: 'UPVOTE',
-      isDeleted: false,
     }));
   }
 
@@ -93,7 +92,6 @@ export class PostVote extends Entity<PostVoteProps> {
       memberId,
       postId,
       type: 'DOWNVOTE',
-      isDeleted: false
     }));
   }
 }

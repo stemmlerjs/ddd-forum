@@ -9,6 +9,7 @@ import { ICommentRepo } from "../commentRepo";
 import { Comment } from "../../domain/comment";
 import { IPostVotesRepo } from "../postVotesRepo";
 import { PostVote } from "../../domain/postVote";
+import { PostVotes } from "../../domain/postVotes";
 
 export class PostRepo implements IPostRepo {
 
@@ -130,7 +131,7 @@ export class PostRepo implements IPostRepo {
     return this.commentRepo.saveBulk(comments);
   }
 
-  private savePostVotes (postVotes: PostVote[]) {
+  private savePostVotes (postVotes: PostVotes) {
     return this.postVotesRepo.saveBulk(postVotes);
   }
 
@@ -145,7 +146,7 @@ export class PostRepo implements IPostRepo {
       try {
         await PostModel.create(rawSequelizePost);
         await this.saveComments(post.comments);
-        await this.savePostVotes(post.votes);
+        await this.savePostVotes(post.getVotes());
         
       } catch (err) {
         await this.delete(post.postId);
@@ -156,7 +157,7 @@ export class PostRepo implements IPostRepo {
       // Save non-aggregate tables before saving the aggregate
       // so that any domain events on the aggregate get dispatched
       await this.saveComments(post.comments);
-      await this.savePostVotes(post.votes);
+      await this.savePostVotes(post.getVotes());
       
       await PostModel.update(rawSequelizePost, { 
         // To make sure your hooks always run, make sure to include this in

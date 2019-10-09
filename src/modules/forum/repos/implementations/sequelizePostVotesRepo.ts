@@ -5,6 +5,7 @@ import { MemberId } from "../../domain/memberId";
 import { PostId } from "../../domain/postId";
 import { PostVoteMap } from "../../mappers/postVoteMap";
 import { VoteType } from "../../domain/vote";
+import { PostVotes } from "../../domain/postVotes";
 
 export class PostVotesRepo implements IPostVotesRepo {
   private models: any;
@@ -44,24 +45,32 @@ export class PostVotesRepo implements IPostVotesRepo {
     const rawSequelizePostVote = PostVoteMap.toPersistence(vote);
 
     if (!exists) {
-      
       try {
         await PostVoteModel.create(rawSequelizePostVote);
       } catch (err) {
         throw new Error(err.toString());
       }
-      
     } else {
-      // TODO: Handle what to do when it already exists, we can delete
-      // const sequelizeVoteInstance = PostVoteModel.findOne({ 
-      //   where: { comment_id: comment.commentId.id.toString() }
-      // });
-      // await sequelizeVoteInstance.update(rawSequelizePostVote);
+      throw new Error('Invalid state. Votes arent updated.')
     }
   }
 
-  async saveBulk (votes: PostVote[]): Promise<any> {
-    for (let vote of votes) {
+  public async delete (vote: PostVote): Promise<any> {
+    const PostVoteModel = this.models.PostVote;
+    return PostVoteModel.destroy({ 
+      where: { 
+        post_id: vote.postId.id.toString(),
+        member_id: vote.memberId.id.toString()
+      }
+    })
+  }
+
+  async saveBulk (votes: PostVotes): Promise<any> {
+    for (let vote of votes.getRemovedItems()) {
+      await this.delete(vote);
+    }
+
+    for (let vote of votes.getNewItems()) {
       await this.save(vote);
     }
   }

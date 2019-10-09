@@ -16,6 +16,7 @@ import { PostLink } from "./postLink";
 import { CommentPosted } from "./events/commentPosted";
 import { PostVote } from "./postVote";
 import { PostVoteCreated } from "./events/postVoteCreated";
+import { PostVotes } from "./postVotes";
 
 export interface PostProps {
   memberId: MemberId;
@@ -25,7 +26,7 @@ export interface PostProps {
   text?: PostText;
   link?: PostLink;
   comments?: Comment[];
-  votes?: PostVote[];
+  votes?: PostVotes;
   totalNumComments?: number;
   points?: number; // posts can have negative or positive valued points
   dateTimePosted?: string | Date;
@@ -74,10 +75,6 @@ export class Post extends AggregateRoot<PostProps> {
     return this.props.type;
   }
 
-  get votes (): PostVote [] {
-    return this.props.votes;
-  }
-
   get totalNumComments (): number {
     return this.props.totalNumComments;
   }
@@ -89,7 +86,7 @@ export class Post extends AggregateRoot<PostProps> {
   }
 
   public addVote (vote: PostVote): Result<void> {
-    this.props.votes.push(vote);
+    this.props.votes.add(vote);
     if (vote.isUpvote()) {
       this.props.points++;
     } else {
@@ -99,17 +96,14 @@ export class Post extends AggregateRoot<PostProps> {
     return Result.ok<void>();
   }
 
-  public removeUpvote (deletedVote: PostVote): Result<void> {
-    this.props.points--;
-    this.props.votes.push(deletedVote);
-    // Domain event
-    return Result.ok<void>();
-  }
-
-  public removeDownvote (deletedVote: PostVote): Result<void> {
-    this.props.points++;
-    this.props.votes.push(deletedVote);
-    // Domain event
+  public removeVote (vote: PostVote): Result<void> {
+    this.props.votes.remove(vote);
+    if (vote.isUpvote()) {
+      this.props.points--;
+    } else {
+      this.props.points++;
+    }
+    // this.addDomainEvent(new PostVoteCreated(this, vote));
     return Result.ok<void>();
   }
 
@@ -126,6 +120,10 @@ export class Post extends AggregateRoot<PostProps> {
 
   public isTextPost (): boolean {
     return this.props.type === 'text';
+  }
+
+  public getVotes (): PostVotes {
+    return this.props.votes;
   }
 
   private constructor (props: PostProps, id?: UniqueEntityID) {
@@ -168,7 +166,7 @@ export class Post extends AggregateRoot<PostProps> {
       points: has(props, 'points') ? props.points : 0,
       dateTimePosted: props.dateTimePosted ? props.dateTimePosted : new Date(),
       totalNumComments: props.totalNumComments ? props.totalNumComments : 0,
-      votes: props.votes ? props.votes : []
+      votes: props.votes ? props.votes : PostVotes.create([])
     };
 
     const isNewPost = !!id === false;

@@ -16,7 +16,9 @@ function getRecentPosts (offset?: number) {
       dispatch(actionCreators.getRecentPostsFailure(error))
     } else {
       const posts: Post[] = result.value.getValue();
-      dispatch(actionCreators.getRecentPostsSuccess(posts));
+      dispatch(actionCreators.getRecentPostsSuccess(
+        posts.sort((a, b) => Number(new Date(b.createdAt)) - Number(new Date(a.createdAt)))
+      ));
     }
   };
 }
