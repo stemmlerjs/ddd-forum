@@ -151,7 +151,7 @@ export class Post extends AggregateRoot<PostProps> {
     const defaultValues: PostProps = {
       ...props,
       comments: props.comments ? props.comments : [],
-      points: has(props, 'points') ? props.points : 1,
+      points: has(props, 'points') ? props.points : 0,
       dateTimePosted: props.dateTimePosted ? props.dateTimePosted : new Date(),
       totalNumComments: props.totalNumComments ? props.totalNumComments : 0,
       votes: props.votes ? props.votes : []
@@ -162,6 +162,11 @@ export class Post extends AggregateRoot<PostProps> {
 
     if (isNewPost) {
       post.addDomainEvent(new PostCreated(post));
+
+      // Create with initial upvote from whomever created the post
+      post.addVote(
+        PostVote.createUpvote(props.memberId, post.postId).getValue()
+      )
     }
 
     return Result.ok<Post>(post);
