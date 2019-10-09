@@ -6,6 +6,7 @@ import { getRecentPostsController } from '../../../useCases/post/getRecentPosts'
 import { getPostBySlugController } from '../../../useCases/post/getPostBySlug';
 import { getPopularPostsController } from '../../../useCases/post/getPopularPosts';
 import { upvotePostController } from '../../../useCases/post/upvotePost';
+import { downvotePostController } from '../../../useCases/post/downvotePost';
 
 const postRouter = express.Router();
 
@@ -29,6 +30,11 @@ postRouter.get('/',
 postRouter.post('/upvote',
   middleware.authenticateRequests(),
   (req, res) => upvotePostController.execute(req, res)
+)
+
+postRouter.post('/downvote',
+  middleware.authenticateRequests(),
+  (req, res) => downvotePostController.execute(req, res)
 )
 
 export {

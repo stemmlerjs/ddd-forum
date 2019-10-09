@@ -99,6 +99,20 @@ export class Post extends AggregateRoot<PostProps> {
     return Result.ok<void>();
   }
 
+  public removeUpvote (deletedVote: PostVote): Result<void> {
+    this.props.points--;
+    this.props.votes.push(deletedVote);
+    // Domain event
+    return Result.ok<void>();
+  }
+
+  public removeDownvote (deletedVote: PostVote): Result<void> {
+    this.props.points++;
+    this.props.votes.push(deletedVote);
+    // Domain event
+    return Result.ok<void>();
+  }
+
   public addComment (comment: Comment): Result<void> {
     this.props.comments.push(comment);
     this.props.totalNumComments++;

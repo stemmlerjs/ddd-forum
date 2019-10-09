@@ -7,16 +7,55 @@ import { Either, Result, left, right } from "../../../../shared/core/Result";
 import { PostVote } from "../postVote";
 import { UpvotePostResponse } from "../../useCases/post/upvotePost/UpvotePostResponse";
 import { UpvotePostErrors } from "../../useCases/post/upvotePost/UpvotePostErrors";
+import { DownvotePostResponse } from "../../useCases/post/downvotePost/DownvotePostResponse";
+import { DownvotePostErrors } from "../../useCases/post/downvotePost/DownvotePostErrors";
 
 export class PostService {
 
-  public upvotePost (
+  public togglePostDownvote (
+    post: Post,
+    member: Member,
+    existingVotesOnPostByMember: PostVote[]
+  ): DownvotePostResponse {
+
+    const downvoteAlreadyExists = !!existingVotesOnPostByMember
+      .find((v) => v.isDownvote()); 
+
+    if (downvoteAlreadyExists) {
+      return left(
+        new DownvotePostErrors.AlreadyDownvotedError(
+          post.postId.id.toString(), member.memberId.id.toString()
+        )
+      )
+    }
+
+    const upvoteExists = !!existingVotesOnPostByMember
+      .find((v) => v.isUpvote());
+      
+    // if (upvoteExists) {
+    //   post.removeUpvote()
+    // }
+
+    const upvoteOrError = PostVote
+      .createDownvote(member.memberId, post.postId);
+
+    if (upvoteOrError.isFailure) {
+      return left(upvoteOrError);
+    }
+
+    post.addVote(upvoteOrError.getValue());
+
+    return right(Result.ok<void>());
+  }
+
+  public togglePostUpvote (
     post: Post, 
     member: Member, 
     existingVotesOnPostByMember: PostVote[]
   ): UpvotePostResponse {
 
-    const upvoteAlreadyExists = !!existingVotesOnPostByMember.find((v) => v.isUpvote());
+    const upvoteAlreadyExists = !!existingVotesOnPostByMember
+      .find((v) => v.isUpvote());
 
     if (upvoteAlreadyExists) {
       return left(
@@ -26,7 +65,8 @@ export class PostService {
       )
     }
 
-    const upvoteOrError = PostVote.createUpvote(member.memberId, post.postId);
+    const upvoteOrError = PostVote
+      .createUpvote(member.memberId, post.postId);
 
     if (upvoteOrError.isFailure) {
       return left(upvoteOrError);

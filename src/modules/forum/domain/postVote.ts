@@ -72,7 +72,8 @@ export class PostVote extends Entity<PostVoteProps> {
     return Result.ok<PostVote>(new PostVote({
       memberId,
       postId,
-      type: 'UPVOTE'
+      type: 'UPVOTE',
+      isDeleted: false,
     }));
   }
 
@@ -91,7 +92,8 @@ export class PostVote extends Entity<PostVoteProps> {
     return Result.ok<PostVote>(new PostVote({
       memberId,
       postId,
-      type: 'DOWNVOTE'
+      type: 'DOWNVOTE',
+      isDeleted: false
     }));
   }
 }

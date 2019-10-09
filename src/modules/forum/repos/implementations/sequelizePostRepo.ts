@@ -35,9 +35,13 @@ export class PostRepo implements IPostRepo {
     return {
       where: {},
       include: [
-        { model: models.Member, as: 'Member', include: [
-          { model: models.BaseUser, as: 'BaseUser' }
-        ] }
+        { 
+          model: models.Member, 
+          as: 'Member', 
+          include: [
+            { model: models.BaseUser, as: 'BaseUser' }
+          ] 
+        }
       ],
       limit: 15,
       offset: 0
