@@ -8,7 +8,9 @@ const {
   DDD_FORUM_DB_DEV_DB_NAME,
   DDD_FORUM_DB_TEST_DB_NAME,
   DDD_FORUM_DB_PROD_DB_NAME,
-  NODE_ENV
+  NODE_ENV,
+  DDD_FORUM_IS_PRODUCTION,
+  CLEARDB_DATABASE_URL
 } = process.env;
 
 const databaseCredentials = {
@@ -41,17 +43,20 @@ const {
 
 module.exports = databaseCredentials;
 
-module.exports.connection = new Sequelize(database, username, password, {
-  host,
-  dialect,
-  port: 3306,
-  dialectOptions: {
-    multipleStatements: true,
-  },
-  pool: {
-    max: 5,
-    min: 0,
-    idle: 10000
-  },
-  logging: false
-});
+module.exports.connection = DDD_FORUM_IS_PRODUCTION 
+  ? new Sequelize(CLEARDB_DATABASE_URL) 
+  : new Sequelize(database, username, password, {
+    host,
+    dialect,
+    port: 3306,
+    dialectOptions: {
+      multipleStatements: true,
+    },
+    pool: {
+      max: 5,
+      min: 0,
+      idle: 10000
+    },
+    logging: false
+  }
+);
