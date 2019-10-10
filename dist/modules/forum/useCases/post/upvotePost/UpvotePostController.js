@@ -12,13 +12,14 @@ class UpvotePostController extends BaseController_1.BaseController {
         const { userId } = req.decoded;
         const dto = {
             userId: userId,
-            postId: this.req.body.postId
+            slug: this.req.body.slug
         };
         try {
             const result = await this.useCase.execute(dto);
             if (result.isLeft()) {
                 const error = result.value;
                 switch (error.constructor) {
+                    case UpvotePostErrors_1.UpvotePostErrors.MemberNotFoundError:
                     case UpvotePostErrors_1.UpvotePostErrors.PostNotFoundError:
                         return this.notFound(error.errorValue().message);
                     case UpvotePostErrors_1.UpvotePostErrors.AlreadyUpvotedError:

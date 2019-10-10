@@ -38,6 +38,36 @@ class PostVote extends Entity_1.Entity {
             return Result_1.Result.ok(new PostVote(props, id));
         }
     }
+    static createUpvote(memberId, postId) {
+        const memberGuard = Guard_1.Guard.againstNullOrUndefined(memberId, 'memberId');
+        const postGuard = Guard_1.Guard.againstNullOrUndefined(postId, 'postId');
+        if (!memberGuard.succeeded) {
+            return Result_1.Result.fail(memberGuard.message);
+        }
+        if (!postGuard.succeeded) {
+            return Result_1.Result.fail(postGuard.message);
+        }
+        return Result_1.Result.ok(new PostVote({
+            memberId,
+            postId,
+            type: 'UPVOTE',
+        }));
+    }
+    static createDownvote(memberId, postId) {
+        const memberGuard = Guard_1.Guard.againstNullOrUndefined(memberId, 'memberId');
+        const postGuard = Guard_1.Guard.againstNullOrUndefined(postId, 'postId');
+        if (!memberGuard.succeeded) {
+            return Result_1.Result.fail(memberGuard.message);
+        }
+        if (!postGuard.succeeded) {
+            return Result_1.Result.fail(postGuard.message);
+        }
+        return Result_1.Result.ok(new PostVote({
+            memberId,
+            postId,
+            type: 'DOWNVOTE',
+        }));
+    }
 }
 exports.PostVote = PostVote;
 //# sourceMappingURL=postVote.js.map

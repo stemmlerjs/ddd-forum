@@ -55,6 +55,7 @@ exports.default = (sequelize, DataTypes) => {
     });
     Post.associate = (models) => {
         Post.belongsTo(models.Member, { foreignKey: 'member_id', targetKey: 'member_id', as: 'Member' });
+        Post.hasMany(models.PostVote, { foreignKey: 'post_id', as: 'Votes' });
     };
     return Post;
 };

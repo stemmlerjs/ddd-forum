@@ -8,7 +8,7 @@ class CommentVote extends Entity_1.Entity {
         return this._id;
     }
     get commentId() {
-        return this.props.CommentId;
+        return this.props.commentId;
     }
     get memberId() {
         return this.props.memberId;
@@ -28,7 +28,7 @@ class CommentVote extends Entity_1.Entity {
     static create(props, id) {
         const guardResult = Guard_1.Guard.againstNullOrUndefinedBulk([
             { argument: props.memberId, argumentName: 'memberId' },
-            { argument: props.CommentId, argumentName: 'commentId' },
+            { argument: props.commentId, argumentName: 'commentId' },
             { argument: props.type, argumentName: 'type' }
         ]);
         if (!guardResult.succeeded) {
@@ -37,6 +37,36 @@ class CommentVote extends Entity_1.Entity {
         else {
             return Result_1.Result.ok(new CommentVote(props, id));
         }
+    }
+    static createUpvote(memberId, commentId) {
+        const memberGuard = Guard_1.Guard.againstNullOrUndefined(memberId, 'memberId');
+        const postGuard = Guard_1.Guard.againstNullOrUndefined(commentId, 'commentId');
+        if (!memberGuard.succeeded) {
+            return Result_1.Result.fail(memberGuard.message);
+        }
+        if (!postGuard.succeeded) {
+            return Result_1.Result.fail(postGuard.message);
+        }
+        return Result_1.Result.ok(new CommentVote({
+            memberId,
+            commentId,
+            type: 'UPVOTE',
+        }));
+    }
+    static createDownvote(memberId, commentId) {
+        const memberGuard = Guard_1.Guard.againstNullOrUndefined(memberId, 'memberId');
+        const postGuard = Guard_1.Guard.againstNullOrUndefined(commentId, 'commentId');
+        if (!memberGuard.succeeded) {
+            return Result_1.Result.fail(memberGuard.message);
+        }
+        if (!postGuard.succeeded) {
+            return Result_1.Result.fail(postGuard.message);
+        }
+        return Result_1.Result.ok(new CommentVote({
+            memberId,
+            commentId,
+            type: 'DOWNVOTE',
+        }));
     }
 }
 exports.CommentVote = CommentVote;

@@ -72,10 +72,7 @@ class ReplyToComment {
             const commentText = commentTextOrError.getValue();
             const replyToCommentResult = this.postService
                 .replyToComment(post, member, parentComment, commentText);
-            if (replyToCommentResult.isRight()) {
-                post = replyToCommentResult.value.getValue();
-            }
-            else {
+            if (replyToCommentResult.isLeft()) {
                 return Result_1.left(replyToCommentResult.value);
             }
             await this.postRepo.save(post);

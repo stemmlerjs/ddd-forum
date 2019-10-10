@@ -12,17 +12,17 @@ var UpvotePostErrors;
     }
     UpvotePostErrors.MemberNotFoundError = MemberNotFoundError;
     class PostNotFoundError extends Result_1.Result {
-        constructor(postId) {
+        constructor(slug) {
             super(false, {
-                message: `Couldn't find a post by postId {${postId}}.`
+                message: `Couldn't find a post by slug {${slug}}.`
             });
         }
     }
     UpvotePostErrors.PostNotFoundError = PostNotFoundError;
     class AlreadyUpvotedError extends Result_1.Result {
-        constructor(postId, userId) {
+        constructor(postId, memberId) {
             super(false, {
-                message: `This post was already upvoted postId {${postId}}, userId {${userId}}.`
+                message: `This post was already upvoted postId {${postId}}, memberId {${memberId}}.`
             });
         }
     }

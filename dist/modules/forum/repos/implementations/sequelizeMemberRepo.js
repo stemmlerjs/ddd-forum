@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const memberMap_1 = require("../../mappers/memberMap");
 const memberDetailsMap_1 = require("../../mappers/memberDetailsMap");
+const memberIdMap_1 = require("../../mappers/memberIdMap");
 class MemberRepo {
     constructor(models) {
         this.models = models;
@@ -22,6 +23,16 @@ class MemberRepo {
         const member = await MemberModel.findOne(baseQuery);
         const found = !!member === true;
         return found;
+    }
+    async getMemberIdByUserId(userId) {
+        const MemberModel = this.models.Member;
+        const baseQuery = this.createBaseQuery();
+        baseQuery.where['member_base_id'] = userId;
+        const member = await MemberModel.findOne(baseQuery);
+        const found = !!member === true;
+        if (!found)
+            throw new Error('Member id not found');
+        return memberIdMap_1.MemberIdMap.toDomain(member);
     }
     async getMemberByUserId(userId) {
         const MemberModel = this.models.Member;

@@ -32,6 +32,12 @@ class PostDetails extends ValueObject_1.ValueObject {
     get dateTimePosted() {
         return this.props.dateTimePosted;
     }
+    get wasUpvotedByMe() {
+        return this.props.wasUpvotedByMe;
+    }
+    get wasDownvotedByMe() {
+        return this.props.wasDownvotedByMe;
+    }
     constructor(props) {
         super(props);
     }
@@ -43,7 +49,7 @@ class PostDetails extends ValueObject_1.ValueObject {
             { argument: props.type, argumentName: 'type' },
             { argument: props.numComments, argumentName: 'numComments' },
             { argument: props.points, argumentName: 'points' },
-            { argument: props.dateTimePosted, argumentName: 'dateTimePosted' }
+            { argument: props.dateTimePosted, argumentName: 'dateTimePosted' },
         ];
         if (props.type === 'link') {
             guardArgs.push({ argument: props.link, argumentName: 'link' });
@@ -58,7 +64,7 @@ class PostDetails extends ValueObject_1.ValueObject {
         if (!post_1.Post.isValidPostType(props.type)) {
             return Result_1.Result.fail("Invalid post type provided.");
         }
-        return Result_1.Result.ok(new PostDetails(props));
+        return Result_1.Result.ok(new PostDetails(Object.assign(Object.assign({}, props), { wasUpvotedByMe: props.wasUpvotedByMe ? props.wasUpvotedByMe : false, wasDownvotedByMe: props.wasDownvotedByMe ? props.wasDownvotedByMe : false })));
     }
 }
 exports.PostDetails = PostDetails;
