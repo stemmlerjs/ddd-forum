@@ -1,13 +1,9 @@
 "use strict";
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
-    return result;
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const models_1 = __importStar(require("../models"));
+const models_1 = __importDefault(require("../models"));
 const UniqueEntityID_1 = require("../../../../domain/UniqueEntityID");
 const DomainEvents_1 = require("../../../../domain/events/DomainEvents");
 const dispatchEventsCallback = (model, primaryKeyField) => {
@@ -15,9 +11,7 @@ const dispatchEventsCallback = (model, primaryKeyField) => {
     DomainEvents_1.DomainEvents.dispatchEventsForAggregate(aggregateId);
 };
 (async function createHooksForAggregateRoots() {
-    models_1.createModels();
     const { BaseUser, Member, Post } = models_1.default;
-    console.log(Object.keys(models_1.default))
     BaseUser.addHook('afterCreate', (m) => dispatchEventsCallback(m, 'base_user_id'));
     BaseUser.addHook('afterDestroy', (m) => dispatchEventsCallback(m, 'base_user_id'));
     BaseUser.addHook('afterUpdate', (m) => dispatchEventsCallback(m, 'base_user_id'));
