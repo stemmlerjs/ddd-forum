@@ -48,12 +48,18 @@ export class Comment extends Entity<CommentProps> {
   }
 
   public removeVote (vote: CommentVote): Result<void> {
+    if (!this.props.votes.exists(vote)) {
+      return Result.fail<void>("This vote doesn't exist.")
+    }
     this.props.votes.remove(vote);
     this.props.points--;
     return Result.ok<void>();
   }
 
   public addVote (vote: CommentVote): Result<void> {
+    if (this.props.votes.exists(vote)) {
+      return Result.fail<void>("Already added this vote.")
+    }
     this.props.votes.add(vote);
     this.props.points++;
     return Result.ok<void>();

@@ -24,9 +24,13 @@ let memberIdTwo: MemberId = MemberId
   .create(new UniqueEntityID('billybob'))
   .getValue();
 
+let upvote: CommentVote;
+
 beforeEach(() => {
   post = null;
   postOrError = null;
+  commentOne = null;
+  upvote = null;
 });
 
 test('When we upvote a comment, the score of the post increases by one', () => {
@@ -59,11 +63,14 @@ test('When we upvote a comment, the score of the post increases by one', () => {
   expect(post.points).toEqual(1);
 
   // Someone else upvotes the comment
-  commentOne.addVote(CommentVote.createUpvote(memberIdTwo, commentOne.commentId).getValue());
+  upvote = CommentVote.createUpvote(memberIdTwo, commentOne.commentId).getValue();
+
+  commentOne.addVote(upvote);
+
   expect(commentOne.points).toEqual(2);
 
   post.updateComment(commentOne);
   expect(post.points).toEqual(2);
-  
 
 })
+
