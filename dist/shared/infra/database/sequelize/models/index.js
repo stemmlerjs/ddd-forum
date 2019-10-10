@@ -54,5 +54,6 @@ const createModels = () => {
     modelsLoaded = true;
     return models;
 };
+exports.createModels = createModels;
 exports.default = createModels();
 //# sourceMappingURL=index.js.map
