@@ -43,7 +43,11 @@ const {
 
 module.exports = databaseCredentials;
 
-module.exports.connection = DDD_FORUM_IS_PRODUCTION 
+const mode = DDD_FORUM_IS_PRODUCTION === "true" ? 'prod' : 'dev';
+
+console.log(`[DB]: Connecting to the database in ${mode} mode.`)
+
+module.exports.connection = DDD_FORUM_IS_PRODUCTION === "true"
   ? new Sequelize(CLEARDB_DATABASE_URL) 
   : new Sequelize(database, username, password, {
     host,

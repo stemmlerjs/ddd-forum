@@ -1,5 +1,5 @@
 
-import models from '../models';
+import models, { createModels } from '../models';
 import { UniqueEntityID } from '../../../../domain/UniqueEntityID';
 import { DomainEvents } from '../../../../domain/events/DomainEvents';
 
@@ -9,7 +9,7 @@ const dispatchEventsCallback = (model: any, primaryKeyField: string) => {
 }
 
 (async function createHooksForAggregateRoots () {
-
+  createModels();
   const { BaseUser, Member, Post } = models;
 
   BaseUser.addHook('afterCreate', (m: any) => dispatchEventsCallback(m, 'base_user_id'));
