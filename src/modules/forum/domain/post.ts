@@ -114,6 +114,32 @@ export class Post extends AggregateRoot<PostProps> {
     return Result.ok<void>();
   }
 
+  public updateComment (comment: Comment): Result<void> {
+    this.props.comments.push(comment);
+    const commentVotes = comment.getVotes();
+    const newVotes = commentVotes.getNewItems();
+    const removedVotes = commentVotes.getRemovedItems();
+
+    for (let newVote of newVotes) {
+      if (newVote.isUpvote()) {
+        this.props.points++;
+      } else {
+        this.props.points--;
+      }
+    }
+
+    for (let removedVote of removedVotes) {
+      if (removedVote.isUpvote()) {
+        this.props.points--;
+      } else {
+        this.props.points++;
+      }
+    }
+    
+    // Domain event here
+    return Result.ok<void>();
+  }
+
   public isLinkPost (): boolean {
     return this.props.type === 'link';
   }

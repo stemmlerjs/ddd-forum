@@ -5,12 +5,16 @@ import { CommentDetails } from "../../domain/commentDetails";
 import { CommentMap } from "../../mappers/commentMap";
 import { CommentId } from "../../domain/commentId";
 import { CommentDetailsMap } from "../../mappers/commentDetailsMap";
+import { ICommentVotesRepo } from "../commentVotesRepo";
+import { CommentVotes } from "../../domain/commentVotes";
 
 export class CommentRepo implements ICommentRepo {
   private models: any;
+  private commentVotesRepo: ICommentVotesRepo;
 
-  constructor (models: any) {
+  constructor (models: any, commentVotesRepo: ICommentVotesRepo) {
     this.models = models;
+    this.commentVotesRepo = commentVotesRepo;
   }
 
   private createBaseQuery (): any {
@@ -75,6 +79,10 @@ export class CommentRepo implements ICommentRepo {
     return CommentModel.destroy({ where: { comment_id: commentId.id.toString() }});
   }
 
+  private saveCommentVotes (commentVotes: CommentVotes) {
+    return this.commentVotesRepo.saveBulk(commentVotes);
+  }
+
   async save (comment: Comment): Promise<void> {
     const CommentModel = this.models.Comment;
     const exists = await this.exists(comment.commentId.id.toString());
@@ -84,12 +92,15 @@ export class CommentRepo implements ICommentRepo {
         
         try {
           await CommentModel.create(rawSequelizeComment);
+          await this.saveCommentVotes(comment.getVotes())
         } catch (err) {
           await this.deleteComment(comment.commentId);
           throw new Error(err.toString());
         }
         
       } else {
+        await this.saveCommentVotes(comment.getVotes())
+
         const sequelizeCommentInstance = CommentModel.findOne({ 
           where: { comment_id: comment.commentId.id.toString() }
         });
@@ -102,5 +113,4 @@ export class CommentRepo implements ICommentRepo {
       await this.save(comment);
     }
   }
-  
 }

@@ -13,7 +13,7 @@ export class CommentVoteMap implements Mapper<CommentVote> {
 
     const commentVoteOrError = CommentVote.create({
       memberId: MemberId.create(new UniqueEntityID(raw.member_id)).getValue(),
-      CommentId: CommentId.create(new UniqueEntityID(raw.comment_id)).getValue(),
+      commentId: CommentId.create(new UniqueEntityID(raw.comment_id)).getValue(),
       type: voteType
     }, new UniqueEntityID(raw.comment_vote_id));
 

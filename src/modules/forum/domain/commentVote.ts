@@ -8,7 +8,7 @@ import { Guard } from "../../../shared/core/Guard";
 import { VoteType } from "./vote";
 
 interface CommentVoteProps {
-  CommentId: CommentId;
+  commentId: CommentId;
   memberId: MemberId;
   type: VoteType;
 }
@@ -20,7 +20,7 @@ export class CommentVote extends Entity<CommentVoteProps> {
   }
 
   get commentId (): CommentId {
-    return this.props.CommentId;
+    return this.props.commentId;
   }
 
   get memberId (): MemberId {
@@ -46,7 +46,7 @@ export class CommentVote extends Entity<CommentVoteProps> {
   public static create (props: CommentVoteProps, id?: UniqueEntityID): Result<CommentVote> {
     const guardResult = Guard.againstNullOrUndefinedBulk([
       { argument: props.memberId, argumentName: 'memberId' },
-      { argument: props.CommentId, argumentName: 'commentId' },
+      { argument: props.commentId, argumentName: 'commentId' },
       { argument: props.type, argumentName: 'type' }
     ]);
 
@@ -55,5 +55,43 @@ export class CommentVote extends Entity<CommentVoteProps> {
     } else {
       return Result.ok<CommentVote>(new CommentVote(props, id));
     }
+  }
+
+  public static createUpvote (memberId: MemberId, commentId: CommentId): Result<CommentVote> {
+    const memberGuard = Guard.againstNullOrUndefined(memberId, 'memberId');
+    const postGuard = Guard.againstNullOrUndefined(commentId, 'commentId');
+
+    if (!memberGuard.succeeded) {
+      return Result.fail<CommentVote>(memberGuard.message);
+    }
+
+    if (!postGuard.succeeded) {
+      return Result.fail<CommentVote>(postGuard.message);
+    }
+
+    return Result.ok<CommentVote>(new CommentVote({
+      memberId,
+      commentId,
+      type: 'UPVOTE',
+    }));
+  }
+
+  public static createDownvote (memberId: MemberId, commentId: CommentId): Result<CommentVote> {
+    const memberGuard = Guard.againstNullOrUndefined(memberId, 'memberId');
+    const postGuard = Guard.againstNullOrUndefined(commentId, 'commentId');
+
+    if (!memberGuard.succeeded) {
+      return Result.fail<CommentVote>(memberGuard.message);
+    }
+
+    if (!postGuard.succeeded) {
+      return Result.fail<CommentVote>(postGuard.message);
+    }
+
+    return Result.ok<CommentVote>(new CommentVote({
+      memberId,
+      commentId,
+      type: 'DOWNVOTE',
+    }));
   }
 }

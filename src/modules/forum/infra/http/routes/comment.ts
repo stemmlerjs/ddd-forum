@@ -6,6 +6,8 @@ import { middleware } from '../../../../../shared/infra/http';
 import { replyToPostController } from '../../../useCases/comments/replyToPost';
 import { getCommentByCommentIdController } from '../../../useCases/comments/getCommentByCommentId';
 import { replyToCommentController } from '../../../useCases/comments/replyToComment';
+import { upvoteCommentController } from '../../../useCases/comments/upvoteComment';
+import { downvoteCommentController } from '../../../useCases/comments/downvoteComment';
 
 const commentRouter = express.Router();
 
@@ -27,6 +29,16 @@ commentRouter.post('/:commentId/reply',
 commentRouter.get('/:commentId',
   middleware.includeDecodedTokenIfExists(),
   (req, res) => getCommentByCommentIdController.execute(req, res)
+)
+
+commentRouter.post('/:commentId/upvote',
+  middleware.includeDecodedTokenIfExists(),
+  (req, res) => upvoteCommentController.execute(req, res)
+)
+
+commentRouter.post('/:commentId/downvote',
+  middleware.includeDecodedTokenIfExists(),
+  (req, res) => downvoteCommentController.execute(req, res)
 )
 
 export {

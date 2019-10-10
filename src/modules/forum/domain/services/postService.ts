@@ -7,8 +7,79 @@ import { Either, Result, left, right } from "../../../../shared/core/Result";
 import { PostVote } from "../postVote";
 import { UpvotePostResponse } from "../../useCases/post/upvotePost/UpvotePostResponse";
 import { DownvotePostResponse } from "../../useCases/post/downvotePost/DownvotePostResponse";
+import { CommentVote } from "../commentVote";
+import { UpvoteCommentResponse } from "../../useCases/comments/upvoteComment/UpvoteCommentResonse";
+import { DownvoteCommentResponse } from "../../useCases/comments/downvoteComment/DownvoteCommentResponse";
 
 export class PostService {
+
+  public toggleCommentDownvote (
+    post: Post, 
+    member: Member, 
+    comment: Comment, 
+    existingVotesOnCommentByMember: CommentVote[]
+  ): DownvoteCommentResponse {
+
+    const existingDownvote: CommentVote = existingVotesOnCommentByMember
+      .find((v) => v.isUpvote());
+
+    const downvoteAlreadyExists = !!existingDownvote;
+
+    if (downvoteAlreadyExists) {
+      comment.removeVote(existingDownvote);
+    } 
+    
+    else {
+      const downvoteOrError = CommentVote
+        .createDownvote(member.memberId, comment.commentId)
+
+      if (downvoteOrError.isFailure) {
+        return left(downvoteOrError);
+      }
+
+      const downvote: CommentVote = downvoteOrError.getValue();
+      comment.addVote(downvote);
+    }
+
+    // Aggregate knows the update
+    post.updateComment(comment);
+
+    return right(Result.ok<void>());  
+  }
+
+  public toggleCommentUpvote (
+    post: Post, 
+    member: Member, 
+    comment: Comment, 
+    existingVotesOnCommentByMember: CommentVote[]
+  ): UpvoteCommentResponse {
+
+    const existingUpvote: CommentVote = existingVotesOnCommentByMember
+      .find((v) => v.isUpvote());
+
+    const upvoteAlreadyExists = !!existingUpvote;
+
+    if (upvoteAlreadyExists) {
+      comment.removeVote(existingUpvote);
+    } 
+    
+    else {
+      const upvoteOrError = CommentVote
+        .createUpvote(member.memberId, comment.commentId)
+
+      if (upvoteOrError.isFailure) {
+        return left(upvoteOrError);
+      }
+
+      const upvote: CommentVote = upvoteOrError.getValue();
+      comment.addVote(upvote);
+    }
+
+    // Aggregate knows the update
+    post.updateComment(comment);
+
+    return right(Result.ok<void>()); 
+  }
 
   public togglePostDownvote (
     post: Post,

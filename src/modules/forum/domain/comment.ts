@@ -9,12 +9,13 @@ import { Guard } from "../../../shared/core/Guard";
 import { PostId } from "./postId";
 import { has } from 'lodash'
 import { CommentVote } from "./commentVote";
+import { CommentVotes } from "./commentVotes";
 
 export interface CommentProps {
   memberId: MemberId;
   text: CommentText;
   postId: PostId;
-  votes?: CommentVote[];
+  votes?: CommentVotes;
   parentCommentId?: CommentId;
   points?: number;
 }
@@ -46,6 +47,20 @@ export class Comment extends Entity<CommentProps> {
     return this.props.points;
   }
 
+  public removeVote (vote: CommentVote): Result<void> {
+    this.props.votes.remove(vote);
+    return Result.ok<void>();
+  }
+
+  public addVote (vote: CommentVote): Result<void> {
+    this.props.votes.add(vote);
+    return Result.ok<void>();
+  }
+
+  public getVotes (): CommentVotes {
+    return this.props.votes;
+  }
+
   private constructor (props: CommentProps, id?: UniqueEntityID) {
     super(props, id);
   }
@@ -64,7 +79,7 @@ export class Comment extends Entity<CommentProps> {
       return Result.ok<Comment>(new Comment({
         ...props,
         points: has(props, 'points') ? props.points : 1,
-        votes: props.votes ? props.votes : []
+        votes: props.votes ? props.votes : CommentVotes.create([])
       }, id));
     }
   }
