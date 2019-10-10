@@ -49,11 +49,13 @@ export class Comment extends Entity<CommentProps> {
 
   public removeVote (vote: CommentVote): Result<void> {
     this.props.votes.remove(vote);
+    this.props.points--;
     return Result.ok<void>();
   }
 
   public addVote (vote: CommentVote): Result<void> {
     this.props.votes.add(vote);
+    this.props.points++;
     return Result.ok<void>();
   }
 
@@ -76,11 +78,23 @@ export class Comment extends Entity<CommentProps> {
       return Result.fail<Comment>(nullGuard.message);
     } else {
 
-      return Result.ok<Comment>(new Comment({
+      const isNewComment = !!id === false;
+
+      const defaultCommentProps: CommentProps = {
         ...props,
-        points: has(props, 'points') ? props.points : 1,
+        points: has(props, 'points') ? props.points : 0,
         votes: props.votes ? props.votes : CommentVotes.create([])
-      }, id));
+      }
+
+      const comment = new Comment(defaultCommentProps, id);
+
+      if (isNewComment) {
+        comment.addVote(
+          CommentVote.createUpvote(props.memberId, comment.commentId).getValue()
+        )
+      }
+
+      return Result.ok<Comment>(comment);
     }
   }
 }

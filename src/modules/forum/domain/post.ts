@@ -121,17 +121,25 @@ export class Post extends AggregateRoot<PostProps> {
     const removedVotes = commentVotes.getRemovedItems();
 
     for (let newVote of newVotes) {
-      if (newVote.isUpvote()) {
+      const isNotInitialCommentUpvote = !newVote.memberId.equals(comment.memberId);
+
+      if (newVote.isUpvote() && isNotInitialCommentUpvote) {
         this.props.points++;
-      } else {
+      } 
+
+      if (newVote.isDownvote() && isNotInitialCommentUpvote) {
         this.props.points--;
       }
     }
 
     for (let removedVote of removedVotes) {
-      if (removedVote.isUpvote()) {
+      
+      const isNotInitialCommentUpvote = !removedVote.memberId.equals(comment.memberId);
+      if (removedVote.isUpvote() && isNotInitialCommentUpvote) {
         this.props.points--;
-      } else {
+      } 
+
+      if (removedVote.isDownvote() && isNotInitialCommentUpvote) {
         this.props.points++;
       }
     }

@@ -64,7 +64,7 @@ export class UpvoteComment implements UseCase<UpvoteCommentDTO, Promise<UpvoteCo
       }
 
       existingVotesOnCommentByMember = await this.commentVotesRepo
-        .getVotesForCommentByMemberId(post.postId,  member.memberId);
+        .getVotesForCommentByMemberId(comment.commentId, member.memberId);
 
       const upvoteCommentResult = this.postService
         .toggleCommentUpvote(post, member, comment, existingVotesOnCommentByMember);

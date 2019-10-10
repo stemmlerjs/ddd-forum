@@ -42,8 +42,13 @@ export class CommentRepo implements ICommentRepo {
     }
   }
 
-  exists (commentId: string): Promise<boolean> {
-    return null;
+  async exists (commentId: string): Promise<boolean> {
+    const CommentModel = this.models.Comment;
+    const detailsQuery = this.createBaseQuery();
+    detailsQuery.where['comment_id'] = commentId;
+    const comment = await CommentModel.findOne(detailsQuery);
+    const found = !!comment === true;
+    return found;
   }
 
   async getCommentDetailsByPostSlug (slug: string): Promise<CommentDetails[]> {
@@ -87,6 +92,7 @@ export class CommentRepo implements ICommentRepo {
     const CommentModel = this.models.Comment;
     const exists = await this.exists(comment.commentId.id.toString());
     const rawSequelizeComment = CommentMap.toPersistence(comment);
+    
 
       if (!exists) {
         
@@ -94,14 +100,13 @@ export class CommentRepo implements ICommentRepo {
           await CommentModel.create(rawSequelizeComment);
           await this.saveCommentVotes(comment.getVotes())
         } catch (err) {
-          await this.deleteComment(comment.commentId);
           throw new Error(err.toString());
         }
         
       } else {
         await this.saveCommentVotes(comment.getVotes())
 
-        const sequelizeCommentInstance = CommentModel.findOne({ 
+        const sequelizeCommentInstance = await CommentModel.findOne({ 
           where: { comment_id: comment.commentId.id.toString() }
         });
         await sequelizeCommentInstance.update(rawSequelizeComment);

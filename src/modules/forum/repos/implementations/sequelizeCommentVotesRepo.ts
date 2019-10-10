@@ -66,11 +66,11 @@ export class CommentVotesRepo implements ICommentVotesRepo {
     })
   }
 
-  async getVotesForCommentByMemberId (CommentId: CommentId, memberId: MemberId): Promise<CommentVote[]> {
+  async getVotesForCommentByMemberId (commentId: CommentId, memberId: MemberId): Promise<CommentVote[]> {
     const CommentVote = this.models.CommentVote;
     const baseQuery = this.createBaseQuery();
     baseQuery.where['member_id'] = memberId.id.toString();
-    baseQuery.where['comment_id'] = CommentId.id.toString();
+    baseQuery.where['comment_id'] = commentId.id.toString();
     const votes = await CommentVote.findAll(baseQuery);
     return votes.map((v) => CommentVoteMap.toDomain(v));
   }
