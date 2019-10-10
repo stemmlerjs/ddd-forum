@@ -60,6 +60,12 @@ class PostVotesRepo {
             await this.save(vote);
         }
     }
+    async countPostUpvotesByPostId(postId) {
+        return 0;
+    }
+    async countPostDownvotesByPostId(postId) {
+        return 0;
+    }
 }
 exports.PostVotesRepo = PostVotesRepo;
 //# sourceMappingURL=sequelizePostVotesRepo.js.map

@@ -25,26 +25,43 @@ class Comment extends Entity_1.Entity {
         return this.props.text;
     }
     get points() {
-        return this.props.points;
+        let initialValue = this.props.points;
+        return initialValue
+            + this.computeVotePoints();
+    }
+    computeVotePoints() {
+        let tally = 0;
+        for (let vote of this.props.votes.getNewItems()) {
+            if (vote.isUpvote()) {
+                tally++;
+            }
+            if (vote.isDownvote()) {
+                tally--;
+            }
+        }
+        for (let vote of this.props.votes.getRemovedItems()) {
+            if (vote.isUpvote()) {
+                tally--;
+            }
+            if (vote.isDownvote()) {
+                tally++;
+            }
+        }
+        return tally;
     }
     removeVote(vote) {
-        if (!this.props.votes.exists(vote)) {
-            return Result_1.Result.fail("This vote doesn't exist.");
-        }
         this.props.votes.remove(vote);
-        this.props.points--;
         return Result_1.Result.ok();
     }
     addVote(vote) {
-        if (this.props.votes.exists(vote)) {
-            return Result_1.Result.fail("Already added this vote.");
-        }
         this.props.votes.add(vote);
-        this.props.points++;
         return Result_1.Result.ok();
     }
     getVotes() {
         return this.props.votes;
+    }
+    updateScore(totalNumUpvotes, totalNumDownvotes) {
+        this.props.points = totalNumUpvotes - totalNumDownvotes;
     }
     constructor(props, id) {
         super(props, id);

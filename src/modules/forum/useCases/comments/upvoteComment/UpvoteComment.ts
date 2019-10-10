@@ -67,7 +67,7 @@ export class UpvoteComment implements UseCase<UpvoteCommentDTO, Promise<UpvoteCo
         .getVotesForCommentByMemberId(comment.commentId, member.memberId);
 
       const upvoteCommentResult = this.postService
-        .toggleCommentUpvote(post, member, comment, existingVotesOnCommentByMember);
+        .upvoteComment(post, member, comment, existingVotesOnCommentByMember);
 
       if (upvoteCommentResult.isLeft()) {
         return left(upvoteCommentResult.value);

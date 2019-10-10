@@ -36,9 +36,9 @@ class DownvoteComment {
                 return Result_1.left(new DownvoteCommentErrors_1.DownvoteCommentErrors.PostNotFoundError(req.commentId));
             }
             existingVotesOnCommentByMember = await this.commentVotesRepo
-                .getVotesForCommentByMemberId(post.postId, member.memberId);
+                .getVotesForCommentByMemberId(comment.commentId, member.memberId);
             const downVoteCommentResult = this.postService
-                .toggleCommentDownvote(post, member, comment, existingVotesOnCommentByMember);
+                .downvoteComment(post, member, comment, existingVotesOnCommentByMember);
             if (downVoteCommentResult.isLeft()) {
                 return Result_1.left(downVoteCommentResult.value);
             }

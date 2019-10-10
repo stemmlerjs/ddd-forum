@@ -10,6 +10,8 @@ const commentPosted_1 = require("./events/commentPosted");
 const postVote_1 = require("./postVote");
 const postVoteCreated_1 = require("./events/postVoteCreated");
 const postVotes_1 = require("./postVotes");
+const comments_1 = require("./comments");
+const commentVotesChanged_1 = require("./events/commentVotesChanged");
 class Post extends AggregateRoot_1.AggregateRoot {
     get postId() {
         return postId_1.PostId.create(this._id)
@@ -52,56 +54,33 @@ class Post extends AggregateRoot_1.AggregateRoot {
     }
     addVote(vote) {
         this.props.votes.add(vote);
-        if (vote.isUpvote()) {
-            this.props.points++;
-        }
-        else {
-            this.props.points--;
-        }
         this.addDomainEvent(new postVoteCreated_1.PostVoteCreated(this, vote));
         return Result_1.Result.ok();
     }
     removeVote(vote) {
         this.props.votes.remove(vote);
-        if (vote.isUpvote()) {
-            this.props.points--;
-        }
-        else {
-            this.props.points++;
-        }
-        // this.addDomainEvent(new PostVoteCreated(this, vote));
         return Result_1.Result.ok();
     }
+    removeCommentIfExists(comment) {
+        if (this.props.comments.exists(comment)) {
+            this.props.comments.remove(comment);
+        }
+    }
     addComment(comment) {
-        this.props.comments.push(comment);
+        this.removeCommentIfExists(comment);
+        this.props.comments.add(comment);
         this.props.totalNumComments++;
         this.addDomainEvent(new commentPosted_1.CommentPosted(this, comment));
         return Result_1.Result.ok();
     }
     updateComment(comment) {
-        this.props.comments.push(comment);
-        const commentVotes = comment.getVotes();
-        const newVotes = commentVotes.getNewItems();
-        const removedVotes = commentVotes.getRemovedItems();
-        for (let newVote of newVotes) {
-            const isNotInitialCommentUpvote = !newVote.memberId.equals(comment.memberId);
-            if (newVote.isUpvote() && isNotInitialCommentUpvote) {
-                this.props.points++;
-            }
-            if (newVote.isDownvote() && isNotInitialCommentUpvote) {
-                this.props.points--;
-            }
+        this.removeCommentIfExists(comment);
+        this.props.comments.add(comment);
+        const updatedVotes = comment.getVotes().getItems();
+        const commentVoteChanged = updatedVotes.length !== 0;
+        if (commentVoteChanged) {
+            this.addDomainEvent(new commentVotesChanged_1.CommentVotesChanged(this, comment));
         }
-        for (let removedVote of removedVotes) {
-            const isNotInitialCommentUpvote = !removedVote.memberId.equals(comment.memberId);
-            if (removedVote.isUpvote() && isNotInitialCommentUpvote) {
-                this.props.points--;
-            }
-            if (removedVote.isDownvote() && isNotInitialCommentUpvote) {
-                this.props.points++;
-            }
-        }
-        // Domain event here
         return Result_1.Result.ok();
     }
     isLinkPost() {
@@ -141,7 +120,7 @@ class Post extends AggregateRoot_1.AggregateRoot {
         if (!this.isValidPostType(props.type)) {
             return Result_1.Result.fail("Invalid post type provided.");
         }
-        const defaultValues = Object.assign(Object.assign({}, props), { comments: props.comments ? props.comments : [], points: lodash_1.has(props, 'points') ? props.points : 0, dateTimePosted: props.dateTimePosted ? props.dateTimePosted : new Date(), totalNumComments: props.totalNumComments ? props.totalNumComments : 0, votes: props.votes ? props.votes : postVotes_1.PostVotes.create([]) });
+        const defaultValues = Object.assign(Object.assign({}, props), { comments: props.comments ? props.comments : comments_1.Comments.create([]), points: lodash_1.has(props, 'points') ? props.points : 0, dateTimePosted: props.dateTimePosted ? props.dateTimePosted : new Date(), totalNumComments: props.totalNumComments ? props.totalNumComments : 0, votes: props.votes ? props.votes : postVotes_1.PostVotes.create([]) });
         const isNewPost = !!id === false;
         const post = new Post(defaultValues, id);
         if (isNewPost) {

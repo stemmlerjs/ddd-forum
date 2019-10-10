@@ -120,7 +120,7 @@ class PostRepo {
         return PostModel.destroy({ where: { post_id: postId.id.toString() } });
     }
     saveComments(comments) {
-        return this.commentRepo.saveBulk(comments);
+        return this.commentRepo.saveBulk(comments.getItems());
     }
     savePostVotes(postVotes) {
         return this.postVotesRepo.saveBulk(postVotes);

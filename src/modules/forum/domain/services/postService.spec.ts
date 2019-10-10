@@ -1,3 +1,4 @@
+
 import { Comment } from "../comment"
 import { PostService } from "./postService";
 import { Post } from "../post";
@@ -46,7 +47,7 @@ beforeEach(() => {
   memberTwoCommentVotes = [];
 })
 
-test ('Toggling upvote on a new comment using the same member simply removes the initial vote', () => {
+test ('Comments: Given one member, a downvote to a post without any votes should add one downvote', () => {
   postTitle = PostTitle.create({ value: 'Cool first post!' }).getValue();
   
   post = Post.create({ 
@@ -61,33 +62,25 @@ test ('Toggling upvote on a new comment using the same member simply removes the
     text: CommentText.create({ value: "yeah" }).getValue(),
     memberId: memberIdOne,
     postId: post.postId
-  })
+  }, new UniqueEntityID(''))
   .getValue();
 
-  // Add it to the post
+
+  // Add comment to post
   post.addComment(comment);
 
-  // Post points should still be one. We don't up the points until we see upvotes.
-  expect(post.points).toEqual(1);
+  postService.downvoteComment(post, memberOne, comment, memberOneCommentVotes);
 
-  expect(comment.getVotes().currentItems.length).toBe(1);
-  expect(comment.getVotes().currentItems[0].isUpvote()).toBe(true);
-  expect(comment.getVotes().currentItems[0].memberId.equals(memberIdOne)).toBe(true);
-  
-  postService.toggleCommentUpvote(post, memberOne, comment, comment.getVotes().currentItems);
+  expect(comment.getVotes().getItems().length).toEqual(1);
+  expect(comment.getVotes().getItems()[0].isDownvote()).toEqual(true);
+  expect(comment.getVotes().getNewItems().length).toEqual(1);
+  expect(comment.getVotes().getRemovedItems().length).toEqual(0);
 
-  // We just removed the only upvote we had on here
-  expect(comment.points).toEqual(0);
-  expect(comment.getVotes().currentItems.length).toBe(0);
+});
 
-  // Doing it again puts the points back up to one
-  postService.toggleCommentUpvote(post, memberOne, comment, comment.getVotes().currentItems);
-  expect(comment.points).toEqual(1);
-
-})
-
-test ('Upvoting', () => {
+test ('Comments: Given one member, several downvotes to an already downvoted post should do nothing.', () => {
   postTitle = PostTitle.create({ value: 'Cool first post!' }).getValue();
+  
   post = Post.create({ 
     title: postTitle,
     memberId: memberIdOne,
@@ -97,28 +90,63 @@ test ('Upvoting', () => {
   }).getValue()
 
   comment = Comment.create({ 
-    text: CommentText.create({ value: "Yeah" }).getValue(),
+    text: CommentText.create({ value: "yeah" }).getValue(),
     memberId: memberIdOne,
     postId: post.postId
-  }).getValue();
+  }, new UniqueEntityID(''))
+  .getValue();
 
-  // Add it to the post. Given the original upvote, it should be equal to 1.
+
+  // Add comment to post
   post.addComment(comment);
-  expect(post.points).toEqual(1);
-  expect(comment.points).toEqual(1);
 
-  // Now, if member two upvotes the comment...
-  postService.toggleCommentUpvote(post, memberTwo, comment, memberTwoCommentVotes);
+  postService.downvoteComment(post, memberOne, comment, memberOneCommentVotes);
 
-  // There should be one vote for member two from that
-  memberTwoCommentVotes = comment.getVotes().getItems().filter((c) => c.memberId.equals(memberIdTwo))
-  expect(memberTwoCommentVotes.length).toBe(1);
+  // After it's saved to a repo, we'd return the list again
+  memberOneCommentVotes = comment.getVotes().getItems().filter((v) => v.memberId.equals(memberOne))
+  expect(memberOneCommentVotes.length).toEqual(1);
 
-  // The comment should have two points
-  expect(comment.points).toEqual(2);
+  postService.downvoteComment(post, memberOne, comment, memberOneCommentVotes);
+  postService.downvoteComment(post, memberOne, comment, memberOneCommentVotes);
+  
+  expect(memberOneCommentVotes.length).toEqual(1);
 
-  // And the post should have 2 points (initial post vote + member two upvote),
-  // (we don't count the initial comment vote as an upvote)
-  expect(post.points).toEqual(2);
+  expect(comment.getVotes().getItems().length).toEqual(1);
+  expect(comment.getVotes().getItems()[0].isDownvote()).toEqual(true);
+  expect(comment.getVotes().getNewItems().length).toEqual(1);
+  expect(comment.getVotes().getRemovedItems().length).toEqual(0);
 
+});
+
+
+test('Comments: Given one member, a downvote to a comment it already upvoted should merely remove the upvote and create no additional downvote', () => {
+  postTitle = PostTitle.create({ value: 'Cool first post!' }).getValue();
+  
+  post = Post.create({ 
+    title: postTitle,
+    memberId: memberIdOne,
+    type: 'text',
+    text: PostText.create({ value: "Wow, this is a sick post!" }).getValue(),
+    slug: PostSlug.create(postTitle).getValue()
+  }).getValue()
+
+  comment = Comment.create({ 
+    text: CommentText.create({ value: "yeah" }).getValue(),
+    memberId: memberIdOne,
+    postId: post.postId
+  }, new UniqueEntityID(''))
+  .getValue();
+
+
+  // Add comment to post
+  post.addComment(comment);
+
+  // Create existing upvotes
+  memberOneCommentVotes = [CommentVote.createUpvote(memberIdOne, comment.commentId).getValue()];
+  postService.downvoteComment(post, memberOne, comment, memberOneCommentVotes);
+
+  expect(comment.getVotes().getRemovedItems().length).toEqual(1);
+
+  // we don't do two operations, so we should ONLY merely remove the upvote.
+  expect(comment.getVotes().getNewItems().length).toEqual(0);     
 })

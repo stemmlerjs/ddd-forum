@@ -38,7 +38,7 @@ class UpvoteComment {
             existingVotesOnCommentByMember = await this.commentVotesRepo
                 .getVotesForCommentByMemberId(comment.commentId, member.memberId);
             const upvoteCommentResult = this.postService
-                .toggleCommentUpvote(post, member, comment, existingVotesOnCommentByMember);
+                .upvoteComment(post, member, comment, existingVotesOnCommentByMember);
             if (upvoteCommentResult.isLeft()) {
                 return Result_1.left(upvoteCommentResult.value);
             }

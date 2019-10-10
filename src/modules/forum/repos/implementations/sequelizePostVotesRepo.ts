@@ -75,4 +75,12 @@ export class PostVotesRepo implements IPostVotesRepo {
     }
   }
 
+  async countPostUpvotesByPostId (postId: PostId): Promise<number> {
+    return 0;
+  }
+
+  async countPostDownvotesByPostId (postId: PostId): Promise<number> {
+    return 0;
+  }
+
 }

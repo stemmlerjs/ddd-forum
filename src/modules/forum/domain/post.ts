@@ -18,6 +18,7 @@ import { PostVote } from "./postVote";
 import { PostVoteCreated } from "./events/postVoteCreated";
 import { PostVotes } from "./postVotes";
 import { Comments } from "./comments";
+import { CommentVotesChanged } from "./events/commentVotesChanged";
 
 export interface PostProps {
   memberId: MemberId;
@@ -61,10 +62,7 @@ export class Post extends AggregateRoot<PostProps> {
   }
 
   get points (): number {
-    let initialValue = this.props.points;
-    return initialValue 
-      + this.computePostVotePoints()
-      + this.computePostCommentPoints()
+    return this.props.points;
   }
 
   get link (): PostLink {
@@ -81,52 +79,6 @@ export class Post extends AggregateRoot<PostProps> {
 
   get totalNumComments (): number {
     return this.props.totalNumComments;
-  }
-
-  private computePostVotePoints (): number {
-    let tally = 0;
-
-    for (let vote of this.props.votes.getNewItems()) {
-      if (vote.isUpvote()) {
-        tally++;
-      } else {
-        tally--;
-      }
-    }
-
-    for (let vote of this.props.votes.getRemovedItems()) {
-      if (vote.isUpvote()) {
-        tally--;
-      } else {
-        tally++;
-      }
-    }
-    return tally; 
-  }
-
-  private computePostCommentPoints (): number {
-    let tally = 0;
-
-    for (let comment of this.props.comments.getItems()) {
-      
-      const commentVotes = comment.getVotes().getNewItems();
-
-      for (let vote of commentVotes) {
-        
-        const voteIsNotInitialCommentUpvote = !vote.memberId
-          .equals(comment.memberId);
-
-        if (vote.isUpvote() && voteIsNotInitialCommentUpvote) {
-          tally++;
-        } 
-
-        if (vote.isDownvote()) {
-          tally--;
-        }
-      } 
-    }
-
-    return tally;
   }
 
   public updateTotalNumberComments (numComments: number): void {
@@ -163,7 +115,14 @@ export class Post extends AggregateRoot<PostProps> {
   public updateComment (comment: Comment): Result<void> {
     this.removeCommentIfExists(comment);
     this.props.comments.add(comment);
-    // Domain event here
+
+    const updatedVotes = comment.getVotes().getItems();
+    const commentVoteChanged = updatedVotes.length !== 0;
+
+    if (commentVoteChanged) {
+      this.addDomainEvent(new CommentVotesChanged(this, comment));
+    }
+
     return Result.ok<void>();
   }
 

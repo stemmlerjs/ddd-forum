@@ -64,10 +64,10 @@ export class DownvoteComment implements UseCase<DownvoteCommentDTO, Promise<Down
       }
 
       existingVotesOnCommentByMember = await this.commentVotesRepo
-        .getVotesForCommentByMemberId(post.postId,  member.memberId);
+        .getVotesForCommentByMemberId(comment.commentId, member.memberId);
 
       const downVoteCommentResult = this.postService
-        .toggleCommentDownvote(post, member, comment, existingVotesOnCommentByMember);
+        .downvoteComment(post, member, comment, existingVotesOnCommentByMember);
 
       if (downVoteCommentResult.isLeft()) {
         return left(downVoteCommentResult.value);

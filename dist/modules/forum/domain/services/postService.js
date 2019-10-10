@@ -5,43 +5,61 @@ const Result_1 = require("../../../../shared/core/Result");
 const postVote_1 = require("../postVote");
 const commentVote_1 = require("../commentVote");
 class PostService {
-    toggleCommentDownvote(post, member, comment, existingVotesOnCommentByMember) {
+    downvoteComment(post, member, comment, existingVotesOnCommentByMember) {
+        // If it was already downvoted, do nothing.
         const existingDownvote = existingVotesOnCommentByMember
-            .find((v) => v.isUpvote());
+            .find((v) => v.isDownvote());
         const downvoteAlreadyExists = !!existingDownvote;
         if (downvoteAlreadyExists) {
-            comment.removeVote(existingDownvote);
+            // Do nothing
+            return Result_1.right(Result_1.Result.ok());
         }
-        else {
-            const downvoteOrError = commentVote_1.CommentVote
-                .createDownvote(member.memberId, comment.commentId);
-            if (downvoteOrError.isFailure) {
-                return Result_1.left(downvoteOrError);
-            }
-            const downvote = downvoteOrError.getValue();
-            comment.addVote(downvote);
-        }
-        // Aggregate knows the update
-        post.updateComment(comment);
-        return Result_1.right(Result_1.Result.ok());
-    }
-    toggleCommentUpvote(post, member, comment, existingVotesOnCommentByMember) {
+        // If upvote exists, we need to remove it.
         const existingUpvote = existingVotesOnCommentByMember
             .find((v) => v.isUpvote());
         const upvoteAlreadyExists = !!existingUpvote;
         if (upvoteAlreadyExists) {
             comment.removeVote(existingUpvote);
+            post.updateComment(comment);
+            return Result_1.right(Result_1.Result.ok());
         }
-        else {
-            const upvoteOrError = commentVote_1.CommentVote
-                .createUpvote(member.memberId, comment.commentId);
-            if (upvoteOrError.isFailure) {
-                return Result_1.left(upvoteOrError);
-            }
-            const upvote = upvoteOrError.getValue();
-            comment.addVote(upvote);
+        // Neither, let's create the downvote ourselves.
+        const downvoteOrError = commentVote_1.CommentVote
+            .createDownvote(member.memberId, comment.commentId);
+        if (downvoteOrError.isFailure) {
+            return Result_1.left(downvoteOrError);
         }
-        // Aggregate knows the update
+        const downvote = downvoteOrError.getValue();
+        comment.addVote(downvote);
+        post.updateComment(comment);
+        return Result_1.right(Result_1.Result.ok());
+    }
+    upvoteComment(post, member, comment, existingVotesOnCommentByMember) {
+        // If upvote already exists 
+        const existingUpvote = existingVotesOnCommentByMember
+            .find((v) => v.isUpvote());
+        const upvoteAlreadyExists = !!existingUpvote;
+        if (upvoteAlreadyExists) {
+            // Do nothing
+            return Result_1.right(Result_1.Result.ok());
+        }
+        // If downvote exists, we need to promote the remove it.
+        const existingDownvote = existingVotesOnCommentByMember
+            .find((v) => v.isDownvote());
+        const downvoteAlreadyExists = !!existingDownvote;
+        if (downvoteAlreadyExists) {
+            comment.removeVote(existingDownvote);
+            post.updateComment(comment);
+            return Result_1.right(Result_1.Result.ok());
+        }
+        // Otherwise, give the comment an upvote
+        const upvoteOrError = commentVote_1.CommentVote
+            .createUpvote(member.memberId, comment.commentId);
+        if (upvoteOrError.isFailure) {
+            return Result_1.left(upvoteOrError);
+        }
+        const upvote = upvoteOrError.getValue();
+        comment.addVote(upvote);
         post.updateComment(comment);
         return Result_1.right(Result_1.Result.ok());
     }
