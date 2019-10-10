@@ -11,6 +11,7 @@ import { IPostVotesRepo } from "../postVotesRepo";
 import { PostVote } from "../../domain/postVote";
 import { PostVotes } from "../../domain/postVotes";
 import { MemberId } from "../../domain/memberId";
+import { Comments } from "../../domain/comments";
 
 export class PostRepo implements IPostRepo {
 
@@ -148,8 +149,8 @@ export class PostRepo implements IPostRepo {
     return PostModel.destroy({ where: { post_id: postId.id.toString() }});
   }
 
-  private saveComments (comments: Comment[]) {
-    return this.commentRepo.saveBulk(comments);
+  private saveComments (comments: Comments) {
+    return this.commentRepo.saveBulk(comments.getItems());
   }
 
   private savePostVotes (postVotes: PostVotes) {

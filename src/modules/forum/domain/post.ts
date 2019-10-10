@@ -17,6 +17,7 @@ import { CommentPosted } from "./events/commentPosted";
 import { PostVote } from "./postVote";
 import { PostVoteCreated } from "./events/postVoteCreated";
 import { PostVotes } from "./postVotes";
+import { Comments } from "./comments";
 
 export interface PostProps {
   memberId: MemberId;
@@ -25,7 +26,7 @@ export interface PostProps {
   type: PostType;
   text?: PostText;
   link?: PostLink;
-  comments?: Comment[];
+  comments?: Comments;
   votes?: PostVotes;
   totalNumComments?: number;
   points?: number; // posts can have negative or positive valued points
@@ -55,12 +56,15 @@ export class Post extends AggregateRoot<PostProps> {
     return this.props.dateTimePosted;
   }
 
-  get comments (): Comment[] {
+  get comments (): Comments {
     return this.props.comments;
   }
 
   get points (): number {
-    return this.props.points;
+    let initialValue = this.props.points;
+    return initialValue 
+      + this.computePostVotePoints()
+      + this.computePostCommentPoints()
   }
 
   get link (): PostLink {
@@ -79,6 +83,52 @@ export class Post extends AggregateRoot<PostProps> {
     return this.props.totalNumComments;
   }
 
+  private computePostVotePoints (): number {
+    let tally = 0;
+
+    for (let vote of this.props.votes.getNewItems()) {
+      if (vote.isUpvote()) {
+        tally++;
+      } else {
+        tally--;
+      }
+    }
+
+    for (let vote of this.props.votes.getRemovedItems()) {
+      if (vote.isUpvote()) {
+        tally--;
+      } else {
+        tally++;
+      }
+    }
+    return tally; 
+  }
+
+  private computePostCommentPoints (): number {
+    let tally = 0;
+
+    for (let comment of this.props.comments.getItems()) {
+      
+      const commentVotes = comment.getVotes().getNewItems();
+
+      for (let vote of commentVotes) {
+        
+        const voteIsNotInitialCommentUpvote = !vote.memberId
+          .equals(comment.memberId);
+
+        if (vote.isUpvote() && voteIsNotInitialCommentUpvote) {
+          tally++;
+        } 
+
+        if (vote.isDownvote()) {
+          tally--;
+        }
+      } 
+    }
+
+    return tally;
+  }
+
   public updateTotalNumberComments (numComments: number): void {
     if (numComments >= 0) {
       this.props.totalNumComments = numComments;
@@ -87,63 +137,32 @@ export class Post extends AggregateRoot<PostProps> {
 
   public addVote (vote: PostVote): Result<void> {
     this.props.votes.add(vote);
-    if (vote.isUpvote()) {
-      this.props.points++;
-    } else {
-      this.props.points--;
-    }
     this.addDomainEvent(new PostVoteCreated(this, vote));
     return Result.ok<void>();
   }
 
   public removeVote (vote: PostVote): Result<void> {
     this.props.votes.remove(vote);
-    if (vote.isUpvote()) {
-      this.props.points--;
-    } else {
-      this.props.points++;
-    }
-    // this.addDomainEvent(new PostVoteCreated(this, vote));
     return Result.ok<void>();
   }
 
+  private removeCommentIfExists (comment: Comment): void {
+    if (this.props.comments.exists(comment)) {
+      this.props.comments.remove(comment);
+    }
+  }
+
   public addComment (comment: Comment): Result<void> {
-    this.props.comments.push(comment);
+    this.removeCommentIfExists(comment);
+    this.props.comments.add(comment);
     this.props.totalNumComments++;
     this.addDomainEvent(new CommentPosted(this, comment));
     return Result.ok<void>();
   }
 
   public updateComment (comment: Comment): Result<void> {
-    this.props.comments.push(comment);
-    const commentVotes = comment.getVotes();
-    const newVotes = commentVotes.getNewItems();
-    const removedVotes = commentVotes.getRemovedItems();
-
-    for (let newVote of newVotes) {
-      const isNotInitialCommentUpvote = !newVote.memberId.equals(comment.memberId);
-
-      if (newVote.isUpvote() && isNotInitialCommentUpvote) {
-        this.props.points++;
-      } 
-
-      if (newVote.isDownvote() && isNotInitialCommentUpvote) {
-        this.props.points--;
-      }
-    }
-
-    for (let removedVote of removedVotes) {
-      
-      const isNotInitialCommentUpvote = !removedVote.memberId.equals(comment.memberId);
-      if (removedVote.isUpvote() && isNotInitialCommentUpvote) {
-        this.props.points--;
-      } 
-
-      if (removedVote.isDownvote() && isNotInitialCommentUpvote) {
-        this.props.points++;
-      }
-    }
-    
+    this.removeCommentIfExists(comment);
+    this.props.comments.add(comment);
     // Domain event here
     return Result.ok<void>();
   }
@@ -196,7 +215,7 @@ export class Post extends AggregateRoot<PostProps> {
 
     const defaultValues: PostProps = {
       ...props,
-      comments: props.comments ? props.comments : [],
+      comments: props.comments ? props.comments : Comments.create([]),
       points: has(props, 'points') ? props.points : 0,
       dateTimePosted: props.dateTimePosted ? props.dateTimePosted : new Date(),
       totalNumComments: props.totalNumComments ? props.totalNumComments : 0,

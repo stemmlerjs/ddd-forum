@@ -25,6 +25,7 @@ let memberIdTwo: MemberId = MemberId
   .getValue();
 
 let upvote: CommentVote;
+let downvote: CommentVote;
 
 beforeEach(() => {
   post = null;
@@ -65,12 +66,31 @@ test('When we upvote a comment, the score of the post increases by one', () => {
   // Someone else upvotes the comment
   upvote = CommentVote.createUpvote(memberIdTwo, commentOne.commentId).getValue();
 
+  // Test collisions
+  commentOne.addVote(upvote);
+  commentOne.addVote(upvote);
   commentOne.addVote(upvote);
 
   expect(commentOne.points).toEqual(2);
 
+  // Test collisions
   post.updateComment(commentOne);
+  post.updateComment(commentOne);
+  post.updateComment(commentOne);
+
   expect(post.points).toEqual(2);
+
+  // Now, let's add a downvote
+  downvote = CommentVote.createDownvote(memberIdTwo, commentOne.commentId).getValue();
+
+  commentOne.addVote(downvote);
+  expect(commentOne.points).toEqual(1);
+
+  post.updateComment(commentOne);
+  expect(post.points).toEqual(1);
+
+
+
 
 })
 

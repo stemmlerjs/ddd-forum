@@ -44,7 +44,37 @@ export class Comment extends Entity<CommentProps> {
   }
 
   get points (): number {
-    return this.props.points;
+    let initialValue = this.props.points;
+    return initialValue 
+      + this.computeVotePoints()
+  }
+
+  private computeVotePoints (): number {
+    let tally = 0;
+    
+    for (let vote of this.props.votes.getNewItems()) {
+
+      if (vote.isUpvote()) {
+        tally++;
+      } 
+
+      if (vote.isDownvote()) {
+        tally--;
+      }
+    } 
+
+    for (let vote of this.props.votes.getRemovedItems()) {
+
+      if (vote.isUpvote()) {
+        tally--;
+      } 
+
+      if (vote.isDownvote()) {
+        tally++;
+      }
+    } 
+
+    return tally;
   }
 
   public removeVote (vote: CommentVote): Result<void> {
@@ -52,7 +82,6 @@ export class Comment extends Entity<CommentProps> {
       return Result.fail<void>("This vote doesn't exist.")
     }
     this.props.votes.remove(vote);
-    this.props.points--;
     return Result.ok<void>();
   }
 
@@ -61,7 +90,6 @@ export class Comment extends Entity<CommentProps> {
       return Result.fail<void>("Already added this vote.")
     }
     this.props.votes.add(vote);
-    this.props.points++;
     return Result.ok<void>();
   }
 
