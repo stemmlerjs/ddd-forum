@@ -15,7 +15,7 @@
     "db:flush:test": "cross-env NODE_ENV=test npm run db:delete:test && npm run db:create:test",
     "migrate:dev": "npm run build && cross-env NODE_ENV=development dotenv -e .env sequelize db:migrate",
     "migrate:test": "npm run build && cross-env NODE_ENV=test dotenv -e .env sequelize db:migrate --env test",
-    "migrate:prod": "npm run build && cross-env NODE_ENV=production dotenv -e .env sequelize db:migrate --env production",
+    "migrate:prod": "sequelize db:migrate --env production",
     "start:dev": "cross-env NODE_ENV=development nodemon",
     "prestart": "npm run migrate:prod",
     "start": "node dist/index",
