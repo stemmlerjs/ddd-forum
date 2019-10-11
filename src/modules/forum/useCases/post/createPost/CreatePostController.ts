@@ -3,6 +3,7 @@ import { CreatePost } from "./CreatePost";
 import { CreatePostDTO } from "./CreatePostDTO";
 import { DecodedExpressRequest } from "../../../../users/infra/http/models/decodedRequest";
 import { CreatePostErrors } from "./CreatePostErrors";
+import { TextUtils } from "../../../../../shared/utils/TextUtils";
 
 
 export class CreatePostController extends BaseController {
@@ -18,11 +19,11 @@ export class CreatePostController extends BaseController {
     const { userId } = req.decoded;
 
     const dto: CreatePostDTO = {
-      title: this.req.body.title,
-      text: this.req.body.text,
+      title: TextUtils.sanitize(this.req.body.title),
+      text: !!this.req.body.text ? TextUtils.sanitize(this.req.body.text) : null,
       userId: userId,
       postType: this.req.body.postType,
-      link: this.req.body.link
+      link: !!this.req.body.link ? TextUtils.sanitize(this.req.body.link) : null
     }
   
     try {

@@ -4,6 +4,7 @@ import { ReplyToPost } from "./ReplyToPost";
 import { DecodedExpressRequest } from "../../../../users/infra/http/models/decodedRequest";
 import { ReplyToPostDTO } from "./ReplyToPostDTO";
 import { ReplyToPostErrors } from "./ReplyToPostErrors";
+import { TextUtils } from "../../../../../shared/utils/TextUtils";
 
 export class ReplyToPostController extends BaseController {
   private useCase: ReplyToPost;
@@ -17,8 +18,9 @@ export class ReplyToPostController extends BaseController {
     const req = this.req as DecodedExpressRequest;
     const { userId } = req.decoded;
 
+    
     const dto: ReplyToPostDTO = {
-      comment: this.req.body.comment,
+      comment: TextUtils.sanitize(this.req.body.comment),
       userId: userId,
       slug: this.req.query.slug
     }

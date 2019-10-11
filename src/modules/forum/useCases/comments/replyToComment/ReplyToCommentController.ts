@@ -3,6 +3,7 @@ import { ReplyToComment } from "./ReplyToComment";
 import { DecodedExpressRequest } from "../../../../users/infra/http/models/decodedRequest";
 import { ReplyToCommentDTO } from "./ReplyToCommentDTO";
 import { ReplyToCommentErrors } from "./ReplyToCommentErrors";
+import { TextUtils } from "../../../../../shared/utils/TextUtils";
 
 
 export class ReplyToCommentController extends BaseController {
@@ -18,7 +19,7 @@ export class ReplyToCommentController extends BaseController {
     const { userId } = req.decoded;
 
     const dto: ReplyToCommentDTO = {
-      comment: this.req.body.comment,
+      comment: TextUtils.sanitize(this.req.body.comment),
       userId: userId,
       slug: this.req.query.slug,
       parentCommentId: this.req.params.commentId

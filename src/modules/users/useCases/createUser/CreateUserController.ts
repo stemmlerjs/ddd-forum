@@ -3,6 +3,7 @@ import { CreateUserUseCase } from "./CreateUserUseCase";
 import { CreateUserDTO } from "./CreateUserDTO";
 import { CreateUserErrors } from "./CreateUserErrors";
 import { BaseController } from "../../../../shared/infra/http/models/BaseController";
+import { TextUtils } from "../../../../shared/utils/TextUtils";
 
 export class CreateUserController extends BaseController {
   private useCase: CreateUserUseCase;
@@ -13,7 +14,13 @@ export class CreateUserController extends BaseController {
   }
 
   async executeImpl (): Promise<any> {
-    const dto: CreateUserDTO = this.req.body as CreateUserDTO;
+    let dto: CreateUserDTO = this.req.body as CreateUserDTO;
+
+    dto = {
+      username: TextUtils.sanitize(dto.username),
+      email: TextUtils.sanitize(dto.email),
+      password: dto.password
+    }
 
     try {
       const result = await this.useCase.execute(dto);
