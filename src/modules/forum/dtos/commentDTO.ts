@@ -10,5 +10,6 @@ export interface CommentDTO {
   member: MemberDTO;
   createdAt: string | Date;
   childComments: CommentDTO[];
+  points: number;
 }
 

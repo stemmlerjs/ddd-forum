@@ -16,6 +16,7 @@ interface CommentDetailsProps {
   postSlug: PostSlug;
   postTitle: PostTitle;
   parentCommentId?: CommentId;
+  points: number;
 }
 
 export class CommentDetails extends ValueObject<CommentDetailsProps> {
@@ -48,6 +49,10 @@ export class CommentDetails extends ValueObject<CommentDetailsProps> {
     return this.props.parentCommentId;
   }
 
+  get points (): number {
+    return this.props.points;
+  }
+
   private constructor (props: CommentDetailsProps) {
     super(props);
   }
@@ -59,7 +64,8 @@ export class CommentDetails extends ValueObject<CommentDetailsProps> {
       { argument: props.member, argumentName: 'member' },
       { argument: props.createdAt, argumentName: 'createdAt' },
       { argument: props.postSlug, argumentName: 'postSlug' },
-      { argument: props.postTitle, argumentName: 'postTitle' }
+      { argument: props.postTitle, argumentName: 'postTitle' },
+      { argument: props.points, argumentName: 'points' }
     ]);
 
     if (!nullGuard.succeeded) {

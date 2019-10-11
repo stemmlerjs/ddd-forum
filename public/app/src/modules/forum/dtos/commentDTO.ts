@@ -10,5 +10,6 @@ export interface CommentDTO {
   createdAt: string | Date;
   childComments: CommentDTO[];
   postTitle: string;
+  points: number;
 }
 

@@ -19,7 +19,8 @@ export class CommentDetailsMap implements Mapper<CommentDetails> {
       member: MemberDetailsMap.toDomain(raw.Member),
       createdAt: raw.createdAt,
       postSlug: PostSlug.createFromExisting(raw.Post.slug).getValue(),
-      parentCommentId: raw.parent_comment_id ? CommentId.create(new UniqueEntityID(raw.parent_comment_id)).getValue() : null
+      parentCommentId: raw.parent_comment_id ? CommentId.create(new UniqueEntityID(raw.parent_comment_id)).getValue() : null,
+      points: raw.points
     });
 
     commentDetailsOrError.isFailure ? console.log(commentDetailsOrError.error) : '';
@@ -36,7 +37,8 @@ export class CommentDetailsMap implements Mapper<CommentDetails> {
       member: MemberDetailsMap.toDTO(commentDetails.member),
       createdAt: commentDetails.createdAt,
       childComments: [],
-      postTitle: commentDetails.postTitle.value
+      postTitle: commentDetails.postTitle.value,
+      points: commentDetails.points
     }
   } 
 }

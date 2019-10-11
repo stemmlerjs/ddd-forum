@@ -16,7 +16,8 @@ class CommentDetailsMap {
             member: memberDetailsMap_1.MemberDetailsMap.toDomain(raw.Member),
             createdAt: raw.createdAt,
             postSlug: postSlug_1.PostSlug.createFromExisting(raw.Post.slug).getValue(),
-            parentCommentId: raw.parent_comment_id ? commentId_1.CommentId.create(new UniqueEntityID_1.UniqueEntityID(raw.parent_comment_id)).getValue() : null
+            parentCommentId: raw.parent_comment_id ? commentId_1.CommentId.create(new UniqueEntityID_1.UniqueEntityID(raw.parent_comment_id)).getValue() : null,
+            points: raw.points
         });
         commentDetailsOrError.isFailure ? console.log(commentDetailsOrError.error) : '';
         return commentDetailsOrError.isSuccess ? commentDetailsOrError.getValue() : null;
@@ -30,7 +31,8 @@ class CommentDetailsMap {
             member: memberDetailsMap_1.MemberDetailsMap.toDTO(commentDetails.member),
             createdAt: commentDetails.createdAt,
             childComments: [],
-            postTitle: commentDetails.postTitle.value
+            postTitle: commentDetails.postTitle.value,
+            points: commentDetails.points
         };
     }
 }

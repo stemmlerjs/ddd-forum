@@ -14,7 +14,7 @@ interface PostCommentProps extends Comment {
 const PostComment: React.FC<PostCommentProps> = (props) => (
   <div className="comment">
     <Points
-      points={1}
+      points={props.points}
       onUpvoteClicked={() => props.onUpvoteClicked()}
       onDownvoteClicked={() => props.onDownvoteClicked()}
     />

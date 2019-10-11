@@ -24,7 +24,8 @@ export class CommentUtil {
       },
       createdAt: dto.createdAt,
       childComments: [],
-      postTitle: dto.postTitle
+      postTitle: dto.postTitle,
+      points: dto.points
     }
   }
 

@@ -115,14 +115,7 @@ export class Post extends AggregateRoot<PostProps> {
   public updateComment (comment: Comment): Result<void> {
     this.removeCommentIfExists(comment);
     this.props.comments.add(comment);
-
-    const updatedVotes = comment.getVotes().getItems();
-    const commentVoteChanged = updatedVotes.length !== 0;
-
-    if (commentVoteChanged) {
-      this.addDomainEvent(new CommentVotesChanged(this, comment));
-    }
-
+    this.addDomainEvent(new CommentVotesChanged(this, comment));
     return Result.ok<void>();
   }
 

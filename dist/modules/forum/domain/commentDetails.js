@@ -25,6 +25,9 @@ class CommentDetails extends ValueObject_1.ValueObject {
     get parentCommentId() {
         return this.props.parentCommentId;
     }
+    get points() {
+        return this.props.points;
+    }
     constructor(props) {
         super(props);
     }
@@ -35,7 +38,8 @@ class CommentDetails extends ValueObject_1.ValueObject {
             { argument: props.member, argumentName: 'member' },
             { argument: props.createdAt, argumentName: 'createdAt' },
             { argument: props.postSlug, argumentName: 'postSlug' },
-            { argument: props.postTitle, argumentName: 'postTitle' }
+            { argument: props.postTitle, argumentName: 'postTitle' },
+            { argument: props.points, argumentName: 'points' }
         ]);
         if (!nullGuard.succeeded) {
             return Result_1.Result.fail(nullGuard.message);

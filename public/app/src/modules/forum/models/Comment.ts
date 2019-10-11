@@ -9,6 +9,7 @@ export interface Comment {
   createdAt: string | Date;
   childComments: Comment[];
   postTitle: string;
+  points: number;
 }
 
 
