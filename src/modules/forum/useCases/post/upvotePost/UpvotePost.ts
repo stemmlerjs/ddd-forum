@@ -49,7 +49,7 @@ export class UpvotePost implements UseCase<UpvotePostDTO, Promise<UpvotePostResp
         .getVotesForPostByMemberId(post.postId,  member.memberId);
 
       const upvotePostResult = this.postService
-        .togglePostUpvote(post, member, existingVotesOnPostByMember);
+        .upvotePost(post, member, existingVotesOnPostByMember);
 
       if (upvotePostResult.isLeft()) {
         return left(upvotePostResult.value);

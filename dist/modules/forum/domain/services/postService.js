@@ -63,14 +63,23 @@ class PostService {
         post.updateComment(comment);
         return Result_1.right(Result_1.Result.ok());
     }
-    togglePostDownvote(post, member, existingVotesOnPostByMember) {
+    downvotePost(post, member, existingVotesOnPostByMember) {
+        // If already downvoted, do nothing
         const existingDownvote = existingVotesOnPostByMember
             .find((v) => v.isDownvote());
         const downvoteAlreadyExists = !!existingDownvote;
         if (downvoteAlreadyExists) {
-            post.removeVote(existingDownvote);
             return Result_1.right(Result_1.Result.ok());
         }
+        // If upvote exists, we need to remove it
+        const existingUpvote = existingVotesOnPostByMember
+            .find((v) => v.isUpvote());
+        const upvoteAlreadyExists = !!existingUpvote;
+        if (upvoteAlreadyExists) {
+            post.removeVote(existingUpvote);
+            return Result_1.right(Result_1.Result.ok());
+        }
+        // Otherwise, we get to create the downvote now
         const downvoteOrError = postVote_1.PostVote
             .createDownvote(member.memberId, post.postId);
         if (downvoteOrError.isFailure) {
@@ -80,16 +89,23 @@ class PostService {
         post.addVote(downvote);
         return Result_1.right(Result_1.Result.ok());
     }
-    togglePostUpvote(post, member, existingVotesOnPostByMember) {
+    upvotePost(post, member, existingVotesOnPostByMember) {
         const existingUpvote = existingVotesOnPostByMember
             .find((v) => v.isUpvote());
-        // If already upvoted, remove the upvote
+        // If already upvoted, do nothing
         const upvoteAlreadyExists = !!existingUpvote;
         if (upvoteAlreadyExists) {
-            post.removeVote(existingUpvote);
             return Result_1.right(Result_1.Result.ok());
         }
-        // If not upvoted, add to votes
+        // If downvoted, remove the downvote
+        const existingDownvote = existingVotesOnPostByMember
+            .find((v) => v.isDownvote());
+        const downvoteAlreadyExists = !!existingDownvote;
+        if (downvoteAlreadyExists) {
+            post.removeVote(existingDownvote);
+            return Result_1.right(Result_1.Result.ok());
+        }
+        // Otherwise, add upvote
         const upvoteOrError = postVote_1.PostVote
             .createUpvote(member.memberId, post.postId);
         if (upvoteOrError.isFailure) {

@@ -108,21 +108,36 @@ export class PostService {
     return right(Result.ok<void>()); 
   }
 
-  public togglePostDownvote (
+  public downvotePost (
     post: Post,
     member: Member,
     existingVotesOnPostByMember: PostVote[]
   ): DownvotePostResponse {
 
+    // If already downvoted, do nothing
     const existingDownvote: PostVote = existingVotesOnPostByMember
       .find((v) => v.isDownvote());
 
     const downvoteAlreadyExists = !!existingDownvote;
 
     if (downvoteAlreadyExists) {
-      post.removeVote(existingDownvote);
       return right(Result.ok<void>());
     }
+
+    // If upvote exists, we need to remove it
+    const existingUpvote: PostVote = existingVotesOnPostByMember
+      .find((v) => v.isUpvote());
+
+    const upvoteAlreadyExists = !!existingUpvote;
+
+    if (upvoteAlreadyExists) {
+
+      post.removeVote(existingUpvote);
+
+      return right(Result.ok<void>());
+    }
+
+    // Otherwise, we get to create the downvote now
 
     const downvoteOrError = PostVote
       .createDownvote(member.memberId, post.postId);
@@ -138,7 +153,7 @@ export class PostService {
     
   }
 
-  public togglePostUpvote (
+  public upvotePost (
     post: Post, 
     member: Member, 
     existingVotesOnPostByMember: PostVote[]
@@ -147,15 +162,25 @@ export class PostService {
     const existingUpvote: PostVote = existingVotesOnPostByMember
       .find((v) => v.isUpvote());
 
-    // If already upvoted, remove the upvote
+    // If already upvoted, do nothing
     const upvoteAlreadyExists = !!existingUpvote;
 
     if (upvoteAlreadyExists) {
-      post.removeVote(existingUpvote);
       return right(Result.ok<void>());
     } 
 
-    // If not upvoted, add to votes
+    // If downvoted, remove the downvote
+    const existingDownvote: PostVote = existingVotesOnPostByMember
+    .find((v) => v.isDownvote());
+
+    const downvoteAlreadyExists = !!existingDownvote;
+
+    if (downvoteAlreadyExists) {
+      post.removeVote(existingDownvote);
+      return right(Result.ok<void>());
+    }
+
+    // Otherwise, add upvote
     const upvoteOrError = PostVote
       .createUpvote(member.memberId, post.postId);
 

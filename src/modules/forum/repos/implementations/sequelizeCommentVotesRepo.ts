@@ -108,6 +108,50 @@ export class CommentVotesRepo implements ICommentVotesRepo {
     const count = result[0][0]['COUNT(*)'];
     return count;
   }
+
+  async countAllPostCommentUpvotesExcludingOP (postId: PostId | string): Promise<number> {
+    postId  = postId instanceof PostId 
+    ? (<PostId>postId).id.toString() 
+    : postId;
+
+    const result = await this.models.sequelize.query(
+      `SELECT COUNT(*) FROM (
+        SELECT COUNT(*) as upvotes
+        from post P
+        join comment CM on CM.post_id = P.post_id
+        join comment_vote CV on CV.comment_id = CM.comment_id
+        where P.post_id = "${postId}"
+        and CV.type = "UPVOTE" 
+        and CV.member_id != CM.member_id
+        group by CV.comment_id
+      ) as upvotes_total;`
+    );
+
+    const count = result[0][0]['COUNT(*)'];
+    return count;
+  }
+
+  async countAllPostCommentDownvotesExcludingOP (postId: PostId | String): Promise<number> {
+    postId  = postId instanceof PostId 
+    ? (<PostId>postId).id.toString() 
+    : postId;
+
+    const result = await this.models.sequelize.query(
+      `SELECT COUNT(*) FROM (
+        SELECT COUNT(*) as upvotes
+        from post P
+        join comment CM on CM.post_id = P.post_id
+        join comment_vote CV on CV.comment_id = CM.comment_id
+        where P.post_id = "${postId}"
+        and CV.type = "DOWNVOTE" 
+        and CV.member_id != CM.member_id
+        group by CV.comment_id
+      ) as upvotes_total;`
+    );
+
+    const count = result[0][0]['COUNT(*)'];
+    return count;
+  }
   
   async countAllPostCommentUpvotes (postId: PostId | string): Promise<number> {
     postId  = postId instanceof PostId 
@@ -122,7 +166,6 @@ export class CommentVotesRepo implements ICommentVotesRepo {
         join comment_vote CV on CV.comment_id = CM.comment_id
         where P.post_id = "${postId}"
         and CV.type = "UPVOTE" 
-        and CV.member_id != CM.member_id
         group by CV.comment_id
       ) as upvotes_total;`
     );

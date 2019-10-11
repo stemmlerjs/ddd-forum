@@ -30,7 +30,7 @@ class UpvotePost {
             existingVotesOnPostByMember = await this.postVotesRepo
                 .getVotesForPostByMemberId(post.postId, member.memberId);
             const upvotePostResult = this.postService
-                .togglePostUpvote(post, member, existingVotesOnPostByMember);
+                .upvotePost(post, member, existingVotesOnPostByMember);
             if (upvotePostResult.isLeft()) {
                 return Result_1.left(upvotePostResult.value);
             }

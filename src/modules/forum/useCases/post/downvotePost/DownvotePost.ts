@@ -55,7 +55,7 @@ export class DownvotePost implements UseCase<DownvotePostDTO, Promise<DownvotePo
         .getVotesForPostByMemberId(post.postId, member.memberId);
 
       const downvotePostResult = this.postService
-        .togglePostDownvote(post, member, existingVotesOnPostByMember)
+        .downvotePost(post, member, existingVotesOnPostByMember)
 
       if (downvotePostResult.isLeft()) {
         return left(downvotePostResult.value);

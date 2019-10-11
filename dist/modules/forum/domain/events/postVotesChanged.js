@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-class PostVoteCreated {
+class PostVotesChanged {
     constructor(post, vote) {
         this.dateTimeOccurred = new Date();
         this.post = post;
@@ -10,5 +10,5 @@ class PostVoteCreated {
         return this.post.id;
     }
 }
-exports.PostVoteCreated = PostVoteCreated;
-//# sourceMappingURL=postVoteCreated.js.map
+exports.PostVotesChanged = PostVotesChanged;
+//# sourceMappingURL=postVotesChanged.js.map

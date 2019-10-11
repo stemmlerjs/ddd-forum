@@ -15,7 +15,7 @@ import { PostType } from "./postType";
 import { PostLink } from "./postLink";
 import { CommentPosted } from "./events/commentPosted";
 import { PostVote } from "./postVote";
-import { PostVoteCreated } from "./events/postVoteCreated";
+import { PostVotesChanged } from "./events/postVotesChanged";
 import { PostVotes } from "./postVotes";
 import { Comments } from "./comments";
 import { CommentVotesChanged } from "./events/commentVotesChanged";
@@ -87,14 +87,25 @@ export class Post extends AggregateRoot<PostProps> {
     }
   }
 
+  public updatePostScore (
+    numPostUpvotes: number, 
+    numPostDownvotes: number, 
+    numPostCommentUpvotes: number, 
+    numPostCommentDownvotes: number
+  ) {
+    this.props.points = (numPostUpvotes - numPostDownvotes) + 
+      (numPostCommentUpvotes - numPostCommentDownvotes)
+  }
+
   public addVote (vote: PostVote): Result<void> {
     this.props.votes.add(vote);
-    this.addDomainEvent(new PostVoteCreated(this, vote));
+    this.addDomainEvent(new PostVotesChanged(this, vote));
     return Result.ok<void>();
   }
 
   public removeVote (vote: PostVote): Result<void> {
     this.props.votes.remove(vote);
+    this.addDomainEvent(new PostVotesChanged(this, vote));
     return Result.ok<void>();
   }
 

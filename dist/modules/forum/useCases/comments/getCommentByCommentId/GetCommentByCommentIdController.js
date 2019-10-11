@@ -9,8 +9,10 @@ class GetCommentByCommentIdController extends BaseController_1.BaseController {
         this.useCase = useCase;
     }
     async executeImpl() {
+        const req = this.req;
         const dto = {
-            commentId: this.req.params.commentId
+            commentId: this.req.params.commentId,
+            userId: req.decoded ? req.decoded.userId : null
         };
         try {
             const result = await this.useCase.execute(dto);

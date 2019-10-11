@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const postId_1 = require("../../domain/postId");
 const postVoteMap_1 = require("../../mappers/postVoteMap");
 class PostVotesRepo {
     constructor(models) {
@@ -61,10 +62,26 @@ class PostVotesRepo {
         }
     }
     async countPostUpvotesByPostId(postId) {
-        return 0;
+        postId = postId instanceof postId_1.PostId
+            ? postId.id.toString()
+            : postId;
+        const result = await this.models.sequelize.query(`select COUNT(*) 
+        from post_vote 
+        where post_id = "${postId}"
+        and type = "UPVOTE"`);
+        const count = result[0][0]['COUNT(*)'];
+        return count;
     }
     async countPostDownvotesByPostId(postId) {
-        return 0;
+        postId = postId instanceof postId_1.PostId
+            ? postId.id.toString()
+            : postId;
+        const result = await this.models.sequelize.query(`select COUNT(*) 
+        from post_vote 
+        where post_id = "${postId}"
+        and type = "DOWNVOTE"`);
+        const count = result[0][0]['COUNT(*)'];
+        return count;
     }
 }
 exports.PostVotesRepo = PostVotesRepo;

@@ -28,6 +28,12 @@ class CommentDetails extends ValueObject_1.ValueObject {
     get points() {
         return this.props.points;
     }
+    get wasUpvotedByMe() {
+        return this.props.wasUpvotedByMe;
+    }
+    get wasDownvotedByMe() {
+        return this.props.wasDownvotedByMe;
+    }
     constructor(props) {
         super(props);
     }
@@ -44,7 +50,7 @@ class CommentDetails extends ValueObject_1.ValueObject {
         if (!nullGuard.succeeded) {
             return Result_1.Result.fail(nullGuard.message);
         }
-        return Result_1.Result.ok(new CommentDetails(props));
+        return Result_1.Result.ok(new CommentDetails(Object.assign(Object.assign({}, props), { wasUpvotedByMe: props.wasUpvotedByMe ? props.wasUpvotedByMe : false, wasDownvotedByMe: props.wasDownvotedByMe ? props.wasDownvotedByMe : false })));
     }
 }
 exports.CommentDetails = CommentDetails;

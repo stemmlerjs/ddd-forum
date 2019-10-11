@@ -8,7 +8,7 @@ const lodash_1 = require("lodash");
 const postCreated_1 = require("./events/postCreated");
 const commentPosted_1 = require("./events/commentPosted");
 const postVote_1 = require("./postVote");
-const postVoteCreated_1 = require("./events/postVoteCreated");
+const postVotesChanged_1 = require("./events/postVotesChanged");
 const postVotes_1 = require("./postVotes");
 const comments_1 = require("./comments");
 const commentVotesChanged_1 = require("./events/commentVotesChanged");
@@ -52,13 +52,18 @@ class Post extends AggregateRoot_1.AggregateRoot {
             this.props.totalNumComments = numComments;
         }
     }
+    updatePostScore(numPostUpvotes, numPostDownvotes, numPostCommentUpvotes, numPostCommentDownvotes) {
+        this.props.points = (numPostUpvotes - numPostDownvotes) +
+            (numPostCommentUpvotes - numPostCommentDownvotes);
+    }
     addVote(vote) {
         this.props.votes.add(vote);
-        this.addDomainEvent(new postVoteCreated_1.PostVoteCreated(this, vote));
+        this.addDomainEvent(new postVotesChanged_1.PostVotesChanged(this, vote));
         return Result_1.Result.ok();
     }
     removeVote(vote) {
         this.props.votes.remove(vote);
+        this.addDomainEvent(new postVotesChanged_1.PostVotesChanged(this, vote));
         return Result_1.Result.ok();
     }
     removeCommentIfExists(comment) {
@@ -76,11 +81,7 @@ class Post extends AggregateRoot_1.AggregateRoot {
     updateComment(comment) {
         this.removeCommentIfExists(comment);
         this.props.comments.add(comment);
-        const updatedVotes = comment.getVotes().getItems();
-        const commentVoteChanged = updatedVotes.length !== 0;
-        if (commentVoteChanged) {
-            this.addDomainEvent(new commentVotesChanged_1.CommentVotesChanged(this, comment));
-        }
+        this.addDomainEvent(new commentVotesChanged_1.CommentVotesChanged(this, comment));
         return Result_1.Result.ok();
     }
     isLinkPost() {

@@ -8,9 +8,11 @@ class GetCommentsByPostSlugController extends BaseController_1.BaseController {
         this.useCase = useCase;
     }
     async executeImpl() {
+        const req = this.req;
         const dto = {
             slug: this.req.query.slug,
-            offset: this.req.query.offset
+            offset: this.req.query.offset,
+            userId: req.decoded ? req.decoded.userId : null
         };
         try {
             const result = await this.useCase.execute(dto);

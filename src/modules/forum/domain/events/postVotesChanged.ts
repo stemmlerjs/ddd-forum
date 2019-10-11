@@ -5,7 +5,7 @@ import { UniqueEntityID } from "../../../../shared/domain/UniqueEntityID";
 import { Post } from "../post";
 import { PostVote } from "../postVote";
 
-export class PostVoteCreated implements IDomainEvent {
+export class PostVotesChanged implements IDomainEvent {
   public dateTimeOccurred: Date;
   public post: Post;
   public vote: PostVote;

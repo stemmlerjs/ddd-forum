@@ -1,9 +1,9 @@
 
 import { UpdatePostStats } from "./UpdatePostStats";
-import { postRepo } from "../../../repos";
+import { postRepo, postVotesRepo, commentVotesRepo } from "../../../repos";
 
 const updatePostStats = new UpdatePostStats(
-  postRepo
+  postRepo, postVotesRepo, commentVotesRepo
 )
 
 export {

@@ -80,10 +80,20 @@ export class CommentRepo implements ICommentRepo {
     return CommentMap.toDomain(comment);
   }
 
-  async getCommentDetailsByCommentId (commentId: string): Promise<CommentDetails> {
+  async getCommentDetailsByCommentId (commentId: string, memberId?: MemberId): Promise<CommentDetails> {
     const CommentModel = this.models.Comment;
     const detailsQuery = this.createBaseDetailsQuery();
     detailsQuery.where['comment_id'] = commentId;
+
+    if (!!memberId === true) {
+      detailsQuery.include.push({ 
+        model: this.models.CommentVote,
+        as: 'CommentVotes',
+        where: { member_id: memberId.id.toString() },
+        required: false
+      })
+    }
+
     const comment = await CommentModel.findOne(detailsQuery);
     const found = !!comment === true;
     if (!found) throw new Error('Comment not found');

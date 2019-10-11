@@ -34,8 +34,6 @@ export class UpdateCommentStats implements UseCase<UpdateCommentStatsDTO, Promis
         this.commentVotesRepo.countDownvotesForCommentByCommentId(req.commentId)
       ]);
 
-      console.log('Num upvotes', numUpvotes, 'num downvotes', numDownvotes);
-
       comment.updateScore(numUpvotes, numDownvotes);
 
       await this.commentRepo.save(comment);

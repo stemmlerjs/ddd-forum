@@ -75,12 +75,36 @@ export class PostVotesRepo implements IPostVotesRepo {
     }
   }
 
-  async countPostUpvotesByPostId (postId: PostId): Promise<number> {
-    return 0;
+  async countPostUpvotesByPostId (postId: PostId| string): Promise<number> {
+    postId  = postId instanceof PostId 
+    ? (<PostId>postId).id.toString() 
+    : postId;
+
+    const result = await this.models.sequelize.query(
+      `select COUNT(*) 
+        from post_vote 
+        where post_id = "${postId}"
+        and type = "UPVOTE"`
+    );
+
+    const count = result[0][0]['COUNT(*)'];
+    return count;
   }
 
-  async countPostDownvotesByPostId (postId: PostId): Promise<number> {
-    return 0;
+  async countPostDownvotesByPostId (postId: PostId | string): Promise<number> {
+    postId  = postId instanceof PostId 
+    ? (<PostId>postId).id.toString() 
+    : postId;
+
+    const result = await this.models.sequelize.query(
+      `select COUNT(*) 
+        from post_vote 
+        where post_id = "${postId}"
+        and type = "DOWNVOTE"`
+    );
+
+    const count = result[0][0]['COUNT(*)'];
+    return count;
   }
 
 }

@@ -4,8 +4,9 @@ const Result_1 = require("../../../../../shared/core/Result");
 const AppError_1 = require("../../../../../shared/core/AppError");
 const UpdatePostStatsErrors_1 = require("./UpdatePostStatsErrors");
 class UpdatePostStats {
-    constructor(postRepo) {
+    constructor(postRepo, postVotesRepo) {
         this.postRepo = postRepo;
+        this.postVotesRepo = postVotesRepo;
     }
     async execute(response) {
         const { postId } = response;
@@ -18,16 +19,14 @@ class UpdatePostStats {
                 return Result_1.left(new UpdatePostStatsErrors_1.UpdatePostStatsErrors.PostNotFoundError(postId));
             }
             const commentCount = await this.postRepo.getNumberOfCommentsByPostId(response.postId);
+            // Update comment count
             post.updateTotalNumberComments(commentCount);
-            // TODO: Calculate total number of points
-            /**
-             * How do we calculate points?
-             *
-             * number of comments +
-             * number of post upvotes +
-             * number of comment upvotes
-             *
-             */
+            // Update post points
+            const [numPostUpvotes, numPostDownvotes] = await Promise.all([
+                this.postVotesRepo.countPostUpvotesByPostId(post.postId),
+                this.postVotesRepo.countPostDownvotesByPostId(post.postId)
+            ]);
+            post.updatePostScore(numPostUpvotes, numPostDownvotes, 0, 0);
             await this.postRepo.save(post);
             return Result_1.right(Result_1.Result.ok());
         }

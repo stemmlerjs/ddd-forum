@@ -1,10 +1,10 @@
 
 import { GetCommentByCommentId } from "./GetCommentByCommentId";
-import { commentRepo } from "../../../repos";
+import { commentRepo, memberRepo } from "../../../repos";
 import { GetCommentByCommentIdController } from "./GetCommentByCommentIdController";
 
 const getCommentByCommentId = new GetCommentByCommentId(
-  commentRepo
+  commentRepo, memberRepo
 )
 
 const getCommentByCommentIdController = new GetCommentByCommentIdController(

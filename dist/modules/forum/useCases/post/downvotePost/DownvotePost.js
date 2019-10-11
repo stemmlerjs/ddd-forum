@@ -30,7 +30,7 @@ class DownvotePost {
             existingVotesOnPostByMember = await this.postVotesRepo
                 .getVotesForPostByMemberId(post.postId, member.memberId);
             const downvotePostResult = this.postService
-                .togglePostDownvote(post, member, existingVotesOnPostByMember);
+                .downvotePost(post, member, existingVotesOnPostByMember);
             if (downvotePostResult.isLeft()) {
                 return Result_1.left(downvotePostResult.value);
             }

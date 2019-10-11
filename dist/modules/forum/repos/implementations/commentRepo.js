@@ -38,10 +38,18 @@ class CommentRepo {
         const found = !!comment === true;
         return found;
     }
-    async getCommentDetailsByPostSlug(slug) {
+    async getCommentDetailsByPostSlug(slug, memberId, offset) {
         const CommentModel = this.models.Comment;
         const detailsQuery = this.createBaseDetailsQuery();
         detailsQuery.include[0].where['slug'] = slug;
+        if (!!memberId === true) {
+            detailsQuery.include.push({
+                model: this.models.CommentVote,
+                as: 'CommentVotes',
+                where: { member_id: memberId.id.toString() },
+                required: false
+            });
+        }
         const comments = await CommentModel.findAll(detailsQuery);
         return comments.map((c) => commentDetailsMap_1.CommentDetailsMap.toDomain(c));
     }
@@ -55,10 +63,18 @@ class CommentRepo {
             throw new Error('Comment not found');
         return commentMap_1.CommentMap.toDomain(comment);
     }
-    async getCommentDetailsByCommentId(commentId) {
+    async getCommentDetailsByCommentId(commentId, memberId) {
         const CommentModel = this.models.Comment;
         const detailsQuery = this.createBaseDetailsQuery();
         detailsQuery.where['comment_id'] = commentId;
+        if (!!memberId === true) {
+            detailsQuery.include.push({
+                model: this.models.CommentVote,
+                as: 'CommentVotes',
+                where: { member_id: memberId.id.toString() },
+                required: false
+            });
+        }
         const comment = await CommentModel.findOne(detailsQuery);
         const found = !!comment === true;
         if (!found)

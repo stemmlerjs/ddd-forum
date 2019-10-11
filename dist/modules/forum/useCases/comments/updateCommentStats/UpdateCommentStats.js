@@ -17,7 +17,6 @@ class UpdateCommentStats {
                 this.commentVotesRepo.countUpvotesForCommentByCommentId(req.commentId),
                 this.commentVotesRepo.countDownvotesForCommentByCommentId(req.commentId)
             ]);
-            console.log('Num upvotes', numUpvotes, 'num downvotes', numDownvotes);
             comment.updateScore(numUpvotes, numDownvotes);
             await this.commentRepo.save(comment);
             return Result_1.right(Result_1.Result.ok());

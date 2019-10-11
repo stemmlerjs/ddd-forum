@@ -13,6 +13,8 @@ export interface ICommentVotesRepo {
   countDownvotesForCommentByCommentId (comment: CommentId): Promise<number>;
   countAllPostCommentUpvotes (postId: PostId): Promise<number>;
   countAllPostCommentDownvotes (postId: PostId): Promise<number>;
+  countAllPostCommentUpvotesExcludingOP (postId: PostId): Promise<number>;
+  countAllPostCommentDownvotesExcludingOP (postId: PostId): Promise<number>;
   saveBulk (votes: CommentVotes): Promise<any>;
   save (vote: CommentVote): Promise<any>;
   delete (vote: CommentVote): Promise<any>;
