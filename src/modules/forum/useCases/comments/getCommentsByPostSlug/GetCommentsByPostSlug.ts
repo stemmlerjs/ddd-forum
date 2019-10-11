@@ -6,6 +6,8 @@ import { GetCommentsByPostSlugErrors } from "./GetCommentsByPostSlugErrors";
 import { CommentDetails } from "../../../domain/commentDetails";
 import { GetCommentsByPostSlugRequestDTO } from "./GetCommentsByPostSlugRequestDTO";
 import { ICommentRepo } from "../../../repos/commentRepo";
+import { MemberId } from "../../../domain/memberId";
+import { IMemberRepo } from "../../../repos/memberRepo";
 
 type Response = Either<
   GetCommentsByPostSlugErrors.PostNotFoundError |
@@ -15,19 +17,27 @@ type Response = Either<
 
 export class GetCommentsByPostSlug implements UseCase<any, Promise<Response>> {
   private commentRepo: ICommentRepo;
+  private memberRepo: IMemberRepo;
 
-  constructor (commentRepo: ICommentRepo) {
+  constructor (commentRepo: ICommentRepo, memberRepo: IMemberRepo) {
     this.commentRepo = commentRepo;
+    this.memberRepo = memberRepo;
   }
 
   public async execute (req: GetCommentsByPostSlugRequestDTO): Promise<Response> {
+    let memberId: MemberId;
     let comments: CommentDetails[];
     const { slug, offset } = req;
+    const isAuthenticated = !!req.userId === true;
+
+    if (isAuthenticated) {
+      memberId = await this.memberRepo.getMemberIdByUserId(req.userId);
+    }
 
     try {
       
       try {
-        comments = await this.commentRepo.getCommentDetailsByPostSlug(slug, offset);
+        comments = await this.commentRepo.getCommentDetailsByPostSlug(slug, memberId, offset);
       } catch (err) {
         return left(new AppError.UnexpectedError(err));
       }

@@ -1,17 +1,17 @@
 
 import { GetCommentsByPostSlug } from "./GetCommentsByPostSlug";
-import { commentRepo } from "../../../repos";
+import { commentRepo, memberRepo } from "../../../repos";
 import { GetCommentsByPostSlugController } from "./GetCommentsByPostSlugController";
 
 const getCommentsByPostSlug = new GetCommentsByPostSlug(
-  commentRepo
+  commentRepo, memberRepo
 )
 
-const getCommentsByPostSlugContainer = new GetCommentsByPostSlugController(
+const getCommentsByPostSlugController = new GetCommentsByPostSlugController(
   getCommentsByPostSlug
 )
 
 export { 
   getCommentsByPostSlug,
-  getCommentsByPostSlugContainer
+  getCommentsByPostSlugController
 }

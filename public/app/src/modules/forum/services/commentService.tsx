@@ -47,7 +47,16 @@ export class CommentService extends BaseAPI implements ICommentService {
 
   async getCommentsBySlug (slug: string, offset?: number): Promise<APIResponse<Comment[]>> {
     try {
-      const response = await this.get('/comments', { offset, slug });
+      const accessToken = this.authService.getToken('access-token');
+      const isAuthenticated = !!accessToken === true;
+      const auth = {
+        authorization: accessToken
+      };
+
+      const response = await this.get('/comments', { offset, slug }, 
+      isAuthenticated ? auth : null
+    );
+
       return right(Result.ok<Comment[]>(
         response.data.comments.map((c: CommentDTO) => CommentUtil.toViewModel(c)))
       );
@@ -58,7 +67,15 @@ export class CommentService extends BaseAPI implements ICommentService {
 
   async getCommentByCommentId (commentId: string): Promise<APIResponse<Comment>> {
     try {
-      const response = await this.get(`/comments/${commentId}`);
+      const accessToken = this.authService.getToken('access-token');
+      const isAuthenticated = !!accessToken === true;
+      const auth = {
+        authorization: accessToken
+      };
+
+      const response = await this.get(`/comments/${commentId}`, null, 
+        isAuthenticated ? auth : null
+      );
       return right(Result.ok<Comment>(CommentUtil.toViewModel(response.data.comment)));
     } catch (err) {
       return left(err.response ? err.response.data.message : "Connection failed")

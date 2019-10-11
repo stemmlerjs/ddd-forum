@@ -11,5 +11,7 @@ export interface CommentDTO {
   createdAt: string | Date;
   childComments: CommentDTO[];
   points: number;
+  wasUpvotedByMe: boolean;
+  wasDownvotedByMe: boolean;
 }
 

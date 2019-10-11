@@ -4,6 +4,7 @@ import { GetCommentsByPostSlug } from "./GetCommentsByPostSlug";
 import { GetCommentsByPostSlugRequestDTO } from "./GetCommentsByPostSlugRequestDTO";
 import { GetCommentsByPostSlugResponseDTO } from "./GetCommentsByPostSlugResponseDTO";
 import { CommentDetailsMap } from "../../../mappers/commentDetailsMap";
+import { DecodedExpressRequest } from "../../../../users/infra/http/models/decodedRequest";
 
 export class GetCommentsByPostSlugController extends BaseController {
   private useCase: GetCommentsByPostSlug;
@@ -14,10 +15,12 @@ export class GetCommentsByPostSlugController extends BaseController {
   }
 
   async executeImpl (): Promise<any> {
+    const req = this.req as DecodedExpressRequest;
 
     const dto: GetCommentsByPostSlugRequestDTO = {
       slug: this.req.query.slug,
-      offset: this.req.query.offset
+      offset: this.req.query.offset,
+      userId: req.decoded ? req.decoded.userId : null
     }
 
     try {

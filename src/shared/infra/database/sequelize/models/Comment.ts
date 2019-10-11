@@ -56,6 +56,7 @@ export default (sequelize, DataTypes) => {
   Comment.associate = (models) => {
     Comment.belongsTo(models.Member, { foreignKey: 'member_id', targetKey: 'member_id', as: 'Member' })
     Comment.belongsTo(models.Post, { foreignKey: 'post_id', targetKey: 'post_id', as: 'Post' })
+    Comment.hasMany(models.CommentVote, { foreignKey: 'comment_id',  as: 'CommentVotes' })
   }
 
   return Comment;

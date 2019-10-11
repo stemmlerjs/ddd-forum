@@ -7,6 +7,7 @@ import { CommentId } from "../../domain/commentId";
 import { CommentDetailsMap } from "../../mappers/commentDetailsMap";
 import { ICommentVotesRepo } from "../commentVotesRepo";
 import { CommentVotes } from "../../domain/commentVotes";
+import { MemberId } from "../../domain/memberId";
 
 export class CommentRepo implements ICommentRepo {
   private models: any;
@@ -51,10 +52,20 @@ export class CommentRepo implements ICommentRepo {
     return found;
   }
 
-  async getCommentDetailsByPostSlug (slug: string): Promise<CommentDetails[]> {
+  async getCommentDetailsByPostSlug (slug: string, memberId?: MemberId, offset?: number): Promise<CommentDetails[]> {
     const CommentModel = this.models.Comment;
     const detailsQuery = this.createBaseDetailsQuery();
     detailsQuery.include[0].where['slug'] = slug;
+    
+    if (!!memberId === true) {
+      detailsQuery.include.push({ 
+        model: this.models.CommentVote,
+        as: 'CommentVotes',
+        where: { member_id: memberId.id.toString() },
+        required: false
+      })
+    }
+
     const comments = await CommentModel.findAll(detailsQuery);
     return comments.map((c) => CommentDetailsMap.toDomain(c));
   }

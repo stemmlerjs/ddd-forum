@@ -1,7 +1,7 @@
 
 
 import express from 'express'
-import { getCommentsByPostSlugContainer } from '../../../useCases/comments/getCommentsByPostSlug';
+import { getCommentsByPostSlugController } from '../../../useCases/comments/getCommentsByPostSlug';
 import { middleware } from '../../../../../shared/infra/http';
 import { replyToPostController } from '../../../useCases/comments/replyToPost';
 import { getCommentByCommentIdController } from '../../../useCases/comments/getCommentByCommentId';
@@ -13,7 +13,7 @@ const commentRouter = express.Router();
 
 commentRouter.get('/',
   middleware.includeDecodedTokenIfExists(),
-  (req, res) => getCommentsByPostSlugContainer.execute(req, res)
+  (req, res) => getCommentsByPostSlugController.execute(req, res)
 )
 
 commentRouter.post('/',

@@ -17,6 +17,8 @@ interface CommentDetailsProps {
   postTitle: PostTitle;
   parentCommentId?: CommentId;
   points: number;
+  wasUpvotedByMe: boolean;
+  wasDownvotedByMe: boolean;
 }
 
 export class CommentDetails extends ValueObject<CommentDetailsProps> {
@@ -53,6 +55,14 @@ export class CommentDetails extends ValueObject<CommentDetailsProps> {
     return this.props.points;
   }
 
+  get wasUpvotedByMe (): boolean {
+    return this.props.wasUpvotedByMe;
+  }
+
+  get wasDownvotedByMe (): boolean {
+    return this.props.wasDownvotedByMe;
+  }
+
   private constructor (props: CommentDetailsProps) {
     super(props);
   }
@@ -72,6 +82,10 @@ export class CommentDetails extends ValueObject<CommentDetailsProps> {
       return Result.fail<CommentDetails>(nullGuard.message);
     }
 
-    return Result.ok<CommentDetails>(new CommentDetails(props));
+    return Result.ok<CommentDetails>(new CommentDetails({
+      ...props,
+      wasUpvotedByMe: props.wasUpvotedByMe ? props.wasUpvotedByMe : false,
+      wasDownvotedByMe: props.wasDownvotedByMe ? props.wasDownvotedByMe : false,
+    }));
   }
 }
