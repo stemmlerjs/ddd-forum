@@ -8,6 +8,8 @@
 
 DDDForum.com is the application that we build in [solidbook.io - The Software Design and Architecture Handbook](https://solidbook.io). 
 
+## Demo 
+
 [You can visit the site here](https://dddforum.com).
 
 > `Note`: It's currently deployed on free tier Heroku, which has some undesirable side-effects like shutting off the server during periods of inactivity. So if it's down for you, refresh a couple of times. Thinking about migrating this to a serverless architecture later on.
