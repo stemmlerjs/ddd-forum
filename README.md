@@ -1,6 +1,6 @@
 # DDDForum.com
 
-> A hackernews-inspired forum site built with TypeScript using the clean architecture and [DDD best practices](https://khalilstemmler.com/articles/domain-driven-design-intro/).
+> A hackernews-inspired forum site built with TypeScript using the [clean architecture](https://khalilstemmler.com/articles/software-design-architecture/organizing-app-logic/) and [DDD best practices](https://khalilstemmler.com/articles/domain-driven-design-intro/).
 
 ![](https://user-images.githubusercontent.com/6892666/66002637-1cacc480-e472-11e9-865f-281b598dfd49.png)
 
