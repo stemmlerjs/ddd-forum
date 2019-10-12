@@ -8,7 +8,7 @@
 
 DDDForum.com is the application that we build in [solidbook.io - The Software Design and Architecture Handbook](https://solidbook.io). 
 
-## Demo 
+### Demo 
 
 [You can visit the site here](https://dddforum.com).
 
