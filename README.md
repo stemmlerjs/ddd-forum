@@ -76,6 +76,6 @@ In the` users` subdomain, here are a few examples of classes and concepts that e
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](/LICENSE.md) file for details
+This project is licensed under the ISC License - see the [LICENSE.md](https://github.com/stemmlerjs/ddd-forum/blob/master/LICENCE.md) file for details
 
 
