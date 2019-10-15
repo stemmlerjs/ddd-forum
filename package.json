@@ -17,6 +17,7 @@
     "migrate:test": "npm run build && cross-env NODE_ENV=test dotenv -e .env sequelize db:migrate --env test",
     "migrate:prod": "sequelize db:migrate --env production",
     "start:dev": "cross-env NODE_ENV=development nodemon",
+    "start:both": "concurrently --kill-others-on-fail \"npm run start:dev\" \"npm run  start:public\"",
     "prestart": "npm run migrate:prod",
     "start": "node dist/index",
     "test": "jest",
@@ -74,5 +75,8 @@
     "ts-node": "^8.4.1",
     "typescript": "^3.6.3",
     "validator": "^11.1.0"
+  },
+  "devDependencies": {
+    "concurrently": "^5.0.0"
   }
 }
