@@ -1,1 +1,0 @@
-{"version":3,"file":"index.js","sourceRoot":"","sources":["../../../../../../src/modules/forum/useCases/post/downvotePost/index.ts"],"names":[],"mappings":";;AACA,iDAA8C;AAC9C,0CAAqE;AACrE,uDAAuD;AACvD,qEAAkE;AAElE,MAAM,YAAY,GAAG,IAAI,2BAAY,CACnC,kBAAU,EAAE,gBAAQ,EAAE,qBAAa,EAAE,sBAAW,CACjD,CAAA;AAMQ,oCAAY;AAJrB,MAAM,sBAAsB,GAAG,IAAI,+CAAsB,CACvD,YAAY,CACb,CAAA;AAEsB,wDAAsB"}

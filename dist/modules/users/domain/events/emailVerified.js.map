@@ -1,1 +1,0 @@
-{"version":3,"file":"emailVerified.js","sourceRoot":"","sources":["../../../../../src/modules/users/domain/events/emailVerified.ts"],"names":[],"mappings":";;AAKA,MAAa,aAAa;IAIxB,YAAa,IAAU;QACrB,IAAI,CAAC,gBAAgB,GAAG,IAAI,IAAI,EAAE,CAAC;QACnC,IAAI,CAAC,IAAI,GAAG,IAAI,CAAC;IACnB,CAAC;IAEM,cAAc;QACnB,OAAO,IAAI,CAAC,IAAI,CAAC,EAAE,CAAC;IACtB,CAAC;CACF;AAZD,sCAYC"}
