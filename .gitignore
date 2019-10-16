@@ -5,4 +5,4 @@ npm-debug.log
 /templates
 # Local Netlify folder
 .netlify
-./dist
+/dist
