@@ -1,4 +1,5 @@
 
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors)
 <p align="center">
  <img src="https://user-images.githubusercontent.com/6892666/67032637-fc237200-f0e1-11e9-8a46-f5d655e71962.png"/>
 </p>
@@ -96,3 +97,19 @@ Here are a few examples of concepts from the `forum` subdomain.
 This project is licensed under the ISC License - see the [LICENSE.md](https://github.com/stemmlerjs/ddd-forum/blob/master/LICENCE.md) file for details
 
 
+
+## Contributors ✨
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore -->
+<table>
+  <tr>
+    <td align="center"><a href="https://linkedin.com/in/anthonydenneulin"><img src="https://avatars3.githubusercontent.com/u/1647464?v=4" width="100px;" alt="Anthony Denneulin"/><br /><sub><b>Anthony Denneulin</b></sub></a><br /><a href="https://github.com/stemmlerjs/ddd-forum/commits?author=denneulin" title="Code">💻</a></td>
+  </tr>
+</table>
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
