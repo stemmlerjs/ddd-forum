@@ -13,6 +13,19 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "stemmlerjs",
+      "name": "Khalil Stemmler",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/6892666?v=4",
+      "profile": "http://khalilstemmler.com/",
+      "contributions": [
+        "code",
+        "bug",
+        "doc",
+        "infra",
+        "ideas"
+      ]
     }
   ],
   "contributorsPerLine": 7,
