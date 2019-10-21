@@ -1,0 +1,40 @@
+
+.post-points-hover
+  background-color: #111;
+  position: absolute;
+  width: 100px;
+  color: #fff;
+  padding: .5rem;
+  font-size: .6rem;
+  left: -7.5rem;
+  top: 5px;
+  border-radius: 5px;
+  border-color: transparent;
+  transition: all .2s ease-in-out;
+  transform: scale(0);
+  transform-origin: 100% 50%;
+
+  &.is-hover
+    transform: scale(1.1);
+
+  &:after
+    display: block;
+    width: 0px;
+    height: 0px;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-left: 10px solid #111;
+    content: '';
+    position: absolute;
+    right: -8px;
+    transform: translateY(-50%);
+    top: 50%;
+
+  p
+    margin: 0;
+
+  a
+    color: rgba(255, 255, 255, .8);
+
+    &:hover
+      color: #fff;

@@ -1,8 +1,18 @@
-# DDDForum.com
+
+
+
+<p align="center">
+ <img src="https://user-images.githubusercontent.com/6892666/67032637-fc237200-f0e1-11e9-8a46-f5d655e71962.png"/>
+</p>
+<h1 align="center">DDDForum.com</h1>
+
+<p align="center">
+ <a href="#contributors"><img src="https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square"></a>
+</p>
 
 > A [SOLID](https://khalilstemmler.com/articles/solid-principles/solid-typescript/) hackernews-inspired forum site built with TypeScript using the [clean architecture](https://khalilstemmler.com/articles/software-design-architecture/organizing-app-logic/) and [DDD best practices](https://khalilstemmler.com/articles/domain-driven-design-intro/).
 
-![](https://user-images.githubusercontent.com/6892666/66002637-1cacc480-e472-11e9-865f-281b598dfd49.png)
+![DDDForum](https://user-images.githubusercontent.com/6892666/67032446-9931db00-f0e1-11e9-894d-7bccd240c851.png)
 
 ## About 
 
@@ -86,8 +96,28 @@ Here are a few examples of concepts from the `forum` subdomain.
 - `adapter` layer: `ICommentRepo`, `IPostRepo`, `IMemberRepo`
 - `infrastructure` layer: `SequelizeCommentRepo`, `SequelizePostRepo`, `SequelizeMemberRepo`
 
+## Contributing
+
+DDDForum is an open source project, and contributions of any kind are welcome! Open issues, bugs, and enhancements are all listed on the issues tab and labeled accordingly. Feel free to open bug tickets and make feature requests. Easy bugs and features will be tagged with the good first issue label.
+
+## Contributors ✨
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore -->
+<table>
+  <tr>
+    <td align="center"><a href="http://khalilstemmler.com/"><img src="https://avatars1.githubusercontent.com/u/6892666?v=4" width="100px;" alt="Khalil Stemmler"/><br /><sub><b>Khalil Stemmler</b></sub></a><br /><a href="https://github.com/stemmlerjs/ddd-forum/commits?author=stemmlerjs" title="Code">💻</a> <a href="https://github.com/stemmlerjs/ddd-forum/issues?q=author%3Astemmlerjs" title="Bug reports">🐛</a> <a href="https://github.com/stemmlerjs/ddd-forum/commits?author=stemmlerjs" title="Documentation">📖</a> <a href="#infra-stemmlerjs" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="#ideas-stemmlerjs" title="Ideas, Planning, & Feedback">🤔</a></td>
+    <td align="center"><a href="https://linkedin.com/in/anthonydenneulin"><img src="https://avatars3.githubusercontent.com/u/1647464?v=4" width="100px;" alt="Anthony Denneulin"/><br /><sub><b>Anthony Denneulin</b></sub></a><br /><a href="https://github.com/stemmlerjs/ddd-forum/commits?author=denneulin" title="Code">💻</a></td>
+    
+  </tr>
+</table>
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
+
 ## License
 
 This project is licensed under the ISC License - see the [LICENSE.md](https://github.com/stemmlerjs/ddd-forum/blob/master/LICENCE.md) file for details
-
-

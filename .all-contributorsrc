@@ -1,0 +1,36 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "denneulin",
+      "name": "Anthony Denneulin",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/1647464?v=4",
+      "profile": "https://linkedin.com/in/anthonydenneulin",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "stemmlerjs",
+      "name": "Khalil Stemmler",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/6892666?v=4",
+      "profile": "http://khalilstemmler.com/",
+      "contributions": [
+        "code",
+        "bug",
+        "doc",
+        "infra",
+        "ideas"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "ddd-forum",
+  "projectOwner": "stemmlerjs",
+  "repoType": "github",
+  "repoHost": "https://github.com"
+}

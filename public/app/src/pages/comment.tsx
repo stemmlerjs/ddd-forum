@@ -52,7 +52,7 @@ class CommentPage extends React.Component<CommentPageProps, CommentState> {
   isFormReady () {
     const { newCommentText } = this.state;
     const commentTextLength = this.getRawTextLength(newCommentText);
-    const commentIsOK = !!newCommentText === true 
+    const commentIsOK = !!newCommentText === true
       && commentTextLength < CommentUtil.maxCommentLength
       && commentTextLength > CommentUtil.minCommentLength
 
@@ -101,14 +101,14 @@ class CommentPage extends React.Component<CommentPageProps, CommentState> {
         autoClose: 3000
       })
     }
-  } 
+  }
 
   afterCommentFetched (prevProps: CommentPageProps) {
     const currentProps: CommentPageProps = this.props;
     if (
       currentProps.forum.isGettingCommentByCommentIdSuccess &&
       !this.state.commentFetched
-    ) {  
+    ) {
 
       this.setState({ ...this.state, commentFetched: true });
       const currentComment = this.props.forum.comment as Comment;
@@ -129,7 +129,7 @@ class CommentPage extends React.Component<CommentPageProps, CommentState> {
   isFormValid () : boolean {
     const { newCommentText } = this.state;
 
-    if (!!newCommentText === false || 
+    if (!!newCommentText === false ||
       TextUtil.atLeast(newCommentText, CommentUtil.minCommentLength) ||
       TextUtil.atMost(newCommentText, CommentUtil.maxCommentLength)
     ) {
@@ -153,7 +153,7 @@ class CommentPage extends React.Component<CommentPageProps, CommentState> {
   render () {
     const comment = this.props.forum.comment as Comment;
     const isCommentFetched = this.props.forum.isGettingCommentByCommentIdSuccess;
-    
+
     return (
       <Layout>
         <div className="header-container flex flex-row flex-center flex-even">
@@ -165,7 +165,7 @@ class CommentPage extends React.Component<CommentPageProps, CommentState> {
               to={`/discuss/${comment.postSlug}`}
               text={`Back to "${comment.postTitle}"`}
             />
-          )} 
+          )}
           <ProfileButton
             isLoggedIn={this.props.users.isAuthenticated}
             username={this.props.users.isAuthenticated ? (this.props.users.user as User).username : ''}
@@ -200,10 +200,11 @@ class CommentPage extends React.Component<CommentPageProps, CommentState> {
         }
 
         {this.props.forum.comments.map((c, i) => (
-          <PostComment 
-            key={i} 
+          <PostComment
+            key={i}
             onUpvoteClicked={() => this.props.upvoteComment(c.commentId)}
             onDownvoteClicked={() => this.props.downvoteComment(c.commentId)}
+            isLoggedIn={this.props.users.isAuthenticated}
             {...c}
           />
         ))}

@@ -82,7 +82,7 @@ class DiscussionPage extends React.Component<DiscussionPageProps, DiscussionStat
   isFormValid () : boolean {
     const { newCommentText } = this.state;
 
-    if (!!newCommentText === false || 
+    if (!!newCommentText === false ||
       TextUtil.atLeast(newCommentText, CommentUtil.minCommentLength) ||
       TextUtil.atMost(newCommentText, CommentUtil.maxCommentLength)
     ) {
@@ -123,7 +123,7 @@ class DiscussionPage extends React.Component<DiscussionPageProps, DiscussionStat
         autoClose: 3000
       })
     }
-  } 
+  }
 
   componentDidUpdate (prevProps: DiscussionPageProps) {
     this.afterSuccessfulCommentPost(prevProps);
@@ -147,20 +147,21 @@ class DiscussionPage extends React.Component<DiscussionPageProps, DiscussionStat
             onLogout={() => this.props.logout()}
           />
         </div>
-       
+
         {this.props.forum.isGettingPostBySlug ? (
           ''
         ) : (
           <>
-            
-            <Header 
-              title={`"${post.title}"`} 
+
+            <Header
+              title={`"${post.title}"`}
               isUpvotable={true}
               onUpvoteClicked={() => this.props.upvotePost(post.slug)}
               onDownvoteClicked={() => this.props.downvotePost(post.slug)}
               points={post.points}
+              isLoggedIn={this.props.users.isAuthenticated}
             />
-            
+
             <br/>
             <br/>
             <PostSummary
@@ -179,15 +180,16 @@ class DiscussionPage extends React.Component<DiscussionPageProps, DiscussionStat
             />
           </>
         )}
-        
+
         <br/>
         <br/>
         <br/>
         {comments.map((c, i) => (
-          <PostComment 
-            key={i} 
+          <PostComment
+            key={i}
             onDownvoteClicked={() => this.props.downvoteComment(c.commentId)}
             onUpvoteClicked={() => this.props.upvoteComment(c.commentId)}
+            isLoggedIn={this.props.users.isAuthenticated}
             {...c}
           />
         ))}

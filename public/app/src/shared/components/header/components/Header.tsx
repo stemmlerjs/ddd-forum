@@ -12,6 +12,7 @@ interface HeaderProps {
   onUpvoteClicked?: Function;
   onDownvoteClicked?: Function;
   points?: number;
+  isLoggedIn?: boolean;
 }
 
 const Header: React.FC<HeaderProps> = (props) => (
@@ -21,6 +22,7 @@ const Header: React.FC<HeaderProps> = (props) => (
       onUpvoteClicked={() => props.onUpvoteClicked ? props.onUpvoteClicked() : ''}
       onDownvoteClicked={() => props.onDownvoteClicked ? props.onDownvoteClicked() : ''}
       points={props.points as number}
+      isLoggedIn={props.isLoggedIn || false}
     />}
     <div className="content-container">
       <h1>{props.title}</h1>
