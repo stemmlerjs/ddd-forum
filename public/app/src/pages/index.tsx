@@ -80,7 +80,7 @@ class IndexPage extends React.Component<IndexPageProps, IndexPageState> {
       activeFilter
     })
   }
-  
+
   getPostsFromActiveFilterGroup (): Post[] {
     if (this.state.activeFilter === 'NEW') {
       return this.props.forum.recentPosts;
@@ -119,15 +119,16 @@ class IndexPage extends React.Component<IndexPageProps, IndexPageState> {
         <br/>
 
         <PostFilters
-          activeFilter={activeFilter} 
+          activeFilter={activeFilter}
           onClick={(filter) => this.setActiveFilter(filter)}
         />
 
         {this.getPostsFromActiveFilterGroup().map((p, i) => (
-          <PostRow 
-            key={i} 
+          <PostRow
+            key={i}
             onUpvoteClicked={() => this.props.upvotePost(p.slug)}
             onDownvoteClicked={() => this.props.downvotePost(p.slug)}
+            isLoggedIn={this.props.users.isAuthenticated}
             {...p}
           />
         ))}

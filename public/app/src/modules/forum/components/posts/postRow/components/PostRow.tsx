@@ -8,14 +8,17 @@ import PostMeta from '../../post/components/PostMeta';
 interface PostRowProps extends Post {
   onUpvoteClicked: () => void;
   onDownvoteClicked: () => void;
+  isLoggedIn: boolean;
 }
 
 const PostRow: React.FC<PostRowProps> = (props) => (
   <div className="post-row">
-    <Points 
+    <Points
       onUpvoteClicked={() => props.onUpvoteClicked()}
       onDownvoteClicked={() => props.onDownvoteClicked()}
-      points={props.points}/>
+      points={props.points}
+      isLoggedIn={props.isLoggedIn}
+    />
     <PostMeta {...props} />
   </div>
 )
