@@ -1,5 +1,5 @@
 import { Result } from "../../../../../shared/core/Result";
-import { UseCaseError } from "../../../../../shared/domain/UseCaseError";
+import { UseCaseError } from "../../../../../shared/core/UseCaseError";
 
 export namespace GetPostBySlugErrors {
 

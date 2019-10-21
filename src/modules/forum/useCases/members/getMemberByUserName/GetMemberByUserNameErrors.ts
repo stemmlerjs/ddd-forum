@@ -1,4 +1,4 @@
-import { UseCaseError } from "../../../../../shared/domain/UseCaseError";
+import { UseCaseError } from "../../../../../shared/core/UseCaseError";
 import { Result } from "../../../../../shared/core/Result";
 
 export namespace GetMemberByUserNameErrors {
