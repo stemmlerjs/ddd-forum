@@ -7,11 +7,17 @@ interface ButtonProps {
   onClick: () => void;
 }
 
-const Button: React.FC<ButtonProps> = (props) => (
-  <div 
-    className="button"
-    onClick={() => props.onClick()}>{props.text}
-  </div>
+const Button: React.FC<ButtonProps> = (props) => {
+  const handleEnterKey = (e: any) => {
+    if (e.charCode == 13) {
+      props.onClick()
+    }
+  }
+  return (
+    <div
+      className="button"
+      onClick={() => props.onClick() onKeyPress={handleEnterKey}}> { props.text }
+  </div >
 )
-
+  }
 export default Button;
