@@ -4,6 +4,7 @@ import { CreatePostDTO } from "./CreatePostDTO";
 import { DecodedExpressRequest } from "../../../../users/infra/http/models/decodedRequest";
 import { CreatePostErrors } from "./CreatePostErrors";
 import { TextUtils } from "../../../../../shared/utils/TextUtils";
+import * as express from 'express'
 
 
 export class CreatePostController extends BaseController {
@@ -14,16 +15,15 @@ export class CreatePostController extends BaseController {
     this.useCase = useCase;
   }
 
-  async executeImpl (): Promise<any> {
-    const req = this.req as DecodedExpressRequest;
+  async executeImpl (req: DecodedExpressRequest, res: any): Promise<any> {
     const { userId } = req.decoded;
 
     const dto: CreatePostDTO = {
-      title: TextUtils.sanitize(this.req.body.title),
-      text: !!this.req.body.text ? TextUtils.sanitize(this.req.body.text) : null,
+      title: TextUtils.sanitize(req.body.title),
+      text: !!req.body.text ? TextUtils.sanitize(req.body.text) : null,
       userId: userId,
-      postType: this.req.body.postType,
-      link: !!this.req.body.link ? TextUtils.sanitize(this.req.body.link) : null
+      postType: req.body.postType,
+      link: !!req.body.link ? TextUtils.sanitize(req.body.link) : null
     }
   
     try {
@@ -34,17 +34,17 @@ export class CreatePostController extends BaseController {
   
         switch (error.constructor) {
           case CreatePostErrors.MemberDoesntExistError:
-            return this.notFound(error.errorValue().message)
+            return this.notFound(res, error.errorValue().message)
           default:
-            return this.fail(error.errorValue().message);
+            return this.fail(res, error.errorValue().message);
         }
         
       } else {
-        return this.ok(this.res);
+        return this.ok(res);
       }
 
     } catch (err) {
-      return this.fail(err)
+      return this.fail(res, err)
     }
   }
 }

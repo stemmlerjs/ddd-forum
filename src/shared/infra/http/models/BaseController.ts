@@ -2,22 +2,16 @@
 import * as express from 'express'
 
 export abstract class BaseController {
-  // or even private
-  protected req: express.Request;
-  protected res: express.Response;
 
-  protected abstract executeImpl (): Promise<void | any>;
+  protected abstract executeImpl (req: express.Request, res: express.Response): Promise<void | any>;
 
   public async execute (req: express.Request, res: express.Response): Promise<void> {
     try {
-      this.req = req;
-      this.res = res;
-
-      await this.executeImpl();
+      await this.executeImpl(req, res);
     } catch (err) {
       console.log(`[BaseController]: Uncaught controller error`);
       console.log(err);
-      this.fail('An unexpected error occurred')
+      this.fail(res, 'An unexpected error occurred')
     }
   }
 
@@ -38,41 +32,41 @@ export abstract class BaseController {
     return res.sendStatus(201);
   }
 
-  public clientError (message?: string) {
-    return BaseController.jsonResponse(this.res, 400, message ? message : 'Unauthorized');
+  public clientError (res: express.Response, message?: string) {
+    return BaseController.jsonResponse(res, 400, message ? message : 'Unauthorized');
   }
 
-  public unauthorized (message?: string) {
-    return BaseController.jsonResponse(this.res, 401, message ? message : 'Unauthorized');
+  public unauthorized (res: express.Response, message?: string) {
+    return BaseController.jsonResponse(res, 401, message ? message : 'Unauthorized');
   }
 
-  public paymentRequired (message?: string) {
-    return BaseController.jsonResponse(this.res, 402, message ? message : 'Payment required');
+  public paymentRequired (res: express.Response, message?: string) {
+    return BaseController.jsonResponse(res, 402, message ? message : 'Payment required');
   }
 
-  public forbidden (message?: string) {
-    return BaseController.jsonResponse(this.res, 403, message ? message : 'Forbidden');
+  public forbidden (res: express.Response, message?: string) {
+    return BaseController.jsonResponse(res, 403, message ? message : 'Forbidden');
   }
 
-  public notFound (message?: string) {
-    return BaseController.jsonResponse(this.res, 404, message ? message : 'Not found');
+  public notFound (res: express.Response, message?: string) {
+    return BaseController.jsonResponse(res, 404, message ? message : 'Not found');
   }
 
-  public conflict (message?: string) {
-    return BaseController.jsonResponse(this.res, 409, message ? message : 'Conflict');
+  public conflict (res: express.Response, message?: string) {
+    return BaseController.jsonResponse(res, 409, message ? message : 'Conflict');
   }
 
-  public tooMany (message?: string) {
-    return BaseController.jsonResponse(this.res, 429, message ? message : 'Too many requests');
+  public tooMany (res: express.Response, message?: string) {
+    return BaseController.jsonResponse(res, 429, message ? message : 'Too many requests');
   }
 
-  public todo () {
-    return BaseController.jsonResponse(this.res, 400, 'TODO');
+  public todo (res: express.Response) {
+    return BaseController.jsonResponse(res, 400, 'TODO');
   }
 
-  public fail (error: Error | string) {
+  public fail (res: express.Response, error: Error | string) {
     console.log(error);
-    return this.res.status(500).json({
+    return res.status(500).json({
       message: error.toString()
     })
   }

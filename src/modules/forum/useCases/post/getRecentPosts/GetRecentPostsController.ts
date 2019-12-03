@@ -5,6 +5,7 @@ import { GetRecentPosts } from "./GetRecentPosts";
 import { GetRecentPostsResponseDTO } from "./GetRecentPostsResponseDTO";
 import { PostDetailsMap } from "../../../mappers/postDetailsMap";
 import { DecodedExpressRequest } from "../../../../users/infra/http/models/decodedRequest";
+import * as express from 'express'
 
 export class GetRecentPostsController extends BaseController {
   private useCase: GetRecentPosts;
@@ -14,11 +15,10 @@ export class GetRecentPostsController extends BaseController {
     this.useCase = useCase;
   }
 
-  async executeImpl (): Promise<any> {
-    const req = this.req as DecodedExpressRequest;
+  async executeImpl (req: DecodedExpressRequest, res: any): Promise<any> {
 
     const dto: GetRecentPostsRequestDTO = {
-      offset: this.req.query.offset,
+      offset: req.query.offset,
       userId: !!req.decoded === true ? req.decoded.userId : null
     }
     
@@ -31,18 +31,18 @@ export class GetRecentPostsController extends BaseController {
   
         switch (error.constructor) {
           default:
-            return this.fail(error.errorValue().message);
+            return this.fail(res, error.errorValue().message);
         }
         
       } else {
         const postDetails = result.value.getValue();
-        return this.ok<GetRecentPostsResponseDTO>(this.res, {
+        return this.ok<GetRecentPostsResponseDTO>(res, {
           posts: postDetails.map((d) => PostDetailsMap.toDTO(d))
         });
       }
 
     } catch (err) {
-      return this.fail(err)
+      return this.fail(res, err)
     }
   }
 }

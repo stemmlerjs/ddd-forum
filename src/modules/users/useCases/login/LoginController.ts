@@ -3,6 +3,8 @@ import { LoginUserUseCase } from "./LoginUseCase";
 import { LoginDTO, LoginDTOResponse } from "./LoginDTO";
 import { LoginUseCaseErrors } from "./LoginErrors";
 import { BaseController } from "../../../../shared/infra/http/models/BaseController";
+import * as express from 'express'
+import { DecodedExpressRequest } from "../../infra/http/models/decodedRequest";
 
 export class LoginController extends BaseController {
   private useCase: LoginUserUseCase;
@@ -12,8 +14,8 @@ export class LoginController extends BaseController {
     this.useCase = useCase;
   }
 
-  async executeImpl (): Promise<any> {
-    const dto: LoginDTO = this.req.body as LoginDTO;
+  async executeImpl (req: DecodedExpressRequest, res: express.Response): Promise<any> {
+    const dto: LoginDTO = req.body as LoginDTO;
 
     try {
       const result = await this.useCase.execute(dto);
@@ -23,19 +25,19 @@ export class LoginController extends BaseController {
   
         switch (error.constructor) {
           case LoginUseCaseErrors.UserNameDoesntExistError:
-            return this.notFound(error.errorValue().message)
+            return this.notFound(res, error.errorValue().message)
           case LoginUseCaseErrors.PasswordDoesntMatchError:
-            return this.clientError(error.errorValue().message)
+            return this.clientError(res, error.errorValue().message)
           default:
-            return this.fail(error.errorValue().message);
+            return this.fail(res, error.errorValue().message);
         }
       } else {
         const dto: LoginDTOResponse = result.value.getValue() as LoginDTOResponse;
-        return this.ok<LoginDTOResponse>(this.res, dto);
+        return this.ok<LoginDTOResponse>(res, dto);
       }
 
     } catch (err) {
-      return this.fail(err)
+      return this.fail(res, err)
     }
   }
 }

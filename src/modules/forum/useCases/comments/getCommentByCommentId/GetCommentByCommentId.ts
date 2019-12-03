@@ -8,6 +8,7 @@ import { AppError } from "../../../../../shared/core/AppError";
 import { GetCommentByCommentIdErrors } from "./GetCommentByCommentIdErrors";
 import { MemberId } from "../../../domain/memberId";
 import { IMemberRepo } from "../../../repos/memberRepo";
+import * as express from 'express'
 
 type Response = Either<
   GetCommentByCommentIdErrors.CommentNotFoundError |

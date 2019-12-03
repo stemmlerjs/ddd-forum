@@ -3,6 +3,8 @@ import { GetUserByUserNameErrors } from "./GetUserByUserNameErrors";
 import { GetUserByUserNameDTO } from "./GetUserByUserNameDTO";
 import { GetUserByUserName } from "./GetUserByUserName";
 import { BaseController } from "../../../../shared/infra/http/models/BaseController";
+import * as express from 'express'
+import { DecodedExpressRequest } from "../../infra/http/models/decodedRequest";
 
 export class GetUserByUserNameController extends BaseController {
   private useCase: GetUserByUserName;
@@ -12,8 +14,8 @@ export class GetUserByUserNameController extends BaseController {
     this.useCase = useCase;
   }
 
-  async executeImpl (): Promise<any> {
-    const dto: GetUserByUserNameDTO = this.req.body as GetUserByUserNameDTO;
+  async executeImpl (req: DecodedExpressRequest, res: express.Response): Promise<any> {
+    const dto: GetUserByUserNameDTO = req.body as GetUserByUserNameDTO;
 
     try {
       const result = await this.useCase.execute(dto);
@@ -23,17 +25,17 @@ export class GetUserByUserNameController extends BaseController {
   
         switch (error.constructor) {
           case GetUserByUserNameErrors.UserNotFoundError:
-            return this.notFound(error.errorValue().message)
+            return this.notFound(res, error.errorValue().message)
           default:
-            return this.fail(error.errorValue().message);
+            return this.fail(res, error.errorValue().message);
         }
         
       } else {
-        return this.ok(this.res);
+        return this.ok(res);
       }
 
     } catch (err) {
-      return this.fail(err)
+      return this.fail(res, err)
     }
   }
 }

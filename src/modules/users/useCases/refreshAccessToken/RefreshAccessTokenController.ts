@@ -6,6 +6,7 @@ import { RefreshAccessTokenDTO } from "./RefreshAccessTokenDTO";
 import { RefreshAccessTokenErrors } from "./RefreshAccessTokenErrors";
 import { JWTToken } from "../../domain/jwt";
 import { LoginDTOResponse } from "../login/LoginDTO";
+import * as express from 'express'
 
 export class RefreshAccessTokenController extends BaseController {
   private useCase: RefreshAccessToken;
@@ -15,8 +16,8 @@ export class RefreshAccessTokenController extends BaseController {
     this.useCase = useCase;
   }
 
-  async executeImpl (): Promise<any> {
-    const dto: RefreshAccessTokenDTO = this.req.body as RefreshAccessTokenDTO;
+  async executeImpl (req: express.Request, res: express.Response): Promise<any> {
+    const dto: RefreshAccessTokenDTO = req.body as RefreshAccessTokenDTO;
 
     try {
       const result = await this.useCase.execute(dto);
@@ -26,22 +27,22 @@ export class RefreshAccessTokenController extends BaseController {
   
         switch (error.constructor) {
           case RefreshAccessTokenErrors.RefreshTokenNotFound:
-            return this.notFound(error.errorValue().message)
+            return this.notFound(res, error.errorValue().message)
             case RefreshAccessTokenErrors.UserNotFoundOrDeletedError:
-              return this.notFound(error.errorValue().message)
+              return this.notFound(res, error.errorValue().message)
           default:
-            return this.fail(error.errorValue().message);
+            return this.fail(res, error.errorValue().message);
         }
       } else {
         const accessToken: JWTToken = result.value.getValue() as JWTToken;
-        return this.ok<LoginDTOResponse>(this.res, {
+        return this.ok<LoginDTOResponse>(res, {
           refreshToken: dto.refreshToken,
           accessToken: accessToken
         });
       }
 
     } catch (err) {
-      return this.fail(err)
+      return this.fail(res, err)
     }
   }
 }

@@ -1,7 +1,7 @@
 
 import { AggregateRoot } from "../../../shared/domain/AggregateRoot";
 import { UniqueEntityID } from "../../../shared/domain/UniqueEntityID";
-import { Result } from "../../../shared/core/Result";
+import { Result, Either, left, right } from "../../../shared/core/Result";
 import { MemberId } from "./memberId";
 import { PostSlug } from "./postSlug";
 import { PostTitle } from "./postTitle";
@@ -19,6 +19,14 @@ import { PostVotesChanged } from "./events/postVotesChanged";
 import { PostVotes } from "./postVotes";
 import { Comments } from "./comments";
 import { CommentVotesChanged } from "./events/commentVotesChanged";
+import { EditPostErrors } from "../useCases/post/editPost/EditPostErrors";
+
+export type UpdatePostOrLinkResult = Either<
+  EditPostErrors.InvalidPostTypeOperationError | 
+  EditPostErrors.PostSealedError |
+  Result<any>, 
+  Result<void>
+>
 
 export interface PostProps {
   memberId: MemberId;
@@ -85,6 +93,48 @@ export class Post extends AggregateRoot<PostProps> {
     if (numComments >= 0) {
       this.props.totalNumComments = numComments;
     }
+  }
+
+  public hasComments (): boolean {
+    return this.totalNumComments !== 0;
+  }
+
+  public updateText (postText: PostText): UpdatePostOrLinkResult {
+    if (!this.isTextPost()) {
+      return left(new EditPostErrors.InvalidPostTypeOperationError())
+    } 
+
+    if (this.hasComments()) {
+      return left(new EditPostErrors.PostSealedError())
+    }
+
+    const guardResult = Guard.againstNullOrUndefined(postText, 'postText');
+      
+    if (!guardResult.succeeded) {
+      return left(Result.fail<any>(guardResult.message))
+    } 
+
+    this.props.text = postText;
+    return right(Result.ok<void>());
+  }
+
+  public updateLink (postLink: PostLink): UpdatePostOrLinkResult {
+    if (!this.isLinkPost()) {
+      return left(new EditPostErrors.InvalidPostTypeOperationError())
+    } 
+
+    if (this.hasComments()) {
+      return left(new EditPostErrors.PostSealedError())
+    }
+
+    const guardResult = Guard.againstNullOrUndefined(postLink, 'postLink');
+      
+    if (!guardResult.succeeded) {
+      return left(Result.fail<any>(guardResult.message))
+    } 
+
+    this.props.link = postLink;
+    return right(Result.ok<void>());
   }
 
   public updatePostScore (

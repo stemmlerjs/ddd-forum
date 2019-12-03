@@ -5,7 +5,7 @@ import { GetCommentByCommentIdResponseDTO } from "./GetCommentByCommentIdRespons
 import { CommentDetailsMap } from "../../../mappers/commentDetailsMap";
 import { GetCommentByCommentIdErrors } from "./GetCommentByCommentIdErrors";
 import { DecodedExpressRequest } from "../../../../users/infra/http/models/decodedRequest";
-
+import * as express from 'express'
 
 export class GetCommentByCommentIdController extends BaseController {
   private useCase: GetCommentByCommentId;
@@ -15,11 +15,10 @@ export class GetCommentByCommentIdController extends BaseController {
     this.useCase = useCase;
   }
 
-  async executeImpl (): Promise<any> {
-    const req = this.req as DecodedExpressRequest;
+  async executeImpl (req: DecodedExpressRequest, res: express.Response): Promise<any> {
 
     const dto: GetCommentByCommentIdRequestDTO = {
-      commentId: this.req.params.commentId,
+      commentId: req.params.commentId,
       userId: req.decoded ? req.decoded.userId : null
     }
 
@@ -31,20 +30,20 @@ export class GetCommentByCommentIdController extends BaseController {
   
         switch (error.constructor) {
           case GetCommentByCommentIdErrors.CommentNotFoundError:
-            return this.notFound(error.errorValue().message);
+            return this.notFound(res, error.errorValue().message);
           default:
-            return this.fail(error.errorValue().message);
+            return this.fail(res, error.errorValue().message);
         }
         
       } else {
         const commentDetails = result.value.getValue();
-        return this.ok<GetCommentByCommentIdResponseDTO>(this.res, {
+        return this.ok<GetCommentByCommentIdResponseDTO>(res, {
           comment:  CommentDetailsMap.toDTO(commentDetails)
         });
       }
 
     } catch (err) {
-      return this.fail(err)
+      return this.fail(res, err)
     }
   }
 }

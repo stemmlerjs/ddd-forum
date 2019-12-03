@@ -4,6 +4,7 @@ import { DownvotePost } from "./DownvotePost";
 import { DecodedExpressRequest } from "../../../../users/infra/http/models/decodedRequest";
 import { DownvotePostDTO } from "./DownvotePostDTO";
 import { DownvotePostErrors } from "./DownvotePostErrors";
+import * as express from 'express'
 
 export class DownvotePostController extends BaseController {
   private useCase: DownvotePost;
@@ -13,13 +14,12 @@ export class DownvotePostController extends BaseController {
     this.useCase = useCase;
   }
 
-  async executeImpl (): Promise<any> {
-    const req = this.req as DecodedExpressRequest;
+  async executeImpl (req: DecodedExpressRequest, res: express.Response): Promise<any> {
     const { userId } = req.decoded;
 
     const dto: DownvotePostDTO = {
       userId: userId,
-      slug: this.req.body.slug
+      slug: req.body.slug
     }
   
     try {
@@ -31,19 +31,19 @@ export class DownvotePostController extends BaseController {
         switch (error.constructor) {
           case DownvotePostErrors.MemberNotFoundError:
           case DownvotePostErrors.PostNotFoundError:
-            return this.notFound(error.errorValue().message)
+            return this.notFound(res, error.errorValue().message)
           case DownvotePostErrors.AlreadyDownvotedError:
             return this.conflict(error.errorValue().message)
           default:
-            return this.fail(error.errorValue().message);
+            return this.fail(res, error.errorValue().message);
         }
         
       } else {
-        return this.ok(this.res);
+        return this.ok(res);
       }
 
     } catch (err) {
-      return this.fail(err)
+      return this.fail(res, err)
     }
   }
 }

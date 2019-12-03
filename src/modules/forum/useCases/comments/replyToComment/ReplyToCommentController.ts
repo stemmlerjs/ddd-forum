@@ -4,7 +4,7 @@ import { DecodedExpressRequest } from "../../../../users/infra/http/models/decod
 import { ReplyToCommentDTO } from "./ReplyToCommentDTO";
 import { ReplyToCommentErrors } from "./ReplyToCommentErrors";
 import { TextUtils } from "../../../../../shared/utils/TextUtils";
-
+import * as express from 'express'
 
 export class ReplyToCommentController extends BaseController {
   private useCase: ReplyToComment;
@@ -14,15 +14,14 @@ export class ReplyToCommentController extends BaseController {
     this.useCase = useCase;
   }
 
-  async executeImpl (): Promise<any> {
-    const req = this.req as DecodedExpressRequest;
+  async executeImpl (req: DecodedExpressRequest, res: express.Response): Promise<any> {
     const { userId } = req.decoded;
 
     const dto: ReplyToCommentDTO = {
-      comment: TextUtils.sanitize(this.req.body.comment),
+      comment: TextUtils.sanitize(req.body.comment),
       userId: userId,
-      slug: this.req.query.slug,
-      parentCommentId: this.req.params.commentId
+      slug: req.query.slug,
+      parentCommentId: req.params.commentId
     }
   
     try {
@@ -33,21 +32,21 @@ export class ReplyToCommentController extends BaseController {
   
         switch (error.constructor) {
           case ReplyToCommentErrors.PostNotFoundError:
-            return this.notFound(error.errorValue().message)
+            return this.notFound(res, error.errorValue().message)
           case ReplyToCommentErrors.CommentNotFoundError:
-            return this.notFound(error.errorValue().message)
+            return this.notFound(res, error.errorValue().message)
           case ReplyToCommentErrors.MemberNotFoundError:
-            return this.notFound(error.errorValue().message)
+            return this.notFound(res, error.errorValue().message)
           default:
-            return this.fail(error.errorValue().message);
+            return this.fail(res, error.errorValue().message);
         }
         
       } else {
-        return this.ok(this.res);
+        return this.ok(res);
       }
 
     } catch (err) {
-      return this.fail(err)
+      return this.fail(res, err)
     }
   }
 }

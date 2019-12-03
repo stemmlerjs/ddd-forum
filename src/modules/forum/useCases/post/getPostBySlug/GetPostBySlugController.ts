@@ -4,6 +4,8 @@ import { GetPostBySlug } from "./GetPostBySlug";
 import { GetPostBySlugDTO } from "./GetPostBySlugDTO";
 import { BaseController } from "../../../../../shared/infra/http/models/BaseController";
 import { PostDTO } from "../../../dtos/postDTO";
+import * as express from 'express'
+import { DecodedExpressRequest } from "../../../../users/infra/http/models/decodedRequest";
 
 export class GetPostBySlugController extends BaseController {
   private useCase: GetPostBySlug;
@@ -13,9 +15,9 @@ export class GetPostBySlugController extends BaseController {
     this.useCase = useCase;
   }
 
-  async executeImpl (): Promise<any> {
+  async executeImpl (req: DecodedExpressRequest, res: express.Response): Promise<any> {
     const dto: GetPostBySlugDTO = {
-      slug: this.req.query.slug
+      slug: req.query.slug
     }
 
     try {
@@ -26,18 +28,18 @@ export class GetPostBySlugController extends BaseController {
   
         switch (error.constructor) {
           default:
-            return this.fail(error.errorValue().message);
+            return this.fail(res, error.errorValue().message);
         }
         
       } else {
         const postDetails = result.value.getValue();
-        return this.ok<{ post: PostDTO }>(this.res, {
+        return this.ok<{ post: PostDTO }>(res, {
           post: PostDetailsMap.toDTO(postDetails)
         });
       }
 
     } catch (err) {
-      return this.fail(err)
+      return this.fail(res, err)
     }
   }
 }

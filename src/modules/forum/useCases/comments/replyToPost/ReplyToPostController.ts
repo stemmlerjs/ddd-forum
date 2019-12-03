@@ -5,6 +5,7 @@ import { DecodedExpressRequest } from "../../../../users/infra/http/models/decod
 import { ReplyToPostDTO } from "./ReplyToPostDTO";
 import { ReplyToPostErrors } from "./ReplyToPostErrors";
 import { TextUtils } from "../../../../../shared/utils/TextUtils";
+import * as express from 'express'
 
 export class ReplyToPostController extends BaseController {
   private useCase: ReplyToPost;
@@ -14,15 +15,14 @@ export class ReplyToPostController extends BaseController {
     this.useCase = useCase;
   }
 
-  async executeImpl (): Promise<any> {
-    const req = this.req as DecodedExpressRequest;
+  async executeImpl (req: DecodedExpressRequest, res: express.Response): Promise<any> {
     const { userId } = req.decoded;
 
     
     const dto: ReplyToPostDTO = {
-      comment: TextUtils.sanitize(this.req.body.comment),
+      comment: TextUtils.sanitize(req.body.comment),
       userId: userId,
-      slug: this.req.query.slug
+      slug: req.query.slug
     }
   
     try {
@@ -33,17 +33,17 @@ export class ReplyToPostController extends BaseController {
   
         switch (error.constructor) {
           case ReplyToPostErrors.PostNotFoundError:
-            return this.notFound(error.errorValue().message)
+            return this.notFound(res, error.errorValue().message)
           default:
-            return this.fail(error.errorValue().message);
+            return this.fail(res, error.errorValue().message);
         }
         
       } else {
-        return this.ok(this.res);
+        return this.ok(res);
       }
 
     } catch (err) {
-      return this.fail(err)
+      return this.fail(res, err)
     }
   }
 }

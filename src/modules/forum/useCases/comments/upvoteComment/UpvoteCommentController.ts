@@ -4,6 +4,7 @@ import { BaseController } from "../../../../../shared/infra/http/models/BaseCont
 import { DecodedExpressRequest } from "../../../../users/infra/http/models/decodedRequest";
 import { UpvoteCommentDTO } from "./UpvoteCommentDTO";
 import { UpvoteCommentErrors } from "./UpvoteCommentErrors";
+import * as express from 'express'
 
 export class UpvoteCommentController extends BaseController {
   private useCase: UpvoteComment;
@@ -13,13 +14,12 @@ export class UpvoteCommentController extends BaseController {
     this.useCase = useCase;
   }
 
-  async executeImpl (): Promise<any> {
-    const req = this.req as DecodedExpressRequest;
+  async executeImpl (req: DecodedExpressRequest, res: express.Response): Promise<any> {
     const { userId } = req.decoded;
 
     const dto: UpvoteCommentDTO = {
       userId: userId,
-      commentId: this.req.params.commentId
+      commentId: req.params.commentId
     }
   
     try {
@@ -32,17 +32,17 @@ export class UpvoteCommentController extends BaseController {
           case UpvoteCommentErrors.MemberNotFoundError:
           case UpvoteCommentErrors.PostNotFoundError:
           case UpvoteCommentErrors.CommentNotFoundError:
-            return this.notFound(error.errorValue().message)
+            return this.notFound(res, error.errorValue().message)
           default:
-            return this.fail(error.errorValue().message);
+            return this.fail(res, error.errorValue().message);
         }
         
       } else {
-        return this.ok(this.res);
+        return this.ok(res);
       }
 
     } catch (err) {
-      return this.fail(err)
+      return this.fail(res, err)
     }
   }
 }
