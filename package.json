@@ -54,6 +54,7 @@
     "dotenv": "^8.1.0",
     "express": "^4.17.1",
     "express-rate-limit": "^5.0.0",
+    "graphql-iso-date": "^3.6.1",
     "helmet": "^3.21.1",
     "jest": "^24.9.0",
     "jsdom": "^15.1.1",
