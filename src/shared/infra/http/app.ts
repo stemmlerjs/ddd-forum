@@ -10,6 +10,9 @@ import { ApolloServer, gql } from 'apollo-server-express';
 import { getRecentPosts } from '../../../modules/forum/useCases/post/getRecentPosts'
 import { PostDetailsMap } from '../../../modules/forum/mappers/postDetailsMap'
 import { GraphQLDateTime } from 'graphql-iso-date';
+import { memberRepo } from '../../../modules/forum/repos'
+import { userRepo } from '../../../modules/users/repos'
+import { MemberDetailsMap } from '../../../modules/forum/mappers/memberDetailsMap'
 
 const origin = {
   // origin: isProduction ? 'https://dddforum.com' : '*',
@@ -34,6 +37,16 @@ const typeDefs = gql`
     posts: [Post]
   }
 
+  type User {
+    username: String
+  }
+
+  type Member {
+    memberId: String
+    reputation: Int
+    user: User
+  }
+
   enum PostType {
     text
     link
@@ -43,7 +56,7 @@ const typeDefs = gql`
     slug: String
     title: String
     createdAt: DateTime
-    # memberPostedBy: MemberDTO;
+    memberPostedBy: Member
     numComments: Int
     points: Int
     text: String
@@ -56,6 +69,12 @@ const server = new ApolloServer({
   typeDefs,
   resolvers: {
     DateTime: GraphQLDateTime,
+    Post: {
+      memberPostedBy: async (post, args, context) => {
+        const memberDetails = await memberRepo.getMemberByPostSlug(post.slug);
+        return MemberDetailsMap.toDTO(memberDetails);
+      }
+    },
     Query: {
       posts: async (parent, args, context) => {
         const response = await getRecentPosts.execute({ });

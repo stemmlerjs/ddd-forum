@@ -14,7 +14,7 @@ type Response = Either<
   Result<PostDetails>
 >
 
-export class GetPostBySlug implements UseCase<any, Promise<Response>> {
+export class GetPostBySlug implements UseCase<GetPostBySlugDTO, Promise<Response>> {
   private postRepo: IPostRepo;
 
   constructor (postRepo: IPostRepo) {

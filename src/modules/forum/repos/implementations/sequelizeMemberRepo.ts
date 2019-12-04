@@ -20,7 +20,8 @@ export class MemberRepo implements IMemberRepo {
     return {
       where: {},
       include: [
-        { model: models.BaseUser, as: 'BaseUser' }
+        { model: models.BaseUser, as: 'BaseUser' },
+        { model: models.Post, as: 'Posts', required: false }
       ]
     }
   }
@@ -42,6 +43,19 @@ export class MemberRepo implements IMemberRepo {
     const found = !!member === true;
     if (!found) throw new Error('Member id not found');
     return MemberIdMap.toDomain(member);
+  }
+
+  public async getMemberByPostSlug (slug: string): Promise<MemberDetails> {
+    const MemberModel = this.models.Member;
+    const baseQuery = this.createBaseQuery();
+    baseQuery.include[1].where = {
+      slug: slug
+    }
+    baseQuery.include[1].required = true;
+    const member = await MemberModel.findOne(baseQuery);
+    const found = !!member === true;
+    if (!found) throw new Error('Member id not found');
+    return MemberDetailsMap.toDomain(member);
   }
 
   public async getMemberByUserId (userId: string): Promise<Member> {
