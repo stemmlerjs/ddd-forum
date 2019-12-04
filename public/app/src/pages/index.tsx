@@ -6,6 +6,7 @@ import PostFilters, { PostFilterType } from '../modules/forum/components/posts/f
 import { Post } from '../modules/forum/models/Post';
 import { DateUtil } from '../shared/utils/DateUtil';
 import { PostRow } from '../modules/forum/components/posts/postRow';
+import { PostRows } from '../modules/forum/components/posts/postRows';
 import { ProfileButton } from '../modules/users/components/profileButton';
 import { UsersState } from '../modules/users/redux/states';
 //@ts-ignore
@@ -61,7 +62,7 @@ class IndexPage extends React.Component<IndexPageProps, IndexPageState> {
   onFilterChanged (prevState: IndexPageState) {
     const currentState: IndexPageState = this.state;
     if (prevState.activeFilter !== currentState.activeFilter) {
-      this.getPosts();
+      // this.getPosts();
     }
   }
 
@@ -95,7 +96,7 @@ class IndexPage extends React.Component<IndexPageProps, IndexPageState> {
 
   componentDidMount () {
     this.setActiveFilterOnLoad();
-    this.getPosts();
+    // this.getPosts();
   }
 
   render () {
@@ -123,15 +124,11 @@ class IndexPage extends React.Component<IndexPageProps, IndexPageState> {
           onClick={(filter) => this.setActiveFilter(filter)}
         />
 
-        {this.getPostsFromActiveFilterGroup().map((p, i) => (
-          <PostRow
-            key={i}
-            onUpvoteClicked={() => this.props.upvotePost(p.slug)}
-            onDownvoteClicked={() => this.props.downvotePost(p.slug)}
-            isLoggedIn={this.props.users.isAuthenticated}
-            {...p}
-          />
-        ))}
+        <PostRows
+          isLoggedIn={this.props.users.isAuthenticated}
+          upvotePost={this.props.upvotePost}
+          downvotePost={this.props.downvotePost}
+        />
 
       </Layout>
     )
