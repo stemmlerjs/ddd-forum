@@ -15,23 +15,14 @@ type Response = Either<
 
 export class GetPopularPosts implements UseCase<GetPopularPostsRequestDTO, Promise<Response>> {
   private postRepo: IPostRepo;
-  private memberRepo: IMemberRepo;
 
-  constructor (postRepo: IPostRepo, memberRepo: IMemberRepo) {
+  constructor (postRepo: IPostRepo) {
     this.postRepo = postRepo;
-    this.memberRepo = memberRepo;
   }
   
   public async execute (req: GetPopularPostsRequestDTO): Promise<Response> {
-    let memberId: MemberId;
     try {
-      const isAuthenticated = !!req.userId === true;
-
-      if (isAuthenticated) {
-        memberId = await this.memberRepo.getMemberIdByUserId(req.userId);
-      }
-
-      const posts = await this.postRepo.getPopularPosts(memberId, req.offset);
+      const posts = await this.postRepo.getPopularPosts(req.offset);
       return right(Result.ok<PostDetails[]>(posts))
     } catch (err) {
       return left(new AppError.UnexpectedError(err))
