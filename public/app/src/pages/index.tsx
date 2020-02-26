@@ -59,13 +59,6 @@ class IndexPage extends React.Component<IndexPageProps, IndexPageState> {
     }
   }
 
-  onFilterChanged (prevState: IndexPageState) {
-    const currentState: IndexPageState = this.state;
-    if (prevState.activeFilter !== currentState.activeFilter) {
-      // this.getPosts();
-    }
-  }
-
   setActiveFilterOnLoad () {
     const showNewFilter = (this.props.location.search as string).includes('show=new');
     const showPopularFilter = (this.props.location.search as string).includes('show=popular');
@@ -90,13 +83,8 @@ class IndexPage extends React.Component<IndexPageProps, IndexPageState> {
     }
   }
 
-  componentDidUpdate (prevProps: IndexPageProps, prevState: IndexPageState) {
-    this.onFilterChanged(prevState)
-  }
-
   componentDidMount () {
     this.setActiveFilterOnLoad();
-    // this.getPosts();
   }
 
   render () {
@@ -125,6 +113,7 @@ class IndexPage extends React.Component<IndexPageProps, IndexPageState> {
         />
 
         <PostRows
+          activeFilter={activeFilter}
           isLoggedIn={this.props.users.isAuthenticated}
           upvotePost={this.props.upvotePost}
           downvotePost={this.props.downvotePost}
