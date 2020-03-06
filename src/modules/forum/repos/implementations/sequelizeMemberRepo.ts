@@ -7,6 +7,7 @@ import { MemberDetailsMap } from "../../mappers/memberDetailsMap";
 import { MemberId } from "../../domain/memberId";
 import { UniqueEntityID } from "../../../../shared/domain/UniqueEntityID";
 import { MemberIdMap } from "../../mappers/memberIdMap";
+import { Op } from "sequelize"
 
 export class MemberRepo implements IMemberRepo {
   private models: any;
@@ -32,6 +33,28 @@ export class MemberRepo implements IMemberRepo {
     const member = await MemberModel.findOne(baseQuery);
     const found = !!member === true;
     return found;
+  }
+
+  public async getMemberDetailsByPostLinkOrSlug (linkOrSlug: string): Promise<MemberDetails> {
+    const MemberModel = this.models.Member;
+    const baseQuery = this.createBaseQuery();
+    baseQuery.include.push(
+      { 
+        model: this.models.Post, 
+        as: 'Post', 
+        required: true, 
+        where: {
+          [Op.or]: {
+            slug: { [Op.eq]: linkOrSlug },
+            link: { [Op.eq]: linkOrSlug }
+          }
+        }
+      }
+    )
+    const member = await MemberModel.findOne(baseQuery);
+    const found = !!member === true;
+    if (!found) throw new Error('Member not found');
+    return MemberDetailsMap.toDomain(member);
   }
 
   public async getMemberIdByUserId (userId: string): Promise<MemberId> {

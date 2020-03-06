@@ -27,7 +27,7 @@ const server = new ApolloServer({
     DateTime: GraphQLDateTime,
     Post: {
       memberPostedBy: async (post, args, context) => {
-        const memberDetails = await memberRepo.getMemberByPostSlug(post.slug);
+        const memberDetails = await memberRepo.getMemberDetailsByPostLinkOrSlug(post.slug);
         return MemberDetailsMap.toDTO(memberDetails);
       }
     },
