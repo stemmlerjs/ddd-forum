@@ -24,6 +24,11 @@
     "test:dev": "jest --watchAll",
     "testWithCoverage": "jest --coverage"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm build"
+    }
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/stemmlerjs/ddd-forum.git"
@@ -77,6 +82,7 @@
     "validator": "^11.1.0"
   },
   "devDependencies": {
-    "concurrently": "^5.0.0"
+    "concurrently": "^5.0.0",
+    "husky": "^4.2.3"
   }
 }
