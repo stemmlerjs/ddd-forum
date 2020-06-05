@@ -18,7 +18,6 @@ export class ReplyToPostController extends BaseController {
   async executeImpl (req: DecodedExpressRequest, res: express.Response): Promise<any> {
     const { userId } = req.decoded;
 
-    
     const dto: ReplyToPostDTO = {
       comment: TextUtils.sanitize(req.body.comment),
       userId: userId,

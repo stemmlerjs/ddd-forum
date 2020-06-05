@@ -22,7 +22,10 @@ export class ReplyToPost implements UseCase<ReplyToPostDTO, Promise<Response>> {
   private memberRepo: IMemberRepo;
   private postRepo: IPostRepo;
 
-  constructor (memberRepo: IMemberRepo, postRepo: IPostRepo) {
+  constructor (
+    memberRepo: IMemberRepo, 
+    postRepo: IPostRepo
+  ) {
     this.memberRepo = memberRepo;
     this.postRepo = postRepo;
   }
@@ -35,7 +38,6 @@ export class ReplyToPost implements UseCase<ReplyToPostDTO, Promise<Response>> {
     try {
 
       const slugOrError = PostSlug.createFromExisting(req.slug);
-
       if (slugOrError.isFailure) {
         return left(slugOrError);
       }
@@ -43,7 +45,6 @@ export class ReplyToPost implements UseCase<ReplyToPostDTO, Promise<Response>> {
       slug = slugOrError.getValue();
 
       try {
-        
         [ post, member ] = await Promise.all([
           this.postRepo.getPostBySlug(slug.value),
           this.memberRepo.getMemberByUserId(userId),
@@ -52,7 +53,9 @@ export class ReplyToPost implements UseCase<ReplyToPostDTO, Promise<Response>> {
         return left(new ReplyToPostErrors.PostNotFoundError(slug.value));
       }
 
-      const commentTextOrError = CommentText.create({ value: req.comment });
+      const commentTextOrError = CommentText.create({ 
+        value: req.comment 
+      });
 
       if (commentTextOrError.isFailure) {
         return left(commentTextOrError);

@@ -51,6 +51,7 @@
     "@types/moment": "^2.13.0",
     "@types/react-helmet": "^5.0.11",
     "@types/react-redux": "^7.1.4",
-    "@types/react-router-dom": "^5.1.0"
+    "@types/react-router-dom": "^5.1.0",
+    "prettier": "^2.0.4"
   }
 }
