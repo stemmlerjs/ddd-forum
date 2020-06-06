@@ -1,11 +1,9 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Layout } from '../shared/layout';
 import Header from '../shared/components/header/components/Header';
 import PostFilters, { PostFilterType } from '../modules/forum/components/posts/filters/components/PostFilters';
 import { Post } from '../modules/forum/models/Post';
-import { DateUtil } from '../shared/utils/DateUtil';
-import { PostRow } from '../modules/forum/components/posts/postRow';
 import { PostRows } from '../modules/forum/components/posts/postRows';
 import { ProfileButton } from '../modules/users/components/profileButton';
 import { UsersState } from '../modules/users/redux/states';
@@ -18,6 +16,7 @@ import { User } from '../modules/users/models/user';
 import withLogoutHandling from '../modules/users/hocs/withLogoutHandling';
 import { ForumState } from '../modules/forum/redux/states';
 import withVoting from '../modules/forum/hocs/withVoting';
+import { useLocation } from 'react-router-dom';
 
 interface IndexPageProps extends usersOperators.IUserOperators, forumOperators.IForumOperations {
   users: UsersState;
@@ -29,6 +28,57 @@ interface IndexPageState {
   activeFilter: PostFilterType;
 }
 
+/**
+ * @desc Pages are container components. They take user events from 
+ * presentational components and pass them to interactors.
+ */
+
+function IndexPageContainer () {
+  const [activeFilter, setActiveFilter] = useState<PostFilterType>('POPULAR');
+  const location = useLocation()
+  
+  // Sets the filter 
+  useEffect(() => {
+    const showNewFilter = (location.search as string)
+      .includes('show=new');
+      
+    if (showNewFilter) {
+      setActiveFilter('NEW');
+    }
+  }, [location])  
+
+  return (
+    <Layout>
+      <div className="header-container flex flex-row flex-center flex-even">
+        <Header
+          title="Domain-Driven Designers"
+          subtitle="Where awesome Domain-Driven Designers are made"
+        />
+        <ProfileButton
+          isLoggedIn={false}
+          username={''}
+          onLogout={() => {}}
+        />
+      </div>
+      <br/>
+      <br/>
+
+      <PostFilters
+        activeFilter={activeFilter}
+        onClick={(filter) => setActiveFilter(filter)}
+      />
+
+      <PostRows
+        activeFilter={activeFilter}
+        isLoggedIn={false}
+        upvotePost={() => {}}
+        downvotePost={() => {}}
+      />
+
+    </Layout>
+  )
+}
+
 class IndexPage extends React.Component<IndexPageProps, IndexPageState> {
   constructor (props: IndexPageProps) {
     super(props);
@@ -36,17 +86,6 @@ class IndexPage extends React.Component<IndexPageProps, IndexPageState> {
     this.state = {
       activeFilter: 'POPULAR'
     }
-  }
-
-  onClickJoinButton () {
-
-  }
-
-  setActiveFilter (filter: PostFilterType) {
-    this.setState({
-      ...this.state,
-      activeFilter: filter
-    })
   }
 
   getPosts () {
@@ -59,22 +98,6 @@ class IndexPage extends React.Component<IndexPageProps, IndexPageState> {
     }
   }
 
-  setActiveFilterOnLoad () {
-    const showNewFilter = (this.props.location.search as string).includes('show=new');
-    const showPopularFilter = (this.props.location.search as string).includes('show=popular');
-
-    let activeFilter = this.state.activeFilter;
-
-    if (showNewFilter) {
-      activeFilter = 'NEW';
-    }
-
-    this.setState({
-      ...this.state,
-      activeFilter
-    })
-  }
-
   getPostsFromActiveFilterGroup (): Post[] {
     if (this.state.activeFilter === 'NEW') {
       return this.props.forum.recentPosts;
@@ -84,7 +107,7 @@ class IndexPage extends React.Component<IndexPageProps, IndexPageState> {
   }
 
   componentDidMount () {
-    this.setActiveFilterOnLoad();
+    // this.setActiveFilterOnLoad();
   }
 
   render () {
@@ -107,10 +130,10 @@ class IndexPage extends React.Component<IndexPageProps, IndexPageState> {
         <br/>
         <br/>
 
-        <PostFilters
+        {/* <PostFilters
           activeFilter={activeFilter}
           onClick={(filter) => this.setActiveFilter(filter)}
-        />
+        /> */}
 
         <PostRows
           activeFilter={activeFilter}
@@ -139,8 +162,4 @@ function mapActionCreatorsToProps(dispatch: any) {
     }, dispatch);
 }
 
-export default connect(mapStateToProps, mapActionCreatorsToProps)(
-  withLogoutHandling(
-    withVoting(IndexPage)
-  )
-);
+export default IndexPageContainer;

@@ -6,6 +6,13 @@ import { GraphQLDateTime } from 'graphql-iso-date';
 import { memberRepo } from '../../../../modules/forum/repos'
 import { MemberDetailsMap } from '../../../../modules/forum/mappers/memberDetailsMap'
 import { getPopularPosts } from '../../../../modules/forum/useCases/post/getPopularPosts';
+import { middleware } from '..';
+import { loginUseCase } from '../../../../modules/users/useCases/login';
+import { createUserUseCase } from '../../../../modules/users/useCases/createUser';
+import { getUserByUserName } from '../../../../modules/users/useCases/getUserByUserName';
+import { UserMap } from '../../../../modules/users/mappers/userMap';
+import { User } from '../../../../modules/users/domain/user';
+
 
 const typeDefs = gql`
   scalar DateTime
@@ -17,11 +24,39 @@ const typeDefs = gql`
 
   type Query {
     posts(filterType: String): [Post]!
-    postBySlug (slug: String): Post
+    postBySlug(slug: String): Post
+
+    userGetCurrentUser: User
+    userGetUserByUserName(username: String!): User
+    # userLogout()
+    # userRefreshAccessToken()
+    # userCreateUser()
+    # userDeleteUser()
+  }
+
+  type UserLoginSuccess {
+    accessToken: String!
+    refreshToken: String!
+  }
+
+  type Error {
+    message: String!
+  }
+
+  union UserLoginResponse = UserLoginSuccess | Error 
+
+  union UserCreateResponse = User | Error
+
+  type Mutation {
+    userLogin(username: String!, password: String!): UserLoginResponse!
+    userCreate(email: String!, username: String!, password: String!): UserCreateResponse!
   }
 
   type User {
-    username: String
+    username: String!
+    isEmailVerified: Boolean
+    isAdminUser: Boolean
+    isDeleted: Boolean
   }
 
   type Member {
@@ -49,9 +84,41 @@ const typeDefs = gql`
 `;
 
 const graphQLServer = new ApolloServer({
+  context: ({ req }) => ({
+    userClaims: middleware.getClaims(req.headers['authorization'])
+  }),
   typeDefs,
   resolvers: {
     DateTime: GraphQLDateTime,
+    Mutation: {
+      userLogin: async (parent, args, context) => {
+        const { username, password } = args;
+        try {
+          const result = await loginUseCase.execute({ username, password });
+          if (result.isLeft()) {
+            return result.value.errorValue();
+          } else {
+            return result.value.getValue();
+          }
+        } catch (err) {
+          return { message: err.toString() }
+        }
+      },
+      userCreate: async (parent, args, context) =>  {
+        const { username, password, email } = args;
+        try {
+          const result = await createUserUseCase.execute({ username, password, email });
+          if (result.isLeft()) {
+            return result.value.errorValue();
+          } else {
+            const user = await getUserByUserName.execute({ username });
+            return UserMap.toDTO(user.value.getValue() as User)
+          }
+        } catch (err) {
+          return { message: err.toString() }
+        }
+      }
+    },
     Post: {
       memberPostedBy: async (post, args, context) => {
         const memberDetails = await memberRepo.getMemberByPostSlug(post.slug);
@@ -59,6 +126,11 @@ const graphQLServer = new ApolloServer({
       }
     },
     Query: {
+      userGetCurrentUser: async (parent, args, context) => {
+        console.log(args)
+        console.log(context.userClaims);
+        return { username: "hi" }
+      },
       posts: async (parent, args, context) => {
         let response;
         const suppliedFilterType = args.hasOwnProperty('filterType');
@@ -85,6 +157,26 @@ const graphQLServer = new ApolloServer({
           throw response.value;
         }
       }
+    },
+    UserLoginResponse: {
+      __resolveType (obj) {
+
+        if(obj.hasOwnProperty('message')){
+          return 'Error';
+        }
+  
+        return 'UserLoginSuccess';
+      },
+    },
+    UserCreateResponse: {
+      __resolveType (obj) {
+
+        if(obj.hasOwnProperty('message')){
+          return 'Error';
+        }
+  
+        return 'User';
+      },
     }
   }
 });

@@ -1,6 +1,7 @@
 
 import { isProduction } from "../../../../config";
 import { IAuthService } from "../../../../modules/users/services/authService";
+import { JWTClaims } from "../../../../modules/users/domain/jwt";
 const rateLimit = require('express-rate-limit')
 
 export class Middleware {
@@ -40,6 +41,28 @@ export class Middleware {
       } else {
         return next();
       }
+    }
+  }
+
+  public async getClaims (token: string): Promise<JWTClaims | string> {
+    const decoded = await this.authService.decodeJWT(token);
+    const signatureFailed = !!decoded === false;
+
+    console.log(token)
+
+    if (signatureFailed) {
+      return "Signature failed";
+    }
+
+    // See if the token was found
+    const { username } = decoded;
+    const tokens = await this.authService.getTokens(username);
+
+    // if the token was found, just continue the request.
+    if (tokens.length !== 0) {
+      return decoded;
+    } else {
+      return 'Auth token not found. User is probably not logged in. Please login again.'
     }
   }
 

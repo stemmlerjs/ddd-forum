@@ -23,7 +23,10 @@ export class LoginUserUseCase implements UseCase<LoginDTO, Promise<Response>> {
   private userRepo: IUserRepo;
   private authService: IAuthService;
 
-  constructor (userRepo: IUserRepo, authService: IAuthService) {
+  constructor (
+    userRepo: IUserRepo, 
+    authService: IAuthService
+  ) {
     this.userRepo = userRepo;
     this.authService = authService
   }
