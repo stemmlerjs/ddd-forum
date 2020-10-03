@@ -7,6 +7,7 @@
 <h1 align="center">DDDForum.com</h1>
 
 <p align="center">
+ <a href="https://circleci.com/gh/stemmlerjs/ddd-forum"><img src="https://circleci.com/gh/circleci/circleci-docs.svg?style=svg"></a>
  <a href="#contributors"><img src="https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square"></a>
 </p>
 
