@@ -1,6 +1,24 @@
 version: "3"
 
 services:
+  web:
+    container_name: ddd_app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+      - 5000:5000
+    environment:
+      - DDD_FORUM_APP_SECRET=${DDD_FORUM_APP_SECRET}
+      - DDD_FORUM_REDIS_URL=ddd_forum_redis
+      - DDD_FORUM_REDIS_PORT=6379
+      - DDD_FORUM_DB_HOST=ddd_forum_mysql
+      - DDD_FORUM_DB_DEV_DB_NAME=${DDD_FORUM_DB_DEV_DB_NAME}
+    depends_on:
+      - mysql
+      - redis
+
   mysql:
     container_name: ddd_forum_mysql
     command: --default-authentication-plugin=mysql_native_password
