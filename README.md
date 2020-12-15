@@ -7,6 +7,7 @@
 <h1 align="center">DDDForum.com</h1>
 
 <p align="center">
+ <a href="https://circleci.com/gh/stemmlerjs/ddd-forum"><img src="https://circleci.com/gh/circleci/circleci-docs.svg?style=svg"></a>
  <a href="#contributors"><img src="https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square"></a>
 </p>
 
@@ -17,6 +18,23 @@
 ## About 
 
 DDDForum.com is the application that we build in [solidbook.io - The Software Design and Architecture Handbook](https://solidbook.io). 
+
+## Running the project
+
+You can run the project using [Docker](https://docs.docker.com/compose/gettingstarted/). First, copy `.env` template file. Feel free to change passwords and app secrets. 
+
+```bash
+cp .env.template .env
+```
+
+Then build and run the image.
+
+```bash
+docker-compose up -d --build
+docker-compose up
+```
+
+You can visit the app by going to `http://localhost:3000`.
 
 ### Demo 
 
