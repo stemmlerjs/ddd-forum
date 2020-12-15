@@ -35,11 +35,21 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "ChunML",
+      "name": "Trung Tran",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/22028884?v=4",
+      "profile": "https://trungtran.io/",
+      "contributions": [
+        "infra"
+      ]
     }
   ],
   "contributorsPerLine": 7,
   "projectName": "ddd-forum",
   "projectOwner": "stemmlerjs",
   "repoType": "github",
-  "repoHost": "https://github.com"
+  "repoHost": "https://github.com",
+  "skipCi": true
 }
