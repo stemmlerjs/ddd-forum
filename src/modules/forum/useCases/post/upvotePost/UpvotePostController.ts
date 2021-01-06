@@ -33,7 +33,7 @@ export class UpvotePostController extends BaseController {
           case UpvotePostErrors.PostNotFoundError:
             return this.notFound(res, error.errorValue().message)
           case UpvotePostErrors.AlreadyUpvotedError:
-            return this.conflict(error.errorValue().message)
+            return this.conflict(res, error.errorValue().message)
           default:
             return this.fail(res, error.errorValue().message);
         }

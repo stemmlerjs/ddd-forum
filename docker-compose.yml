@@ -3,9 +3,9 @@ version: "3"
 services:
   web:
     container_name: ddd_app
-    build:
-      context: .
-      dockerfile: Dockerfile
+    volumes:
+      - ./ddd-forum:/opt/ddd-forum
+    build: . 
     ports:
       - 3000:3000
       - 5000:5000
