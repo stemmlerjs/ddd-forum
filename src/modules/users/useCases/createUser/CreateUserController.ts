@@ -32,9 +32,9 @@ export class CreateUserController extends BaseController {
   
         switch (error.constructor) {
           case CreateUserErrors.UsernameTakenError:
-            return this.conflict(error.errorValue().message)
+            return this.conflict(res, error.errorValue().message)
           case CreateUserErrors.EmailAlreadyExistsError:
-            return this.conflict(error.errorValue().message)
+            return this.conflict(res, error.errorValue().message)
           default:
             return this.fail(res, error.errorValue().message);
         }

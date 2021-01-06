@@ -84,7 +84,7 @@ class JoinPage extends React.Component<JoinPageProps, JoinPageState> {
     const currentProps: JoinPageProps = this.props;
     if (currentProps.users.isCreatingUserFailure === !prevProps.users.isCreatingUserFailure) {
       const error: string = currentProps.users.error;
-      return toast.error(`Yeahhhhh, ${error} 🤠`, {
+      return error && toast.error(`Yeahhhhh, ${error} 🤠`, {
         autoClose: 3000
       })
     }
