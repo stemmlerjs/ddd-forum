@@ -51,19 +51,16 @@ export class CreateUserUseCase implements UseCase<CreateUserDTO, Promise<Respons
         ) as Response;
       }
 
-      try {
-        const alreadyCreatedUserByUserName = await this.userRepo
-        .getUserByUserName(username);
+      const alreadyCreatedUserByUserName = await this.userRepo
+      .getUserByUserName(username);
 
-        const userNameTaken = !!alreadyCreatedUserByUserName === true;
+      const userNameTaken = !!alreadyCreatedUserByUserName === true;
 
-        if (userNameTaken) {
-          return left (
-            new CreateUserErrors.UsernameTakenError(username.value)
-          ) as Response;
-        }
-      } catch (err) {}
-
+      if (userNameTaken) {
+        return left (
+          new CreateUserErrors.UsernameTakenError(username.value)
+        ) as Response;
+      }
 
       const userOrError: Result<User> = User.create({
         email, password, username,
