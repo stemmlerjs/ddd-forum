@@ -49,7 +49,7 @@
     "@types/jest": "^24.0.18",
     "@types/lodash": "^4.14.141",
     "@types/node": "^12.7.8",
-    "apollo-server-express": "^2.11.0",
+    "apollo-server-express": "^2.14.2",
     "axios": "^0.19.0",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.19.0",
