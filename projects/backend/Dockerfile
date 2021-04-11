@@ -1,17 +1,15 @@
 FROM node:12.18.4
 
-WORKDIR /usr/src/ddd
+WORKDIR /usr/src/ddd-backend
 
 RUN apt-get update && apt-get install -y netcat
 
-ENV path /usr/src/ddd/node_modules/.bin:$PATH
+ENV path /usr/src/ddd-backend/node_modules/.bin:$PATH
 
-COPY . /usr/src/ddd
+COPY . /usr/src/ddd-backend
 
 RUN npm i -g dotenv-cli
 RUN npm i
-
-RUN cd public/app && npm i
 
 RUN chmod +x entrypoint.sh
 

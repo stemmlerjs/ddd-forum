@@ -4,8 +4,6 @@
   "description": "Learn how to build a hacker news-type app with TypeScript & DDD",
   "main": "index.js",
   "scripts": {
-    "build:public": "cd public/app && npm run build",
-    "start:public": "cd public/app && npm run start",
     "build": "rimraf ./dist && tsc",
     "db:create:dev": "cross-env NODE_ENV=development node scripts/db/create",
     "db:create:test": "cross-env NODE_ENV=test node scripts/db/create",
@@ -17,7 +15,7 @@
     "migrate:test": "npm run build && cross-env NODE_ENV=test dotenv -e .env sequelize db:migrate --env test",
     "migrate:prod": "sequelize db:migrate --env production",
     "start:dev": "cross-env NODE_ENV=development nodemon",
-    "start:both": "concurrently --kill-others-on-fail \"npm run start:dev\" \"npm run  start:public\"",
+    "start:both": "concurrently --kill-others-on-fail \"npm run start:dev\" \"npm run start:public\"",
     "prestart": "npm run migrate:prod",
     "start": "node dist/index",
     "test": "jest",

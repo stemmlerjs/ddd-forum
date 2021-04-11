@@ -1,4 +1,6 @@
 
+
+
 <p align="center">
  <img src="https://user-images.githubusercontent.com/6892666/67032637-fc237200-f0e1-11e9-8a46-f5d655e71962.png"/>
 </p>
@@ -19,10 +21,17 @@ DDDForum.com is the application that we build in [solidbook.io - The Software De
 
 ## Running the project
 
-This project uses Docker. To run the entire app, clone the repo and enter the following command:
+You can run the project using [Docker](https://docs.docker.com/compose/gettingstarted/). First, copy `.env` template file. Feel free to change passwords and app secrets. 
 
 ```bash
-sh startup.sh
+cp .env.template .env
+```
+
+Then build and run the image.
+
+```bash
+docker-compose up -d --build
+docker-compose up
 ```
 
 You can visit the app by going to `http://localhost:3000`.
