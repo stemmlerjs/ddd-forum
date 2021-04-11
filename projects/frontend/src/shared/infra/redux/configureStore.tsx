@@ -1,11 +1,9 @@
 
 import { createStore, applyMiddleware, combineReducers, compose } from 'redux';
 import thunk from 'redux-thunk';
-import users from '../../../modules/users/redux/reducers';
 import forum from '../../../modules/forum/redux/reducers';
 
 const reducers = {
-  users,
   forum
 }
 

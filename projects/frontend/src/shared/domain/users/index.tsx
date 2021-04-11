@@ -1,6 +1,6 @@
 
-import { UsersService } from "./userService";
-import { AuthService } from "./authService";
+import { UsersService } from "./services/userService";
+import { AuthService } from "./services/authService";
 
 const authService = new AuthService();
 const usersService = new UsersService(

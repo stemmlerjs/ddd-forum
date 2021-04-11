@@ -3,14 +3,11 @@ import React from 'react'
 import { Layout } from '../shared/layout';
 import Header from '../shared/components/header/components/Header';
 import { ProfileButton } from '../modules/users/components/profileButton';
-import { UsersState } from '../modules/users/redux/states';
 import { toast } from 'react-toastify';
 //@ts-ignore
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import * as usersOperators from '../modules/users/redux/operators'
 import * as forumOperators from '../modules/forum/redux/operators'
-import { User } from '../modules/users/models/user';
 import withLogoutHandling from '../modules/users/hocs/withLogoutHandling';
 import PostSubmission from '../modules/forum/components/comments/components/PostSubmission';
 import { PostType } from '../modules/forum/models/Post';
@@ -19,8 +16,9 @@ import { PostUtil } from '../modules/forum/utils/PostUtil';
 import { FullPageLoader } from '../shared/components/loader';
 import { ForumState } from '../modules/forum/redux/states';
 
+//@ts-ignore
 interface SubmitPageProps extends usersOperators.IUserOperators, forumOperators.IForumOperations {
-  users: UsersState;
+  users: any;
   forum: ForumState;
   history: any;
 }
@@ -143,7 +141,9 @@ class SubmitPage extends React.Component<SubmitPageProps, SubmitPageState> {
           />
           <ProfileButton
             isLoggedIn={this.props.users.isAuthenticated}
+            //@ts-ignore
             username={this.props.users.isAuthenticated ? (this.props.users.user as User).username : ''}
+            //@ts-ignore
             onLogout={() => this.props.logout()}
           />
         </div>
@@ -165,6 +165,7 @@ class SubmitPage extends React.Component<SubmitPageProps, SubmitPageState> {
   }
 }
 
+//@ts-ignore
 function mapStateToProps ({ users, forum }: { users: UsersState, forum: ForumState }) {
   return {
     users,
@@ -175,7 +176,6 @@ function mapStateToProps ({ users, forum }: { users: UsersState, forum: ForumSta
 function mapActionCreatorsToProps(dispatch: any) {
   return bindActionCreators(
     {
-      ...usersOperators,
       ...forumOperators
     }, dispatch);
 }

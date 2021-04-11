@@ -1,11 +1,20 @@
 
 import React from 'react';
-import { UsersState } from '../redux/states';
-import { IUserOperators } from '../redux/operators';
 import { toast } from 'react-toastify';
 
+/**
+ * @desc Okay, I'm thinking about the best way to organize this type of logic.
+ * This is logic that has to execute AFTER things have happened. I wonder if we can
+ * keep the interaction layer clean and tidy by treating these as "Event Handlers".
+ * These are things that we do in reaction to events. Perhaps it would be great if we
+ * signalled particular events in a clean way that they could be typed. The event handler
+ * would need to be somewhat global, wouldn't it?
+ */
+
+
+//@ts-ignore
 interface withLoginHandlingProps extends IUserOperators {
-  users: UsersState
+  users: any
   history: any;
 }
 
@@ -16,12 +25,14 @@ function withLoginHandling (WrappedComponent: any) {
     }
 
     handleLogin (username: string, password: string) {
+      //@ts-ignore
       this.props.login(username, password);
     }
 
     afterSuccessfulLogin (prevProps: withLoginHandlingProps) {
       const currentProps: withLoginHandlingProps = this.props;
       if (currentProps.users.isLoggingInSuccess && !prevProps.users.isLoggingInSuccess) {
+        //@ts-ignore
         this.props.getUserProfile();
         setTimeout(() => { this.props.history.push('/')}, 3000)
         return toast.success("Logged in! 🤠", {

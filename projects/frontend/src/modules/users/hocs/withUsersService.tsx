@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { usersService } from '../services';
+import { usersService } from '../../../shared/domain/users';
 
 function withUsersService (WrappedComponent: any) {
   class HOC extends React.Component {

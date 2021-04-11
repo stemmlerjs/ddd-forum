@@ -5,16 +5,15 @@ import Header from '../shared/components/header/components/Header'
 import { toast } from 'react-toastify';
 import { OnboardTemplate } from '../modules/users/components/onboarding/onboardTemplate'
 import { TextUtil } from '../shared/utils/TextUtil';
-import { IUserOperators } from '../modules/users/redux/operators';
-import { UsersState } from '../modules/users/redux/states';
 //@ts-ignore
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import * as usersOperators from '../modules/users/redux/operators'
 import withLoginHandling from '../modules/users/hocs/withLoginHandling';
 
+//@ts-ignore
 interface JoinPageProps extends IUserOperators {
-  users: UsersState;
+  //@ts-ignore
+  users: any;
   history: any;
 }
 
@@ -76,6 +75,7 @@ class JoinPage extends React.Component<JoinPageProps, JoinPageState> {
         autoClose: 3000
       });
       // Now login
+      //@ts-ignore
       this.props.login(this.state.username, this.state.password);
     }
   }
@@ -98,6 +98,7 @@ class JoinPage extends React.Component<JoinPageProps, JoinPageState> {
   async onSubmit () {
     if (this.isFormValid()) {
       const { email, username, password } = this.state;  
+      //@ts-ignore
       this.props.createUser(email, username, password)
     }
   }
@@ -123,6 +124,7 @@ class JoinPage extends React.Component<JoinPageProps, JoinPageState> {
   }
 }
 
+//@ts-ignore
 function mapStateToProps ({ users }: { users: UsersState }) {
   return {
     users
@@ -132,7 +134,7 @@ function mapStateToProps ({ users }: { users: UsersState }) {
 function mapActionCreatorsToProps(dispatch: any) {
   return bindActionCreators(
     {
-      ...usersOperators,
+
     }, dispatch);
 }
 

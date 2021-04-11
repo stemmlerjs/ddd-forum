@@ -1,14 +1,14 @@
 
-import { BaseAPI } from "../../../shared/infra/services/BaseAPI";
-import { right, left } from "../../../shared/core/Either";
-import { Result } from "../../../shared/core/Result";
-import { APIResponse } from "../../../shared/infra/services/APIResponse";
+import { BaseAPI } from "../../../infra/services/BaseAPI";
+import { right, left } from "../../../core/Either";
+import { Result } from "../../../core/Result";
+import { APIResponse } from "../../../infra/services/APIResponse";
 import { LoginDTO } from "../dtos/loginDTO";
 import { User } from "../models/user";
 import { IAuthService } from "./authService";
 
 export interface IUsersService {
-  getCurrentUserProfile (): Promise<User>;
+  getCurrentUserProfile (): Promise<APIResponse<User>>;
   createUser (email: string, username: string, password: string): Promise<APIResponse<void>>;
   login (username: string, password: string): Promise<APIResponse<LoginDTO>>;
   logout (): Promise<APIResponse<void>>;
@@ -20,11 +20,15 @@ export class UsersService extends BaseAPI implements IUsersService {
     super(authService);
   }
 
-  async getCurrentUserProfile (): Promise<User> {
-    const response = await this.get('/users/me', null, { 
-      authorization: this.authService.getToken('access-token') 
-    });
-    return response.data.user as User;
+  async getCurrentUserProfile (): Promise<APIResponse<User>> {
+    try {
+      const response = await this.get('/users/me', null, { 
+        authorization: this.authService.getToken('access-token') 
+      });
+      return right(Result.ok<User>(response.data.user as User))
+    } catch (err) {
+      return left(err.response ? err.response.data.message : "Connection failed")
+    }
   }
 
   public async logout (): Promise<APIResponse<void>> {

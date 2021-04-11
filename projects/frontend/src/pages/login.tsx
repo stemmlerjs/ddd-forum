@@ -4,16 +4,14 @@ import { Layout } from '../shared/layout'
 import { toast } from 'react-toastify';
 import { OnboardTemplate } from '../modules/users/components/onboarding/onboardTemplate'
 import Header from '../shared/components/header/components/Header'
-import { IUserOperators } from '../modules/users/redux/operators';
-import { UsersState } from '../modules/users/redux/states';
 //@ts-ignore
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import * as usersOperators from '../modules/users/redux/operators'
 import withLoginHandling from '../modules/users/hocs/withLoginHandling';
 
+//@ts-ignore
 interface LoginPageProps extends IUserOperators {
-  users: UsersState;
+  users: any;
   history: any;
 }
 
@@ -63,6 +61,7 @@ class LoginPage extends React.Component<LoginPageProps, LoginPageState> {
   async onSubmit () {
     if (this.isFormValid()) {
       const { username, password } = this.state;
+      //@ts-ignore
       this.props.login(username, password);
     }
   }
@@ -86,6 +85,7 @@ class LoginPage extends React.Component<LoginPageProps, LoginPageState> {
   }
 }
 
+//@ts-ignore
 function mapStateToProps ({ users }: { users: UsersState }) {
   return {
     users
@@ -95,7 +95,7 @@ function mapStateToProps ({ users }: { users: UsersState }) {
 function mapActionCreatorsToProps(dispatch: any) {
   return bindActionCreators(
     {
-      ...usersOperators,
+
     }, dispatch);
 }
 

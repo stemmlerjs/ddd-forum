@@ -2,8 +2,8 @@
 import axios, { AxiosInstance } from 'axios';
 import { apiConfig } from '../../../config/api';
 import { get } from 'lodash'
-import { IAuthService } from '../../../modules/users/services/authService';
-import { JWTToken } from '../../../modules/users/models/tokens';
+import { IAuthService } from '../../domain/users/services/authService';
+import { JWTToken } from '../../domain/users/models/tokens';
 
 export abstract class BaseAPI {
   protected baseUrl: string;

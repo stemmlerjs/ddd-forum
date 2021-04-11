@@ -9,12 +9,9 @@ import PostComment from '../modules/forum/components/posts/post/components/PostC
 import { Comment } from '../modules/forum/models/Comment';
 import { BackNavigation } from '../shared/components/header';
 import { CommentUtil } from '../modules/forum/utils/CommentUtil';
-import { UsersState } from '../modules/users/redux/states';
 //@ts-ignore
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import * as usersOperators from '../modules/users/redux/operators'
-import { User } from '../modules/users/models/user';
 import { ProfileButton } from '../modules/users/components/profileButton';
 import withLogoutHandling from '../modules/users/hocs/withLogoutHandling';
 import * as forumOperators from '../modules/forum/redux/operators'
@@ -26,8 +23,8 @@ import { FullPageLoader } from '../shared/components/loader';
 import withVoting from '../modules/forum/hocs/withVoting';
 import { Points } from '../modules/forum/components/posts/points';
 
-interface DiscussionPageProps extends usersOperators.IUserOperators, forumOperators.IForumOperations {
-  users: UsersState;
+interface DiscussionPageProps extends forumOperators.IForumOperations {
+  users: any;
   forum: ForumState;
   history: any;
 }
@@ -143,7 +140,9 @@ class DiscussionPage extends React.Component<DiscussionPageProps, DiscussionStat
           />
           <ProfileButton
             isLoggedIn={this.props.users.isAuthenticated}
+            //@ts-ignore
             username={this.props.users.isAuthenticated ? (this.props.users.user as User).username : ''}
+            //@ts-ignore
             onLogout={() => this.props.logout()}
           />
         </div>
@@ -200,7 +199,7 @@ class DiscussionPage extends React.Component<DiscussionPageProps, DiscussionStat
   }
 }
 
-
+//@ts-ignore
 function mapStateToProps ({ users, forum }: { users: UsersState, forum: ForumState }) {
   return {
     users,
@@ -211,7 +210,6 @@ function mapStateToProps ({ users, forum }: { users: UsersState, forum: ForumSta
 function mapActionCreatorsToProps(dispatch: any) {
   return bindActionCreators(
     {
-      ...usersOperators,
       ...forumOperators
     }, dispatch);
 }

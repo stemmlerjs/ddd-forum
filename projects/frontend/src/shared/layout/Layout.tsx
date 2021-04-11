@@ -7,7 +7,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 import "./Layout.sass"
 import { siteMetaData } from '../../config/siteMetaData';
 import withUsersService from '../../modules/users/hocs/withUsersService';
-import { UsersService } from '../../modules/users/services/userService';
+import { UsersService } from '../domain/users/services/userService';
 
 interface LayoutProps {
   usersService: UsersService;

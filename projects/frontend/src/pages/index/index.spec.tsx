@@ -2,6 +2,12 @@
 import React from 'react';
 import { IndexPage } from './index.page';
 import { render, fireEvent, waitFor, screen } from '@testing-library/react'
+import { IUsersService } from '../../shared/domain/users/services/userService';
+import { IPostService } from '../../modules/forum/services/postService';
+import { User } from '../../shared/domain/users/models/user';
+import { MockUserService } from '../../shared/domain/users/mocks/mockUsersService';
+import { MockPostService } from '../../shared/domain/posts/mocks/mockPostsService';
+import { renderWithRouter } from '../../shared/infra/router/RouterTestUtils';
 
 /**
  * @name IndexPageAcceptanceTest
@@ -18,19 +24,35 @@ import { render, fireEvent, waitFor, screen } from '@testing-library/react'
  */
 
 describe('Index page', () => {
-  describe('Given there are popular blog posts', () => {
+  describe('Given there are at least 4 posts', () => {
     describe('When the user lands on the index page', () => {
-      test('Then they should see', () => {
+      test('Then they should see all four posts ranked by popularity', async () => {
 
         // Arrange
+        let mockUserService: IUsersService = new MockUserService(null);
+        let mockPostService: IPostService = new MockPostService([
+          {
+            slug: '/ddd-test',
+            title: 'Domain-Driven Design Example',
+            createdAt: new Date(),
+            postAuthor: 'stemmlerjs',
+            numComments: 0,
+            points: 1,
+            type: 'link',
+            text: '',
+            link: 'https://khalilstemmler.com/ddd',
+            wasUpvotedByMe: true,
+            wasDownvotedByMe: false,
+          }
+        ]);
         
         // Act
-        render(<IndexPage/>)
-
+        renderWithRouter(<IndexPage userService={mockUserService} postService={mockPostService} />)
+        await waitFor(() => screen.getByText('Domain-Driven Designers'))
 
         // Assert 
-
-        expect(1 + 1).toBe(2)    
+        // TODO: I need to verify that the four posts are shown in order
+        expect(1 + 1).toBe(2)
       });
     })
   })

@@ -9,13 +9,10 @@ import { BackNavigation } from '../shared/components/header';
 import PostCommentAuthorAndText from '../modules/forum/components/posts/post/components/PostCommentAuthorAndText';
 import PostComment from '../modules/forum/components/posts/post/components/PostComment';
 import { CommentUtil } from '../modules/forum/utils/CommentUtil';
-import { UsersState } from '../modules/users/redux/states';
 import { toast } from 'react-toastify';
 //@ts-ignore
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import * as usersOperators from '../modules/users/redux/operators'
-import { User } from '../modules/users/models/user';
 import { ProfileButton } from '../modules/users/components/profileButton';
 import withLogoutHandling from '../modules/users/hocs/withLogoutHandling';
 import { ForumState } from '../modules/forum/redux/states';
@@ -30,8 +27,9 @@ interface CommentState {
 
 }
 
+//@ts-ignore
 interface CommentPageProps extends usersOperators.IUserOperators, forumOperators.IForumOperations {
-  users: UsersState;
+  users: any;
   forum: ForumState;
 }
 
@@ -168,7 +166,9 @@ class CommentPage extends React.Component<CommentPageProps, CommentState> {
           )}
           <ProfileButton
             isLoggedIn={this.props.users.isAuthenticated}
+            //@ts-ignore
             username={this.props.users.isAuthenticated ? (this.props.users.user as User).username : ''}
+            //@ts-ignore
             onLogout={() => this.props.logout()}
           />
         </div>
@@ -214,6 +214,7 @@ class CommentPage extends React.Component<CommentPageProps, CommentState> {
   }
 }
 
+//@ts-ignore
 function mapStateToProps ({ users, forum }: { users: UsersState, forum: ForumState }) {
   return {
     users,
@@ -224,7 +225,6 @@ function mapStateToProps ({ users, forum }: { users: UsersState, forum: ForumSta
 function mapActionCreatorsToProps(dispatch: any) {
   return bindActionCreators(
     {
-      ...usersOperators,
       ...forumOperators
     }, dispatch);
 }

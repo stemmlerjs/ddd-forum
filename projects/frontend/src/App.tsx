@@ -7,9 +7,10 @@ import DiscussionPage from './pages/discussion';
 import CommentPage from './pages/comment';
 import LoginPage from './pages/login';
 import JoinPage from './pages/join';
-import AuthenticatedRoute from './shared/infra/router/AuthenticatedRoute';
+import { AuthenticatedRoute } from './shared/infra/router/AuthenticatedRoute';
 import SubmitPage from './pages/submit';
 import MemberPage from './pages/member';
+import { usersService } from './shared/domain/users';
 
 const App: React.FC = () => {
   return (
@@ -18,7 +19,7 @@ const App: React.FC = () => {
       <Route path="/discuss/:slug" component={DiscussionPage}/>
       <Route path="/comment/:commentId" component={CommentPage}/>
       <Route path="/member/:username" component={MemberPage}/>
-      <AuthenticatedRoute path="/submit" component={SubmitPage}/>
+      <AuthenticatedRoute usersService={usersService} path="/submit" component={SubmitPage}/>
       <Route path="/join" component={JoinPage}/>
       <Route path="/login" component={LoginPage}/>
     </Router>

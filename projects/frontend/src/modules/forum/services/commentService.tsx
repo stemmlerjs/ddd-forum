@@ -1,7 +1,7 @@
 
 import { APIResponse } from "../../../shared/infra/services/APIResponse";
 import { BaseAPI } from "../../../shared/infra/services/BaseAPI";
-import { IAuthService } from "../../users/services/authService";
+import { IAuthService } from "../../../shared/domain/users/services/authService";
 import { Comment } from "../models/Comment";
 import { Result } from "../../../shared/core/Result";
 import { right, left } from "../../../shared/core/Either";

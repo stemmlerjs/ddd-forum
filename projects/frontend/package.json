@@ -5,6 +5,7 @@
   "dependencies": {
     "@types/lodash": "^4.14.141",
     "axios": "^0.19.0",
+    "faker": "^5.5.3",
     "lodash": "^4.17.15",
     "moment": "^2.24.0",
     "node-sass": "^4.12.0",
@@ -24,7 +25,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --env=jest-environment-jsdom-sixteen",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -44,6 +45,7 @@
   },
   "devDependencies": {
     "@testing-library/react": "^11.2.6",
+    "@types/faker": "^5.5.1",
     "@types/jest": "^24.0.18",
     "@types/moment": "^2.13.0",
     "@types/node": "^12.20.7",
@@ -52,6 +54,7 @@
     "@types/react-helmet": "^5.0.11",
     "@types/react-redux": "^7.1.4",
     "@types/react-router-dom": "^5.1.0",
+    "jest-environment-jsdom-sixteen": "^1.0.3",
     "prettier": "^2.0.4",
     "typescript": "^3.9.9"
   }

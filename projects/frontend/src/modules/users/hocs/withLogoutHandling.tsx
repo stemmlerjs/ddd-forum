@@ -1,11 +1,10 @@
 
 import React from 'react';
-import { UsersState } from '../redux/states';
-import { IUserOperators } from '../redux/operators';
 import { toast } from 'react-toastify';
 
+//@ts-ignore
 interface withLogoutHandlingProps extends IUserOperators {
-  users: UsersState
+  users: any
 }
 
 function withLogoutHandling (WrappedComponent: any) {
@@ -15,6 +14,7 @@ function withLogoutHandling (WrappedComponent: any) {
     }
 
     handleLogout () {
+      //@ts-ignore
       this.props.logout();
     }
 
