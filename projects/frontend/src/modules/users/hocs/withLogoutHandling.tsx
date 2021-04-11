@@ -45,6 +45,7 @@ function withLogoutHandling (WrappedComponent: any) {
     render () {
       return (
         <WrappedComponent
+        // @ts-ignore
           logout={() => this.handleLogout()}
           {...this.props}
         />

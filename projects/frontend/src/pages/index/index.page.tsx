@@ -1,22 +1,22 @@
 
-import React from 'react';
-import { Layout } from '../shared/layout';
-import Header from '../shared/components/header/components/Header';
-import PostFilters, { PostFilterType } from '../modules/forum/components/posts/filters/components/PostFilters';
-import { Post } from '../modules/forum/models/Post';
-import { DateUtil } from '../shared/utils/DateUtil';
-import { PostRow } from '../modules/forum/components/posts/postRow';
-import { ProfileButton } from '../modules/users/components/profileButton';
-import { UsersState } from '../modules/users/redux/states';
+import React, { useEffect, useState } from 'react';
+import { Layout } from '../../shared/layout';
+import Header from '../../shared/components/header/components/Header';
+import PostFilters, { PostFilterType } from '../../modules/forum/components/posts/filters/components/PostFilters';
+import { Post } from '../../modules/forum/models/Post';
+import { PostRow } from '../../modules/forum/components/posts/postRow';
+import { ProfileButton } from '../../modules/users/components/profileButton';
+import { UsersState } from '../../modules/users/redux/states';
 //@ts-ignore
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import * as usersOperators from '../modules/users/redux/operators'
-import * as forumOperators from '../modules/forum/redux/operators'
-import { User } from '../modules/users/models/user';
-import withLogoutHandling from '../modules/users/hocs/withLogoutHandling';
-import { ForumState } from '../modules/forum/redux/states';
-import withVoting from '../modules/forum/hocs/withVoting';
+import * as usersOperators from '../../modules/users/redux/operators'
+import * as forumOperators from '../../modules/forum/redux/operators'
+import { User } from '../../modules/users/models/user';
+import withLogoutHandling from '../../modules/users/hocs/withLogoutHandling';
+import { ForumState } from '../../modules/forum/redux/states';
+import withVoting from '../../modules/forum/hocs/withVoting';
+import { useLocation } from 'react-router';
 
 interface IndexPageProps extends usersOperators.IUserOperators, forumOperators.IForumOperations {
   users: UsersState;
@@ -28,17 +28,110 @@ interface IndexPageState {
   activeFilter: PostFilterType;
 }
 
-class IndexPage extends React.Component<IndexPageProps, IndexPageState> {
+function usePosts () {
+  
+  const getRecentPosts = () => {};
+  const getPopularPosts = () => {};
+
+  return {
+    operations: { getRecentPosts, getPopularPosts }
+  }
+}
+
+function useUsers () {
+
+}
+
+function useIndexPage () {
+  const location = useLocation()
+  const [_activeFilter, _setActiveFilter] = useState<PostFilterType>('POPULAR');
+  
+
+  const setActiveFilter = (filter: PostFilterType) => {
+    _setActiveFilter(filter);
+  }
+
+  const setFilterOnPageLoad = () => {
+    const showNewFilter = (location.search as string).includes('show=new');
+
+    let activeFilter: PostFilterType = _activeFilter;
+
+    if (showNewFilter) {
+      activeFilter = 'NEW';
+    }
+
+    setActiveFilter(activeFilter)
+  }
+
+  useEffect(setFilterOnPageLoad, []);
+  
+  return {
+    models: { activeFilter: _activeFilter },
+    operations: { setActiveFilter }
+  }
+}
+
+export function IndexPage () {
+
+  let activeFilter: PostFilterType = 'POPULAR'
+
+  const setActiveFilter = (filter: PostFilterType) => {}
+  const getPostsFromActiveFilterGroup = () => {
+    return []
+  }
+
+  const props = {
+    users: {
+      isAuthenticated: false,
+      user: {}
+    },
+    logout: () => {},
+    upvotePost: (str: string) => {},
+    downvotePost: (str: string) => {},
+  }
+
+  return (
+    <Layout>
+      <div className="header-container flex flex-row flex-center flex-even">
+        <Header
+          title="Domain-Driven Designers"
+          subtitle="Where awesome Domain-Driven Designers are made"
+        />
+        <ProfileButton
+          isLoggedIn={props.users.isAuthenticated}
+          username={props.users.isAuthenticated ? (props.users.user as User).username : ''}
+          onLogout={() => props.logout()}
+        />
+      </div>
+      <br/>
+      <br/>
+
+      <PostFilters
+        activeFilter={activeFilter}
+        onClick={(filter) => setActiveFilter(filter)}
+      />
+
+      {getPostsFromActiveFilterGroup().map((p, i) => (
+        <PostRow
+          key={i}
+          onUpvoteClicked={() => props.upvotePost('')}
+          onDownvoteClicked={() => props.downvotePost('')}
+          isLoggedIn={props.users.isAuthenticated}
+          {...p}
+        />
+      ))}
+
+    </Layout>
+  )
+}
+
+class OldIndexPage extends React.Component<IndexPageProps, IndexPageState> {
   constructor (props: IndexPageProps) {
     super(props);
 
     this.state = {
       activeFilter: 'POPULAR'
     }
-  }
-
-  onClickJoinButton () {
-
   }
 
   setActiveFilter (filter: PostFilterType) {
@@ -155,6 +248,6 @@ function mapActionCreatorsToProps(dispatch: any) {
 
 export default connect(mapStateToProps, mapActionCreatorsToProps)(
   withLogoutHandling(
-    withVoting(IndexPage)
+    withVoting(OldIndexPage)
   )
 );

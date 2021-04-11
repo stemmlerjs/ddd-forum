@@ -2,7 +2,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import './App.sass';
-import IndexPage from './pages';
+import { IndexPage } from './pages/index/index.page';
 import DiscussionPage from './pages/discussion';
 import CommentPage from './pages/comment';
 import LoginPage from './pages/login';

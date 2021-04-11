@@ -32,9 +32,13 @@ function withVoting (WrappedComponent: any) {
     render () {
       return (
         <WrappedComponent
+        // @ts-ignore
           upvoteComment={(commentId: string) => this.handleUpvoteComment(commentId)}
+          // @ts-ignore
           downvoteComment={(commentId: string) => this.handleDownvoteComment(commentId)}
+          // @ts-ignore
           upvotePost={(slug: string) => this.handleUpvotePost(slug)}
+          // @ts-ignore
           downvotePost={(slug: string) => this.handleDownvotePost(slug)}
           {...this.props}
         />

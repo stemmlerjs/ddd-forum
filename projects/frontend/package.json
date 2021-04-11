@@ -3,11 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@types/jest": "24.0.18",
     "@types/lodash": "^4.14.141",
-    "@types/node": "^12.7.8",
-    "@types/react": "^16.9.4",
-    "@types/react-dom": "^16.9.1",
     "axios": "^0.19.0",
     "lodash": "^4.17.15",
     "moment": "^2.24.0",
@@ -23,8 +19,7 @@
     "react-scripts": "3.1.2",
     "react-toastify": "^5.4.0",
     "redux": "^4.0.4",
-    "redux-thunk": "^2.3.0",
-    "typescript": "^3.6.3"
+    "redux-thunk": "^2.3.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -48,10 +43,16 @@
     ]
   },
   "devDependencies": {
+    "@testing-library/react": "^11.2.6",
+    "@types/jest": "^24.0.18",
     "@types/moment": "^2.13.0",
+    "@types/node": "^12.20.7",
+    "@types/react": "^16.14.5",
+    "@types/react-dom": "^16.9.12",
     "@types/react-helmet": "^5.0.11",
     "@types/react-redux": "^7.1.4",
     "@types/react-router-dom": "^5.1.0",
-    "prettier": "^2.0.4"
+    "prettier": "^2.0.4",
+    "typescript": "^3.9.9"
   }
 }
