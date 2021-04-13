@@ -12,7 +12,7 @@ interface PostRowProps extends Post {
 }
 
 const PostRow: React.FC<PostRowProps> = (props) => (
-  <div className="post-row">
+  <div className="post-row" data-testid="post-row">
     <Points
       onUpvoteClicked={() => props.onUpvoteClicked()}
       onDownvoteClicked={() => props.onDownvoteClicked()}

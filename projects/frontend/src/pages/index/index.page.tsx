@@ -10,22 +10,12 @@ import { useIndexPage } from './useIndexPage';
 import { useUsers } from '../../shared/domain/users/hooks/useUsers';
 import { User } from '../../shared/domain/users/models/user';
 import { usePosts } from '../../shared/domain/posts/hooks/usePosts';
-import { IUsersService } from '../../shared/domain/users/services/userService';
-import { IPostService } from '../../modules/forum/services/postService';
 
-interface IndexPageProps {
-  userService: IUsersService;
-  postService: IPostService;
-}
 
-interface IndexPageState {
-  activeFilter: PostFilterType;
-}
-
-export function IndexPage (pageProps: IndexPageProps) {
+export function IndexPage () {
   const indexProps = useIndexPage();
-  const usersProps = useUsers(pageProps.userService);
-  const postsProps = usePosts(pageProps.postService);
+  const usersProps = useUsers();
+  const postsProps = usePosts();
 
   const getFilteredPostsFromActiveFilter = () => {
     if (indexProps.state.activeFilter === 'NEW') {

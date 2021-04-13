@@ -1,13 +1,11 @@
 
+import * as usePosts from '../../shared/domain/posts/hooks/usePosts'
+
 import React from 'react';
 import { IndexPage } from './index.page';
-import { render, fireEvent, waitFor, screen } from '@testing-library/react'
-import { IUsersService } from '../../shared/domain/users/services/userService';
-import { IPostService } from '../../modules/forum/services/postService';
-import { User } from '../../shared/domain/users/models/user';
-import { MockUserService } from '../../shared/domain/users/mocks/mockUsersService';
-import { MockPostService } from '../../shared/domain/posts/mocks/mockPostsService';
+import { screen } from '@testing-library/react'
 import { renderWithRouter } from '../../shared/infra/router/RouterTestUtils';
+import { act } from 'react-dom/test-utils';
 
 /**
  * @name IndexPageAcceptanceTest
@@ -24,35 +22,94 @@ import { renderWithRouter } from '../../shared/infra/router/RouterTestUtils';
  */
 
 describe('Index page', () => {
-  describe('Given there are at least 4 posts', () => {
+  describe('Given the user is logged out and there are at least 4 posts', () => {
     describe('When the user lands on the index page', () => {
       test('Then they should see all four posts ranked by popularity', async () => {
-
+  
         // Arrange
-        let mockUserService: IUsersService = new MockUserService(null);
-        let mockPostService: IPostService = new MockPostService([
+        jest.spyOn(usePosts, 'usePosts').mockImplementation(() => (
           {
-            slug: '/ddd-test',
-            title: 'Domain-Driven Design Example',
-            createdAt: new Date(),
-            postAuthor: 'stemmlerjs',
-            numComments: 0,
-            points: 1,
-            type: 'link',
-            text: '',
-            link: 'https://khalilstemmler.com/ddd',
-            wasUpvotedByMe: true,
-            wasDownvotedByMe: false,
+            operations: { 
+              getRecentPosts: async () => {},
+              getPopularPosts: async () => {},
+              upvotePost: async () => {},
+              downvotePost: async () => {},
+            },
+            state: { 
+              recentPosts: [],
+              popularPosts: [
+                {
+                  slug: '/',
+                  title: '/ddd-forum',
+                  createdAt: new Date(),
+                  postAuthor: '@khalil',
+                  numComments: 0,
+                  points: 2,
+                  type: 'text',
+                  text: 'this is a test',
+                  link: 'http://google.com',
+                  wasUpvotedByMe: false,
+                  wasDownvotedByMe: true,
+                },
+                {
+                  slug: '/',
+                  title: '/ddd-forum',
+                  createdAt: new Date(),
+                  postAuthor: '@khalil',
+                  numComments: 0,
+                  points: 2,
+                  type: 'text',
+                  text: 'this is a test',
+                  link: 'http://google.com',
+                  wasUpvotedByMe: false,
+                  wasDownvotedByMe: true,
+                },
+                {
+                  slug: '/',
+                  title: '/ddd-forum',
+                  createdAt: new Date(),
+                  postAuthor: '@khalil',
+                  numComments: 0,
+                  points: 2,
+                  type: 'text',
+                  text: 'this is a test',
+                  link: 'http://google.com',
+                  wasUpvotedByMe: false,
+                  wasDownvotedByMe: true,
+                },
+                {
+                  slug: '/',
+                  title: '/ddd-forum',
+                  createdAt: new Date(),
+                  postAuthor: '@khalil',
+                  numComments: 0,
+                  points: 2,
+                  type: 'text',
+                  text: 'this is a test',
+                  link: 'http://google.com',
+                  wasUpvotedByMe: false,
+                  wasDownvotedByMe: true,
+                }
+              ]
+            }
           }
-        ]);
+        ));
         
         // Act
-        renderWithRouter(<IndexPage userService={mockUserService} postService={mockPostService} />)
-        await waitFor(() => screen.getByText('Domain-Driven Designers'))
+        const result = renderWithRouter(
+          <IndexPage />
+        );
+
+        result.findByText('Domain-Driven Designers');
 
         // Assert 
-        // TODO: I need to verify that the four posts are shown in order
-        expect(1 + 1).toBe(2)
+        let elements;
+
+        act(() => {
+          elements = screen.getAllByTestId('post-row');
+        })
+        
+        expect(elements).toHaveLength(4)
       });
     })
   })

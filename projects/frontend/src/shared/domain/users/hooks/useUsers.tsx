@@ -1,9 +1,9 @@
 
 import { useState } from "react";
+import { usersService } from "..";
 import { User } from "../models/user";
-import { IUsersService } from "../services/userService";
 
-export function useUsers (usersService: IUsersService) {
+export function useUsers () {
   const [currentUser, setCurrentUser] = useState<User | {}>({});
 
   const isAuthenticated = () => {
