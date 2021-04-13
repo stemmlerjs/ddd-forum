@@ -1,113 +1,88 @@
 
-import * as usePosts from '../../shared/domain/posts/hooks/usePosts'
-
 import React from 'react';
 import { IndexPage } from './index.page';
 import { screen } from '@testing-library/react'
 import { renderWithRouter } from '../../shared/infra/router/RouterTestUtils';
-import { act } from 'react-dom/test-utils';
+import { MockUserService } from '../../shared/domain/users/mocks/mockUsersService';
+import { MockPostService } from '../../shared/domain/posts/mocks/mockPostsService';
 
-/**
- * @name IndexPageAcceptanceTest
- * @type Integration
- * @desc Pages contain features. Features are user stories, use cases, commands, or queries.
- * Features are known to have one or more acceptance tests. Therefore, for each page, we'll 
- * write the acceptance tests to test each feature. These will be the highest level tests.
- * They are going to be "unit" tests (though Kent C. Dodds, a popular React educator, calls them
- * integration tests - where integration tests are actually synonymous to "contract" tests, testing 
- * code you don't own). We're only interested in testing code we own. And we want these tests to
- * run fast. There will be gaps, but we will fill those with "integration" and (component-level)
- * "unit" tests later.
- * 
- */
-
-describe('Index page', () => {
-  describe('Given the user is logged out and there are at least 4 posts', () => {
+describe('Home page', () => {
+  describe('Given there are 4 posts', () => {
     describe('When the user lands on the index page', () => {
       test('Then they should see all four posts ranked by popularity', async () => {
-  
-        // Arrange
-        jest.spyOn(usePosts, 'usePosts').mockImplementation(() => (
-          {
-            operations: { 
-              getRecentPosts: async () => {},
-              getPopularPosts: async () => {},
-              upvotePost: async () => {},
-              downvotePost: async () => {},
+        jest.useFakeTimers();
+        const usersService = new MockUserService(null);
+        const postsService = new MockPostService(
+          [
+            {
+              slug: '/',
+              title: 'ddd',
+              createdAt: new Date(),
+              postAuthor: '@khalil',
+              numComments: 4,
+              points: 2,
+              type: 'text',
+              text: 'hello',
+              link: '',
+              wasUpvotedByMe: true,
+              wasDownvotedByMe: false
             },
-            state: { 
-              recentPosts: [],
-              popularPosts: [
-                {
-                  slug: '/',
-                  title: '/ddd-forum',
-                  createdAt: new Date(),
-                  postAuthor: '@khalil',
-                  numComments: 0,
-                  points: 2,
-                  type: 'text',
-                  text: 'this is a test',
-                  link: 'http://google.com',
-                  wasUpvotedByMe: false,
-                  wasDownvotedByMe: true,
-                },
-                {
-                  slug: '/',
-                  title: '/ddd-forum',
-                  createdAt: new Date(),
-                  postAuthor: '@khalil',
-                  numComments: 0,
-                  points: 2,
-                  type: 'text',
-                  text: 'this is a test',
-                  link: 'http://google.com',
-                  wasUpvotedByMe: false,
-                  wasDownvotedByMe: true,
-                },
-                {
-                  slug: '/',
-                  title: '/ddd-forum',
-                  createdAt: new Date(),
-                  postAuthor: '@khalil',
-                  numComments: 0,
-                  points: 2,
-                  type: 'text',
-                  text: 'this is a test',
-                  link: 'http://google.com',
-                  wasUpvotedByMe: false,
-                  wasDownvotedByMe: true,
-                },
-                {
-                  slug: '/',
-                  title: '/ddd-forum',
-                  createdAt: new Date(),
-                  postAuthor: '@khalil',
-                  numComments: 0,
-                  points: 2,
-                  type: 'text',
-                  text: 'this is a test',
-                  link: 'http://google.com',
-                  wasUpvotedByMe: false,
-                  wasDownvotedByMe: true,
-                }
-              ]
+            {
+              slug: '/',
+              title: 'First post',
+              createdAt: new Date(),
+              postAuthor: '@khalil',
+              numComments: 4,
+              points: 2,
+              type: 'text',
+              text: 'hello',
+              link: '',
+              wasUpvotedByMe: true,
+              wasDownvotedByMe: false
+            },
+            {
+              slug: '/',
+              title: 'ddd',
+              createdAt: new Date(),
+              postAuthor: '@khalil',
+              numComments: 4,
+              points: 2,
+              type: 'text',
+              text: 'hello',
+              link: '',
+              wasUpvotedByMe: true,
+              wasDownvotedByMe: false
+            },
+            {
+              slug: '/',
+              title: 'ddd',
+              createdAt: new Date(),
+              postAuthor: '@khalil',
+              numComments: 4,
+              points: 2,
+              type: 'text',
+              text: 'hello',
+              link: '',
+              wasUpvotedByMe: true,
+              wasDownvotedByMe: false
             }
-          }
-        ));
+          ]
+        );
         
         // Act
         const result = renderWithRouter(
-          <IndexPage />
+          <IndexPage 
+            userService={usersService} 
+            postService={postsService}
+          />
         );
 
-        result.findByText('Domain-Driven Designers');
+        await result.findAllByTestId('post-row')
 
         // Assert 
-        let elements;
+        let elements;        
 
-        act(() => {
-          elements = screen.getAllByTestId('post-row');
-        })
+        elements = screen.getAllByTestId('post-row');
         
         expect(elements).toHaveLength(4)
       });
@@ -128,3 +103,18 @@ describe('Index page', () => {
    */
   
 })
+
+
+/**
+ * @name IndexPageAcceptanceTest
+ * @type Integration
+ * @desc Pages contain features. Features are user stories, use cases, commands, or queries.
+ * Features are known to have one or more acceptance tests. Therefore, for each page, we'll 
+ * write the acceptance tests to test each feature. These will be the highest level tests.
+ * They are going to be "unit" tests (though Kent C. Dodds, a popular React educator, calls them
+ * integration tests - where integration tests are actually synonymous to "contract" tests, testing 
+ * code you don't own). We're only interested in testing code we own. And we want these tests to
+ * run fast. There will be gaps, but we will fill those with "integration" and (component-level)
+ * "unit" tests later.
+ * 
+ */

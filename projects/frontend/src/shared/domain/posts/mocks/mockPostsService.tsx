@@ -1,7 +1,7 @@
 
 import { Post, PostType } from "../../../../modules/forum/models/Post"
 import { IPostService } from "../../../../modules/forum/services/postService"
-import { Right, right } from "../../../core/Either";
+import {  right } from "../../../core/Either";
 import { Result } from "../../../core/Result";
 import { APIResponse } from "../../../infra/services/APIResponse";
 
@@ -57,14 +57,14 @@ export class MockPostService implements IPostService {
   }
 
   async getPostBySlug (slug: string): Promise<APIResponse<Post>> {
-    return 
+    return right(Result.ok<Post>(this.posts[0])); 
   }
   
   async upvotePost (slug: string): Promise<APIResponse<void>> {
-    return // ;
+    return right(Result.ok<void>())
   }
 
   async downvotePost (slug: string): Promise<APIResponse<void>> {
-    return // ;
+    return right(Result.ok<void>())
   }
 }

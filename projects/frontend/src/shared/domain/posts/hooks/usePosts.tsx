@@ -1,16 +1,12 @@
 
 import React, { useState } from 'react'
 import { Post } from '../../../../modules/forum/models/Post';
-import { postService } from '../../../../modules/forum/services';
+import { IPostService } from '../../../../modules/forum/services/postService';
 
-export function usePosts () {
+export function usePosts (postService: IPostService) {
 
   const [_recentPosts, _setRecentPosts] = useState<Post[]>([]);
   const [_popularPosts, _setPopularPosts] = useState<Post[]>([]);
-
-  const getPosts = () => {
-    
-  }
   
   const getRecentPosts = async () => {
     const result = await postService.getRecentPosts();
@@ -22,10 +18,12 @@ export function usePosts () {
       // TODO: Handle failure
     }
   };
+
   const getPopularPosts = async () => {
     const result = await postService.getPopularPosts();
+
     if (result.isRight()) {
-      _setPopularPosts(result.value.getValue())
+      _setPopularPosts(result.value.getValue())  
     } 
 
     if (result.isLeft()) {
@@ -37,10 +35,16 @@ export function usePosts () {
   const downvotePost = (str: string) => {}
 
   return {
-    operations: { getRecentPosts, getPopularPosts, upvotePost, downvotePost },
+    operations: { 
+      getRecentPosts, 
+      getPopularPosts, 
+      upvotePost, 
+      downvotePost 
+    },
     state: { 
       recentPosts: _recentPosts,
       popularPosts: _popularPosts
     }
   }
 }
+

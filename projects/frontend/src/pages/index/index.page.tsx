@@ -2,7 +2,7 @@
 import React, { useEffect } from 'react';
 import { Layout } from '../../shared/layout';
 import Header from '../../shared/components/header/components/Header';
-import PostFilters, { PostFilterType } from '../../modules/forum/components/posts/filters/components/PostFilters';
+import PostFilters from '../../modules/forum/components/posts/filters/components/PostFilters';
 import { Post } from '../../modules/forum/models/Post';
 import { PostRow } from '../../modules/forum/components/posts/postRow';
 import { ProfileButton } from '../../modules/users/components/profileButton';
@@ -10,12 +10,18 @@ import { useIndexPage } from './useIndexPage';
 import { useUsers } from '../../shared/domain/users/hooks/useUsers';
 import { User } from '../../shared/domain/users/models/user';
 import { usePosts } from '../../shared/domain/posts/hooks/usePosts';
+import { IUsersService } from '../../shared/domain/users/services/userService';
+import { IPostService } from '../../modules/forum/services/postService';
 
+interface IndexPageProps {
+  userService: IUsersService;
+  postService: IPostService;
+}
 
-export function IndexPage () {
+export function IndexPage (pageProps: IndexPageProps) {
   const indexProps = useIndexPage();
-  const usersProps = useUsers();
-  const postsProps = usePosts();
+  const usersProps = useUsers(pageProps.userService);
+  const postsProps = usePosts(pageProps.postService);
 
   const getFilteredPostsFromActiveFilter = () => {
     if (indexProps.state.activeFilter === 'NEW') {
@@ -33,7 +39,9 @@ export function IndexPage () {
     }
   }
 
-  useEffect(() => getPosts, [indexProps.state.activeFilter]);
+  useEffect(() => {
+    getPosts();
+  }, [indexProps.state.activeFilter]);
 
   return (
     <Layout>
