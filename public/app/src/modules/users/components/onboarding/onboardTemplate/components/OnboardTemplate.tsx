@@ -23,7 +23,7 @@ function getRedirectText (type: TemplateType): string {
 
 function getRedirectLocation (type: TemplateType): string {
   return type === 'signup' ? '/login' : '/join'
-} 
+}
 
 function getTitle (type: TemplateType) {
   return type === 'signup' ? 'Create account' : 'Log in'
@@ -36,16 +36,19 @@ const OnboardTemplate: React.FC<OnboardTemplateProps> = (props) => (
     {props.type === 'signup' && <TextInput
       placeholder="email"
       onChange={(val: string) => props.updateFormField('email', val)}
+      onEnterPress={props.onSubmit}
       type="text"
     />}
     <TextInput
       placeholder="username"
       onChange={(val: string) => props.updateFormField('username', val)}
+      onEnterPress={props.onSubmit}
       type="text"
     />
     <TextInput
       placeholder="password"
       onChange={(val: string) => props.updateFormField('password', val)}
+      onEnterPress={props.onSubmit}
       type="password"
     />
     <br/>
