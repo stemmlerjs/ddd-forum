@@ -7,86 +7,93 @@ import { MockUserService } from '../../shared/domain/users/mocks/mockUsersServic
 import { MockPostService } from '../../shared/domain/posts/mocks/mockPostsService';
 
 describe('Home page', () => {
-  describe('Given there are 4 posts', () => {
-    describe('When the user lands on the index page', () => {
-      test('Then they should see all four posts ranked by popularity', async () => {
-        const usersService = new MockUserService(null);
-        const postsService = new MockPostService(
-          [
-            {
-              slug: '/',
-              title: 'ddd',
-              createdAt: new Date(),
-              postAuthor: '@khalil',
-              numComments: 4,
-              points: 2,
-              type: 'text',
-              text: 'hello',
-              link: '',
-              wasUpvotedByMe: true,
-              wasDownvotedByMe: false
-            },
-            {
-              slug: '/',
-              title: 'First post',
-              createdAt: new Date(),
-              postAuthor: '@khalil',
-              numComments: 4,
-              points: 2,
-              type: 'text',
-              text: 'hello',
-              link: '',
-              wasUpvotedByMe: true,
-              wasDownvotedByMe: false
-            },
-            {
-              slug: '/',
-              title: 'ddd',
-              createdAt: new Date(),
-              postAuthor: '@khalil',
-              numComments: 4,
-              points: 2,
-              type: 'text',
-              text: 'hello',
-              link: '',
-              wasUpvotedByMe: true,
-              wasDownvotedByMe: false
-            },
-            {
-              slug: '/',
-              title: 'ddd',
-              createdAt: new Date(),
-              postAuthor: '@khalil',
-              numComments: 4,
-              points: 2,
-              type: 'text',
-              text: 'hello',
-              link: '',
-              wasUpvotedByMe: true,
-              wasDownvotedByMe: false
-            }
-          ]
-        );
-        
-        // Act
-        const result = renderWithRouter(
-          <IndexPage 
-            userService={usersService} 
-            postService={postsService}
-          />
-        );
-
-        await result.findAllByTestId('post-row')
-
-        // Assert 
-        let elements;        
-
-        elements = screen.getAllByTestId('post-row');
-        
-        expect(elements).toHaveLength(4)
+  describe('Scenario: Fetching popular posts', () => {
+    describe('Given there are 4 posts', () => {
+      describe('When the user lands on the index page', () => {
+        test('Then they should see all four posts ranked by popularity', async () => {
+          const usersService = new MockUserService(null);
+          const postsService = new MockPostService(
+            [
+              {
+                slug: '/',
+                title: 'ddd',
+                createdAt: new Date(),
+                postAuthor: '@khalil',
+                numComments: 4,
+                points: 2,
+                type: 'text',
+                text: 'hello',
+                link: '',
+                wasUpvotedByMe: true,
+                wasDownvotedByMe: false
+              },
+              {
+                slug: '/',
+                title: 'First post',
+                createdAt: new Date(),
+                postAuthor: '@khalil',
+                numComments: 4,
+                points: 2,
+                type: 'text',
+                text: 'hello',
+                link: '',
+                wasUpvotedByMe: true,
+                wasDownvotedByMe: false
+              },
+              {
+                slug: '/',
+                title: 'ddd',
+                createdAt: new Date(),
+                postAuthor: '@khalil',
+                numComments: 4,
+                points: 2,
+                type: 'text',
+                text: 'hello',
+                link: '',
+                wasUpvotedByMe: true,
+                wasDownvotedByMe: false
+              },
+              {
+                slug: '/',
+                title: 'ddd',
+                createdAt: new Date(),
+                postAuthor: '@khalil',
+                numComments: 4,
+                points: 2,
+                type: 'text',
+                text: 'hello',
+                link: '',
+                wasUpvotedByMe: true,
+                wasDownvotedByMe: false
+              }
+            ]
+          );
+          
+          // Act
+          const result = renderWithRouter(
+            <IndexPage 
+              userService={usersService} 
+              postService={postsService}
+            />
+          );
+  
+          await result.findAllByTestId('post-row')
+  
+          // Assert 
+          let elements;        
+  
+          elements = screen.getAllByTestId('post-row');
+          
+          expect(elements).toHaveLength(4)
+        });
       });
-    })
+    });
   })
+
+  describe('Scenario: Fetching new posts', () => {
+    
+  })
+  
 
   
 

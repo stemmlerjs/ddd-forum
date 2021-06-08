@@ -1,7 +1,7 @@
 
 import { PostService } from "./postService";
 import { CommentService } from "./commentService";
-import { authService } from "../../../shared/domain/users";
+import { authService } from "../../users";
 
 const commentService = new CommentService(
   authService

@@ -11,11 +11,14 @@ import { AuthenticatedRoute } from './shared/infra/router/AuthenticatedRoute';
 import SubmitPage from './pages/submit';
 import MemberPage from './pages/member';
 import { usersService } from './shared/domain/users';
+import { postService } from './shared/domain/posts/services';
 
 const App: React.FC = () => {
   return (
     <Router>
-      <Route path="/" exact component={IndexPage} />
+      <Route path="/" exact render={
+        () => <IndexPage postService={postService} userService={usersService}/>
+      } />
       <Route path="/discuss/:slug" component={DiscussionPage}/>
       <Route path="/comment/:commentId" component={CommentPage}/>
       <Route path="/member/:username" component={MemberPage}/>

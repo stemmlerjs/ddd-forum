@@ -1,7 +1,7 @@
 
 
 import * as actionCreators from '../actionCreators'
-import { postService } from '../../services';
+import { postService } from '../../../../shared/domain/posts/services';
 import { Post } from '../../models/Post';
 
 function getPostBySlug (slug: string) {

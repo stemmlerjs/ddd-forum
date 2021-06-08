@@ -11,7 +11,7 @@ import { useUsers } from '../../shared/domain/users/hooks/useUsers';
 import { User } from '../../shared/domain/users/models/user';
 import { usePosts } from '../../shared/domain/posts/hooks/usePosts';
 import { IUsersService } from '../../shared/domain/users/services/userService';
-import { IPostService } from '../../modules/forum/services/postService';
+import { IPostService } from '../../shared/domain/posts/services/postService';
 
 interface IndexPageProps {
   userService: IUsersService;
@@ -31,7 +31,7 @@ export function IndexPage (pageProps: IndexPageProps) {
     }
   }
 
-  const getPosts = () => {
+  const getPostsBasedOnActiveFilter = () => {
     if (indexProps.state.activeFilter === 'NEW') {
       postsProps.operations.getRecentPosts();
     } else {
@@ -40,7 +40,7 @@ export function IndexPage (pageProps: IndexPageProps) {
   }
 
   useEffect(() => {
-    getPosts();
+    getPostsBasedOnActiveFilter();
   }, [indexProps.state.activeFilter]);
 
   return (

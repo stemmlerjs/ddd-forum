@@ -1,6 +1,6 @@
 
 import * as actionCreators from '../actionCreators'
-import { postService } from '../../services';
+import { postService } from '../../../../shared/domain/posts/services';
 import { PostType } from '../../models/Post';
 
 function submitPost (title: string, type: PostType, text?: string, link?: string) {

@@ -1,6 +1,6 @@
 
 import * as actionCreators from '../actionCreators'
-import { commentService } from '../../services';
+import { commentService } from '../../../../shared/domain/posts/services';
 
 function createReplyToComment (comment: string, parentCommentId: string, slug: string) {
   return async (dispatch: any) => {

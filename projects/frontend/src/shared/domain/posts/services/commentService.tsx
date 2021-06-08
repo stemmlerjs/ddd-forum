@@ -1,12 +1,12 @@
 
-import { APIResponse } from "../../../shared/infra/services/APIResponse";
-import { BaseAPI } from "../../../shared/infra/services/BaseAPI";
-import { IAuthService } from "../../../shared/domain/users/services/authService";
-import { Comment } from "../models/Comment";
-import { Result } from "../../../shared/core/Result";
-import { right, left } from "../../../shared/core/Either";
-import { CommentDTO } from "../dtos/commentDTO";
-import { CommentUtil } from "../utils/CommentUtil";
+import { APIResponse } from "../../../infra/services/APIResponse";
+import { BaseAPI } from "../../../infra/services/BaseAPI";
+import { IAuthService } from "../../users/services/authService";
+import { Comment } from "../../../../modules/forum/models/Comment";
+import { Result } from "../../../core/Result";
+import { right, left } from "../../../core/Either";
+import { CommentDTO } from "../../../../modules/forum/dtos/commentDTO";
+import { CommentUtil } from "../../../../modules/forum/utils/CommentUtil";
 
 export interface ICommentService {
   createReplyToPost (text: string, slug: string): Promise<APIResponse<void>>;

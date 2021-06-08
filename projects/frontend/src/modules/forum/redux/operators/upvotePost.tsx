@@ -1,6 +1,6 @@
 
 import * as actionCreators from '../actionCreators'
-import { postService } from '../../services';
+import { postService } from '../../../../shared/domain/posts/services';
 
 function upvotePost (postSlug: string) {
   return async (dispatch: any) => {

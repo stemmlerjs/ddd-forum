@@ -1,6 +1,6 @@
 
 import * as actionCreators from '../actionCreators'
-import { commentService } from '../../services';
+import { commentService } from '../../../../shared/domain/posts/services';
 import { CommentUtil } from '../../utils/CommentUtil';
 
 function getComments (slug: string, offset?: number) {

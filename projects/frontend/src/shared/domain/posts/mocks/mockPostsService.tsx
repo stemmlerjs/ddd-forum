@@ -1,6 +1,6 @@
 
 import { Post, PostType } from "../../../../modules/forum/models/Post"
-import { IPostService } from "../../../../modules/forum/services/postService"
+import { IPostService } from "../services/postService"
 import {  right } from "../../../core/Either";
 import { Result } from "../../../core/Result";
 import { APIResponse } from "../../../infra/services/APIResponse";

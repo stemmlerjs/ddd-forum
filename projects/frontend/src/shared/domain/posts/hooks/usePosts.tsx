@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react'
 import { Post } from '../../../../modules/forum/models/Post';
-import { IPostService } from '../../../../modules/forum/services/postService';
+import { IPostService } from '../services/postService';
 
 export function usePosts (postService: IPostService) {
 
