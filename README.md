@@ -113,6 +113,12 @@ Here are a few examples of concepts from the `forum` subdomain.
 - `adapter` layer: `ICommentRepo`, `IPostRepo`, `IMemberRepo`
 - `infrastructure` layer: `SequelizeCommentRepo`, `SequelizePostRepo`, `SequelizeMemberRepo`
 
+## Project visualization
+
+Here's a large-scale visualization of the repo. As I put more time into the front-end, it may change a little bit.
+
+![Visualization of this repo](./diagram.svg)
+
 ## Contributing
 
 DDDForum is an open source project, and contributions of any kind are welcome! Open issues, bugs, and enhancements are all listed on the issues tab and labeled accordingly. Feel free to open bug tickets and make feature requests. Easy bugs and features will be tagged with the good first issue label.
