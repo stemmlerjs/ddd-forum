@@ -83,7 +83,9 @@ export class UserPassword extends ValueObject<IUserPasswordProps> {
         if (
           !this.isAppropriateLength(props.value)
         ) {
-          return Result.fail<UserPassword>('Password doesnt meet criteria [8 chars min].');
+          return Result.fail<UserPassword>(
+            `Password doesnt meet criteria [${this.minLength} chars min].`
+          );
         }
       }
 
