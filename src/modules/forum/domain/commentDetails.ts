@@ -78,8 +78,8 @@ export class CommentDetails extends ValueObject<CommentDetailsProps> {
       { argument: props.points, argumentName: 'points' }
     ]);
 
-    if (!nullGuard.succeeded) {
-      return Result.fail<CommentDetails>(nullGuard.message);
+    if (nullGuard.isFailure) {
+      return Result.fail<CommentDetails>(nullGuard.getErrorValue());
     }
 
     return Result.ok<CommentDetails>(new CommentDetails({

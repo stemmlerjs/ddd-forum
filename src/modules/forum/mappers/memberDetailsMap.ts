@@ -14,7 +14,7 @@ export class MemberDetailsMap implements Mapper<MemberDetails> {
       username: userNameOrError.getValue(),
     });
 
-    memberDetailsOrError.isFailure ? console.log(memberDetailsOrError.error) : '';
+    memberDetailsOrError.isFailure ? console.log(memberDetailsOrError.getErrorValue()) : '';
 
     return memberDetailsOrError.isSuccess ? memberDetailsOrError.getValue() : null;
   }

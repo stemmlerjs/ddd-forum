@@ -23,19 +23,19 @@ export class PostTitle extends ValueObject<PostTitleProps> {
 
     const nullGuardResult = Guard.againstNullOrUndefined(props.value, 'postTitle');
 
-    if (!nullGuardResult.succeeded) {
-      return Result.fail<PostTitle>(nullGuardResult.message);
+    if (nullGuardResult.isFailure) {
+      return Result.fail<PostTitle>(nullGuardResult.getErrorValue());
     }
 
     const minGuardResult = Guard.againstAtLeast(this.minLength, props.value);
     const maxGuardResult = Guard.againstAtMost(this.maxLength, props.value);
 
-    if (!minGuardResult.succeeded) {
-      return Result.fail<PostTitle>(minGuardResult.message);
+    if (minGuardResult.isFailure) {
+      return Result.fail<PostTitle>(minGuardResult.getErrorValue());
     }
 
-    if (!maxGuardResult.succeeded) {
-      return Result.fail<PostTitle>(maxGuardResult.message);
+    if (maxGuardResult.isFailure) {
+      return Result.fail<PostTitle>(maxGuardResult.getErrorValue());
     }
 
     return Result.ok<PostTitle>(new PostTitle(props));

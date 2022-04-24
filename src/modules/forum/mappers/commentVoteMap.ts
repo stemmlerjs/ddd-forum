@@ -17,7 +17,7 @@ export class CommentVoteMap implements Mapper<CommentVote> {
       type: voteType
     }, new UniqueEntityID(raw.comment_vote_id));
 
-    commentVoteOrError.isFailure ? console.log(commentVoteOrError.error) : '';
+    commentVoteOrError.isFailure ? console.log(commentVoteOrError.getErrorValue()) : '';
 
     return commentVoteOrError.isSuccess ? commentVoteOrError.getValue() : null;
   }

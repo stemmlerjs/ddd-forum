@@ -21,18 +21,18 @@ export class UserName extends ValueObject<UserNameProps> {
 
   public static create (props: UserNameProps): Result<UserName> {
     const usernameResult = Guard.againstNullOrUndefined(props.name, 'username');
-    if (!usernameResult.succeeded) {
-      return Result.fail<UserName>(usernameResult.message)
+    if (usernameResult.isFailure) {
+      return Result.fail<UserName>(usernameResult.getErrorValue())
     }
 
     const minLengthResult = Guard.againstAtLeast(this.minLength, props.name);
-    if (!minLengthResult.succeeded) {
-      return Result.fail<UserName>(minLengthResult.message)
+    if (minLengthResult.isFailure) {
+      return Result.fail<UserName>(minLengthResult.getErrorValue())
     }
 
     const maxLengthResult = Guard.againstAtMost(this.maxLength, props.name);
-    if (!maxLengthResult.succeeded) {
-      return Result.fail<UserName>(minLengthResult.message)
+    if (maxLengthResult.isFailure) {
+      return Result.fail<UserName>(minLengthResult.getErrorValue())
     }
 
     return Result.ok<UserName>(new UserName(props));

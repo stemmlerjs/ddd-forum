@@ -28,7 +28,7 @@ export class CommentMap implements Mapper<Comment> {
       text: CommentText.create({ value: raw.text }).getValue(),
     }, new UniqueEntityID(raw.comment_id));
 
-    commentOrError.isFailure ? console.log(commentOrError.error) : '';
+    commentOrError.isFailure ? console.log(commentOrError.getErrorValue()) : '';
 
     return commentOrError.isSuccess ? commentOrError.getValue() : null;
   }

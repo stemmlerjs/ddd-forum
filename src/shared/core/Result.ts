@@ -2,7 +2,7 @@
 export class Result<T> {
   public isSuccess: boolean;
   public isFailure: boolean
-  public error: T | string;
+  private error: T | string;
   private _value: T;
 
   public constructor (isSuccess: boolean, error?: T | string, value?: T) {
@@ -30,7 +30,7 @@ export class Result<T> {
     return this._value;
   }
 
-  public errorValue (): T {
+  public getErrorValue (): T {
     return this.error as T;
   }
 

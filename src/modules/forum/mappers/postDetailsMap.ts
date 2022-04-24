@@ -36,7 +36,7 @@ export class PostDetailsMap implements Mapper<PostDetails> {
       wasDownvotedByMe: !!votes.find((v) => v.isDownvote())
     })
 
-    postDetailsOrError.isFailure ? console.log(postDetailsOrError.error) : '';
+    postDetailsOrError.isFailure ? console.log(postDetailsOrError.getErrorValue()) : '';
 
     return postDetailsOrError.isSuccess ? postDetailsOrError.getValue() : null;
   }

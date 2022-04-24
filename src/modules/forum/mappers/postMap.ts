@@ -25,7 +25,7 @@ export class PostMap implements Mapper<Post> {
       totalNumComments: raw.total_num_comments
     }, new UniqueEntityID(raw.post_id))
 
-    postOrError.isFailure ? console.log(postOrError.error) : '';
+    postOrError.isFailure ? console.log(postOrError.getErrorValue()) : '';
 
     return postOrError.isSuccess ? postOrError.getValue() : null;
   }

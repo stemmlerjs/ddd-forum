@@ -75,8 +75,8 @@ export class UserPassword extends ValueObject<IUserPasswordProps> {
   public static create (props: IUserPasswordProps): Result<UserPassword> {
     const propsResult = Guard.againstNullOrUndefined(props.value, 'password');
 
-    if (!propsResult.succeeded) {
-      return Result.fail<UserPassword>(propsResult.message);
+    if (propsResult.isFailure) {
+      return Result.fail<UserPassword>(propsResult.getErrorValue());
     } else {
 
       if (!props.hashed) {

@@ -27,11 +27,11 @@ export class RefreshAccessTokenController extends BaseController {
   
         switch (error.constructor) {
           case RefreshAccessTokenErrors.RefreshTokenNotFound:
-            return this.notFound(res, error.errorValue().message)
+            return this.notFound(res, error.getErrorValue().message)
             case RefreshAccessTokenErrors.UserNotFoundOrDeletedError:
-              return this.notFound(res, error.errorValue().message)
+              return this.notFound(res, error.getErrorValue().message)
           default:
-            return this.fail(res, error.errorValue().message);
+            return this.fail(res, error.getErrorValue().message);
         }
       } else {
         const accessToken: JWTToken = result.value.getValue() as JWTToken;

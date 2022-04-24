@@ -43,8 +43,8 @@ export class Member extends AggregateRoot<MemberProps> {
       { argument: props.username, argumentName: 'username' }
     ])
 
-    if (!guardResult.succeeded) {
-      return Result.fail<Member>(guardResult.message);
+    if (guardResult.isFailure) {
+      return Result.fail<Member>(guardResult.getErrorValue());
     }
 
     const defaultValues: MemberProps = {

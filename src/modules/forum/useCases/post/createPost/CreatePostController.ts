@@ -34,9 +34,9 @@ export class CreatePostController extends BaseController {
   
         switch (error.constructor) {
           case CreatePostErrors.MemberDoesntExistError:
-            return this.notFound(res, error.errorValue().message)
+            return this.notFound(res, error.getErrorValue().message)
           default:
-            return this.fail(res, error.errorValue().message);
+            return this.fail(res, error.getErrorValue().message);
         }
         
       } else {

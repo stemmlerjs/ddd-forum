@@ -31,11 +31,11 @@ export class UpvotePostController extends BaseController {
         switch (error.constructor) {
           case UpvotePostErrors.MemberNotFoundError:
           case UpvotePostErrors.PostNotFoundError:
-            return this.notFound(res, error.errorValue().message)
+            return this.notFound(res, error.getErrorValue().message)
           case UpvotePostErrors.AlreadyUpvotedError:
-            return this.conflict(res, error.errorValue().message)
+            return this.conflict(res, error.getErrorValue().message)
           default:
-            return this.fail(res, error.errorValue().message);
+            return this.fail(res, error.getErrorValue().message);
         }
         
       } else {

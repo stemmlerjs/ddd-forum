@@ -21,8 +21,8 @@ export class PostLink extends ValueObject<PostLinkProps> {
   public static create (props: PostLinkProps): Result<PostLink> {
     const nullGuard = Guard.againstNullOrUndefined(props.url, 'url');
     
-    if (!nullGuard.succeeded) {
-      return Result.fail<PostLink>(nullGuard.message);
+    if (nullGuard.isFailure) {
+      return Result.fail<PostLink>(nullGuard.getErrorValue());
     } 
 
     if (!TextUtils.validateWebURL(props.url)) {

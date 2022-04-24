@@ -17,7 +17,7 @@ export class PostVoteMap implements Mapper<PostVote> {
       type: voteType
     }, new UniqueEntityID(raw.post_vote_id));
 
-    postVoteOrError.isFailure ? console.log(postVoteOrError.error) : '';
+    postVoteOrError.isFailure ? console.log(postVoteOrError.getErrorValue()) : '';
 
     return postVoteOrError.isSuccess ? postVoteOrError.getValue() : null;
   }

@@ -32,9 +32,9 @@ export class UpvoteCommentController extends BaseController {
           case UpvoteCommentErrors.MemberNotFoundError:
           case UpvoteCommentErrors.PostNotFoundError:
           case UpvoteCommentErrors.CommentNotFoundError:
-            return this.notFound(res, error.errorValue().message)
+            return this.notFound(res, error.getErrorValue().message)
           default:
-            return this.fail(res, error.errorValue().message);
+            return this.fail(res, error.getErrorValue().message);
         }
         
       } else {

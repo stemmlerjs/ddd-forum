@@ -29,7 +29,7 @@ export class CommentDetailsMap implements Mapper<CommentDetails> {
       wasDownvotedByMe: !!votes.find((v) => v.isDownvote())
     });
 
-    commentDetailsOrError.isFailure ? console.log(commentDetailsOrError.error) : '';
+    commentDetailsOrError.isFailure ? console.log(commentDetailsOrError.getErrorValue()) : '';
 
     return commentDetailsOrError.isSuccess ? commentDetailsOrError.getValue() : null;
   }

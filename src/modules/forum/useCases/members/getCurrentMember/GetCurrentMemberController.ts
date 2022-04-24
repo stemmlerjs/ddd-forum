@@ -21,7 +21,7 @@ export class GetCurrentMemberController extends BaseController {
       const result = await this.useCase.execute({ username });
 
       if (result.isLeft()) {
-        return this.fail(res, result.value.errorValue().message);
+        return this.fail(res, result.value.getErrorValue().message);
       } else {
         const memberDetails = result.value.getValue();
         

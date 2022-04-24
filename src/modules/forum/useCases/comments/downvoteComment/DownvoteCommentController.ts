@@ -32,9 +32,9 @@ export class DownvoteCommentController extends BaseController {
           case DownvoteCommentErrors.MemberNotFoundError:
           case DownvoteCommentErrors.PostNotFoundError:
           case DownvoteCommentErrors.CommentNotFoundError:
-            return this.notFound(res, error.errorValue().message)
+            return this.notFound(res, error.getErrorValue().message)
           default:
-            return this.fail(res, error.errorValue().message);
+            return this.fail(res, error.getErrorValue().message);
         }
         
       } else {

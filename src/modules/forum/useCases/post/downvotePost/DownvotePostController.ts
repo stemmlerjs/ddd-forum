@@ -31,11 +31,11 @@ export class DownvotePostController extends BaseController {
         switch (error.constructor) {
           case DownvotePostErrors.MemberNotFoundError:
           case DownvotePostErrors.PostNotFoundError:
-            return this.notFound(res, error.errorValue().message)
+            return this.notFound(res, error.getErrorValue().message)
           case DownvotePostErrors.AlreadyDownvotedError:
-            return this.conflict(res, error.errorValue().message)
+            return this.conflict(res, error.getErrorValue().message)
           default:
-            return this.fail(res, error.errorValue().message);
+            return this.fail(res, error.getErrorValue().message);
         }
         
       } else {

@@ -35,7 +35,7 @@ export class CreateUserUseCase implements UseCase<CreateUserDTO, Promise<Respons
     ]);
 
     if (dtoResult.isFailure) {
-      return left(Result.fail<void>(dtoResult.error)) as Response;
+      return left(Result.fail<void>(dtoResult.getErrorValue())) as Response;
     }
 
     const email: UserEmail = emailOrError.getValue();
@@ -71,7 +71,7 @@ export class CreateUserUseCase implements UseCase<CreateUserDTO, Promise<Respons
 
       if (userOrError.isFailure) {
         return left(
-          Result.fail<User>(userOrError.error.toString())
+          Result.fail<User>(userOrError.getErrorValue().toString())
         ) as Response;
       }
 

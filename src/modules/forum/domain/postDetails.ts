@@ -93,8 +93,8 @@ export class PostDetails extends ValueObject<PostDetailsProps> {
 
     const guardResult = Guard.againstNullOrUndefinedBulk(guardArgs);
 
-    if (!guardResult.succeeded) {
-      return Result.fail<PostDetails>(guardResult.message);
+    if (guardResult.isFailure) {
+      return Result.fail<PostDetails>(guardResult.getErrorValue());
     }
 
     if (!Post.isValidPostType(props.type)) {

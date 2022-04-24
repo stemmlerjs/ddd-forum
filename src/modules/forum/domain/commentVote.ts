@@ -50,8 +50,8 @@ export class CommentVote extends Entity<CommentVoteProps> {
       { argument: props.type, argumentName: 'type' }
     ]);
 
-    if (!guardResult.succeeded) {
-      return Result.fail<CommentVote>(guardResult.message);
+    if (guardResult.isFailure) {
+      return Result.fail<CommentVote>(guardResult.getErrorValue());
     } else {
       return Result.ok<CommentVote>(new CommentVote(props, id));
     }
@@ -61,12 +61,12 @@ export class CommentVote extends Entity<CommentVoteProps> {
     const memberGuard = Guard.againstNullOrUndefined(memberId, 'memberId');
     const postGuard = Guard.againstNullOrUndefined(commentId, 'commentId');
 
-    if (!memberGuard.succeeded) {
-      return Result.fail<CommentVote>(memberGuard.message);
+    if (memberGuard.isFailure) {
+      return Result.fail<CommentVote>(memberGuard.getErrorValue());
     }
 
-    if (!postGuard.succeeded) {
-      return Result.fail<CommentVote>(postGuard.message);
+    if (postGuard.isFailure) {
+      return Result.fail<CommentVote>(postGuard.getErrorValue());
     }
 
     return Result.ok<CommentVote>(new CommentVote({
@@ -80,12 +80,12 @@ export class CommentVote extends Entity<CommentVoteProps> {
     const memberGuard = Guard.againstNullOrUndefined(memberId, 'memberId');
     const postGuard = Guard.againstNullOrUndefined(commentId, 'commentId');
 
-    if (!memberGuard.succeeded) {
-      return Result.fail<CommentVote>(memberGuard.message);
+    if (memberGuard.isFailure) {
+      return Result.fail<CommentVote>(memberGuard.getErrorValue());
     }
 
-    if (!postGuard.succeeded) {
-      return Result.fail<CommentVote>(postGuard.message);
+    if (postGuard.isFailure) {
+      return Result.fail<CommentVote>(postGuard.getErrorValue());
     }
 
     return Result.ok<CommentVote>(new CommentVote({

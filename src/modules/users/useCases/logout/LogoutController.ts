@@ -19,7 +19,7 @@ export class LogoutController extends BaseController {
       const result = await this.useCase.execute({ userId });
 
       if (result.isLeft()) {
-        return this.fail(res, result.value.errorValue().message);
+        return this.fail(res, result.value.getErrorValue().message);
       } else {
         return this.ok(res);
       }

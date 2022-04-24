@@ -31,7 +31,7 @@ export class UserMap implements Mapper<User> {
       email: userEmailOrError.getValue(),
     }, new UniqueEntityID(raw.base_user_id));
 
-    userOrError.isFailure ? console.log(userOrError.error) : '';
+    userOrError.isFailure ? console.log(userOrError.getErrorValue()) : '';
 
     return userOrError.isSuccess ? userOrError.getValue() : null;
   }

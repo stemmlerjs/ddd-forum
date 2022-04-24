@@ -22,19 +22,19 @@ export class PostText extends ValueObject<PostTextProps> {
   public static create (props: PostTextProps): Result<PostText> {
     const nullGuardResult = Guard.againstNullOrUndefined(props.value, 'postText');
 
-    if (!nullGuardResult.succeeded) {
-      return Result.fail<PostText>(nullGuardResult.message);
+    if (nullGuardResult.isFailure) {
+      return Result.fail<PostText>(nullGuardResult.getErrorValue());
     }
 
     const minGuardResult = Guard.againstAtLeast(this.minLength, props.value);
     const maxGuardResult = Guard.againstAtMost(this.maxLength, props.value);
 
-    if (!minGuardResult.succeeded) {
-      return Result.fail<PostText>(minGuardResult.message);
+    if (minGuardResult.isFailure) {
+      return Result.fail<PostText>(minGuardResult.getErrorValue());
     }
 
-    if (!maxGuardResult.succeeded) {
-      return Result.fail<PostText>(maxGuardResult.message);
+    if (maxGuardResult.isFailure) {
+      return Result.fail<PostText>(maxGuardResult.getErrorValue());
     }
 
     return Result.ok<PostText>(new PostText(props));

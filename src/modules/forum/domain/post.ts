@@ -110,8 +110,8 @@ export class Post extends AggregateRoot<PostProps> {
 
     const guardResult = Guard.againstNullOrUndefined(postText, 'postText');
       
-    if (!guardResult.succeeded) {
-      return left(Result.fail<any>(guardResult.message))
+    if (guardResult.isFailure) {
+      return left(Result.fail<any>(guardResult.getErrorValue()))
     } 
 
     this.props.text = postText;
@@ -129,8 +129,8 @@ export class Post extends AggregateRoot<PostProps> {
 
     const guardResult = Guard.againstNullOrUndefined(postLink, 'postLink');
       
-    if (!guardResult.succeeded) {
-      return left(Result.fail<any>(guardResult.message))
+    if (guardResult.isFailure) {
+      return left(Result.fail<any>(guardResult.getErrorValue()))
     } 
 
     this.props.link = postLink;
@@ -218,8 +218,8 @@ export class Post extends AggregateRoot<PostProps> {
 
     const guardResult = Guard.againstNullOrUndefinedBulk(guardArgs);
 
-    if (!guardResult.succeeded) {
-      return Result.fail<Post>(guardResult.message);
+    if (guardResult.isFailure) {
+      return Result.fail<Post>(guardResult.getErrorValue());
     }
 
     if (!this.isValidPostType(props.type)) {

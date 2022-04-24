@@ -17,7 +17,7 @@ export class MemberMap implements Mapper<Member> {
       userId: userIdOrError.getValue()
     }, new UniqueEntityID(raw.member_id));
 
-    memberOrError.isFailure ? console.log(memberOrError.error) : '';
+    memberOrError.isFailure ? console.log(memberOrError.getErrorValue()) : '';
 
     return memberOrError.isSuccess ? memberOrError.getValue() : null;
   }

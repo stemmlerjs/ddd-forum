@@ -26,7 +26,7 @@ export class GetUserByUserName implements UseCase<GetUserByUserNameDTO, Promise<
 
       if (userNameOrError.isFailure) {
         return left(
-          Result.fail<any>(userNameOrError.error.toString())
+          Result.fail<any>(userNameOrError.getErrorValue().toString())
         ) as Response;
       }
 

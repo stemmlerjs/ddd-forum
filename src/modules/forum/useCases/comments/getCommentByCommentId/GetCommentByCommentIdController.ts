@@ -30,9 +30,9 @@ export class GetCommentByCommentIdController extends BaseController {
   
         switch (error.constructor) {
           case GetCommentByCommentIdErrors.CommentNotFoundError:
-            return this.notFound(res, error.errorValue().message);
+            return this.notFound(res, error.getErrorValue().message);
           default:
-            return this.fail(res, error.errorValue().message);
+            return this.fail(res, error.getErrorValue().message);
         }
         
       } else {

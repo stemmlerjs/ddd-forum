@@ -95,8 +95,8 @@ export class User extends AggregateRoot<UserProps> {
       { argument: props.email, argumentName: 'email' }
     ]);
 
-    if (!guardResult.succeeded) {
-      return Result.fail<User>(guardResult.message)
+    if (guardResult.isFailure) {
+      return Result.fail<User>(guardResult.getErrorValue())
     }
 
     const isNewUser = !!id === false;

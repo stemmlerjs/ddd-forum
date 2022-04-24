@@ -43,8 +43,8 @@ export class MemberDetails extends ValueObject<MemberDetailsProps> {
       { argument: props.reputation, argumentName: 'reputation' }
     ]);
 
-    if (!guardResult.succeeded) {
-      return Result.fail<MemberDetails>(guardResult.message);
+    if (guardResult.isFailure) {
+      return Result.fail<MemberDetails>(guardResult.getErrorValue());
     }
 
     return Result.ok<MemberDetails>(new MemberDetails({

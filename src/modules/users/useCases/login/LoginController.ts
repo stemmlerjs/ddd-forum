@@ -25,11 +25,11 @@ export class LoginController extends BaseController {
   
         switch (error.constructor) {
           case LoginUseCaseErrors.UserNameDoesntExistError:
-            return this.notFound(res, error.errorValue().message)
+            return this.notFound(res, error.getErrorValue().message)
           case LoginUseCaseErrors.PasswordDoesntMatchError:
-            return this.clientError(res, error.errorValue().message)
+            return this.clientError(res, error.getErrorValue().message)
           default:
-            return this.fail(res, error.errorValue().message);
+            return this.fail(res, error.getErrorValue().message);
         }
       } else {
         const dto: LoginDTOResponse = result.value.getValue() as LoginDTOResponse;

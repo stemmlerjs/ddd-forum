@@ -106,8 +106,8 @@ export class Comment extends Entity<CommentProps> {
       { argument: props.postId, argumentName: 'postId' },
     ]);
 
-    if (!nullGuard.succeeded) {
-      return Result.fail<Comment>(nullGuard.message);
+    if (nullGuard.isFailure) {
+      return Result.fail<Comment>(nullGuard.getErrorValue());
     } else {
 
       const isNewComment = !!id === false;
