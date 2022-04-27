@@ -16,6 +16,7 @@
     "migrate:dev": "npm run build && cross-env NODE_ENV=development dotenv -e .env sequelize db:migrate",
     "migrate:test": "npm run build && cross-env NODE_ENV=test dotenv -e .env sequelize db:migrate --env test",
     "migrate:prod": "sequelize db:migrate --env production",
+    "setup:dev": "npm install && npm run db:create:dev && npm run migrate:dev && cd public/app && npm install",
     "start:dev": "cross-env NODE_ENV=development nodemon",
     "start:both": "concurrently --kill-others-on-fail \"npm run start:dev\" \"npm run  start:public\"",
     "prestart": "npm run migrate:prod",
@@ -86,6 +87,7 @@
   },
   "devDependencies": {
     "concurrently": "^5.0.0",
+    "dotenv-cli": "^5.1.0",
     "husky": "^4.2.3"
   }
 }
