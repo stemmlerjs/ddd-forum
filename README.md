@@ -21,16 +21,24 @@ DDDForum.com is the application that we build in [solidbook.io - The Software De
 
 ## Running the project
 
-You can run the project using [Docker](https://docs.docker.com/compose/gettingstarted/). First, copy `.env` template file. Feel free to change passwords and app secrets. 
+1. Install and start [Docker](https://docs.docker.com/compose/gettingstarted/) if you haven't already.
+2. Copy the `.env` template file. Feel free to change passwords and app secrets. 
 
 ```bash
 cp .env.template .env
 ```
 
-Then build and run the image.
+3. Build and run the image to run the backend services.
 
 ```bash
 docker-compose up
+```
+
+4. Open up an additional console and then run:
+
+```bash
+npm run setup:dev
+npm run start:both
 ```
 
 You can visit the app by going to `http://localhost:3000`.
