@@ -1,0 +1,424 @@
+{
+  "Id": "Qps9Xgbd",
+  "Version": "0.4.0",
+  "RuntimeVersion": "0.2.3-preview",
+  "Pattern": {
+    "Id": "Qps9Xgbd",
+    "Name": "SubDomain",
+    "Attributes": [
+      {
+        "Id": "ppTa0ZPY",
+        "Name": "Name",
+        "DataType": "string",
+        "IsRequired": true,
+        "Choices": []
+      }
+    ],
+    "Elements": [
+      {
+        "Id": "YQY1UP9X",
+        "Name": "Resource",
+        "Attributes": [
+          {
+            "Id": "nYEcsBJ0",
+            "Name": "Name",
+            "DataType": "string",
+            "IsRequired": true,
+            "Choices": []
+          },
+          {
+            "Id": "zyMKwj1w",
+            "Name": "Kind",
+            "DataType": "string",
+            "IsRequired": true,
+            "DefaultValue": "entity",
+            "Choices": [
+              "aggregate",
+              "entity"
+            ]
+          }
+        ],
+        "Elements": [
+          {
+            "Id": "fG9N9vM6",
+            "Name": "UseCase",
+            "Attributes": [
+              {
+                "Id": "gTRJAA6u",
+                "Name": "Name",
+                "DataType": "string",
+                "IsRequired": true,
+                "Choices": []
+              },
+              {
+                "Id": "24hWYBWf",
+                "Name": "Kind",
+                "DataType": "string",
+                "IsRequired": true,
+                "DefaultValue": "command",
+                "Choices": [
+                  "command",
+                  "query"
+                ]
+              },
+              {
+                "Id": "znJ67wqj",
+                "Name": "Route",
+                "DataType": "string",
+                "IsRequired": true,
+                "DefaultValue": "/",
+                "Choices": []
+              },
+              {
+                "Id": "x3H8M06Q",
+                "Name": "IsAuthenticated",
+                "DataType": "bool",
+                "IsRequired": true,
+                "DefaultValue": "true",
+                "Choices": []
+              }
+            ],
+            "CodeTemplates": [
+              {
+                "Id": "dwDXxv9G",
+                "Name": "UseCase",
+                "LastModifiedUtc": "2022-06-13T08:57:11.8172269Z",
+                "Metadata": {
+                  "OriginalFilePath": "C:\\Projects\\github\\stemmlerjs\\ddd-forum\\src\\modules\\forum\\useCases\\post\\createPost\\CreatePost.ts",
+                  "OriginalFileExtension": ".ts"
+                }
+              },
+              {
+                "Id": "PmEpX6M7",
+                "Name": "Controller",
+                "LastModifiedUtc": "2022-06-13T08:54:14.9353515Z",
+                "Metadata": {
+                  "OriginalFilePath": "C:\\Projects\\github\\stemmlerjs\\ddd-forum\\src\\modules\\forum\\useCases\\post\\createPost\\CreatePostController.ts",
+                  "OriginalFileExtension": ".ts"
+                }
+              },
+              {
+                "Id": "1uxps3Sc",
+                "Name": "DTO",
+                "LastModifiedUtc": "2022-06-13T08:50:57.6134271Z",
+                "Metadata": {
+                  "OriginalFilePath": "C:\\Projects\\github\\stemmlerjs\\ddd-forum\\src\\modules\\forum\\useCases\\post\\createPost\\CreatePostDTO.ts",
+                  "OriginalFileExtension": ".ts"
+                }
+              },
+              {
+                "Id": "cd8R6rKQ",
+                "Name": "Errors",
+                "LastModifiedUtc": "2022-06-13T08:46:12.6939558Z",
+                "Metadata": {
+                  "OriginalFilePath": "C:\\Projects\\github\\stemmlerjs\\ddd-forum\\src\\modules\\forum\\useCases\\post\\createPost\\CreatePostErrors.ts",
+                  "OriginalFileExtension": ".ts"
+                }
+              },
+              {
+                "Id": "Dn8BrSRK",
+                "Name": "Index",
+                "LastModifiedUtc": "2022-06-13T08:41:16.3553577Z",
+                "Metadata": {
+                  "OriginalFilePath": "C:\\Projects\\github\\stemmlerjs\\ddd-forum\\src\\modules\\forum\\useCases\\post\\createPost\\index.ts",
+                  "OriginalFileExtension": ".ts"
+                }
+              }
+            ],
+            "Automation": [
+              {
+                "Id": "VUbQMgMU",
+                "Name": "UseCaseCommand1",
+                "Type": "CodeTemplateCommand",
+                "Metadata": {
+                  "CodeTemplateId": "dwDXxv9G",
+                  "IsOneOff": true,
+                  "FilePath": "src/modules/{{Parent.Parent.Name | string.camelsingular}}/useCases/{{Parent.Name | string.camelsingular}}/{{Name | string.camelsingular}}{{Parent.Name | string.pascalsingular}}/{{Name | string.pascalsingular}}{{Parent.Name | string.pascalsingular}}.ts"
+                }
+              },
+              {
+                "Id": "V3CskeRB",
+                "Name": "ControllerCommand2",
+                "Type": "CodeTemplateCommand",
+                "Metadata": {
+                  "CodeTemplateId": "PmEpX6M7",
+                  "IsOneOff": true,
+                  "FilePath": "src/modules/{{Parent.Parent.Name | string.camelsingular}}/useCases/{{Parent.Name | string.camelsingular}}/{{Name | string.camelsingular}}{{Parent.Name | string.pascalsingular}}/{{Name | string.pascalsingular}}{{Parent.Name | string.pascalsingular}}Controller.ts"
+                }
+              },
+              {
+                "Id": "rmWtB8Mg",
+                "Name": "DTOCommand3",
+                "Type": "CodeTemplateCommand",
+                "Metadata": {
+                  "CodeTemplateId": "1uxps3Sc",
+                  "IsOneOff": true,
+                  "FilePath": "src/modules/{{Parent.Parent.Name | string.camelsingular}}/useCases/{{Parent.Name | string.camelsingular}}/{{Name | string.camelsingular}}{{Parent.Name | string.pascalsingular}}/{{Name | string.pascalsingular}}{{Parent.Name | string.pascalsingular}}DTO.ts"
+                }
+              },
+              {
+                "Id": "5M93B0Sd",
+                "Name": "ErrorsCommand4",
+                "Type": "CodeTemplateCommand",
+                "Metadata": {
+                  "CodeTemplateId": "cd8R6rKQ",
+                  "IsOneOff": true,
+                  "FilePath": "src/modules/{{Parent.Parent.Name | string.camelsingular}}/useCases/{{Parent.Name | string.camelsingular}}/{{Name | string.camelsingular}}{{Parent.Name | string.pascalsingular}}/{{Name | string.pascalsingular}}{{Parent.Name | string.pascalsingular}}Errors.ts"
+                }
+              },
+              {
+                "Id": "KcSe1axf",
+                "Name": "IndexCommand5",
+                "Type": "CodeTemplateCommand",
+                "Metadata": {
+                  "CodeTemplateId": "Dn8BrSRK",
+                  "IsOneOff": true,
+                  "FilePath": "src/modules/{{Parent.Parent.Name | string.camelsingular}}/useCases/{{Parent.Name | string.camelsingular}}/{{Name | string.camelsingular}}{{Parent.Name | string.pascalsingular}}/index.ts"
+                }
+              },
+              {
+                "Id": "8HYpvvQc",
+                "Name": "Go",
+                "Type": "CommandLaunchPoint",
+                "Metadata": {
+                  "CommandIds": "VUbQMgMU;V3CskeRB;rmWtB8Mg;5M93B0Sd;KcSe1axf"
+                }
+              }
+            ],
+            "IsCollection": true,
+            "Cardinality": "OneOrMany",
+            "AutoCreate": true
+          }
+        ],
+        "CodeTemplates": [
+          {
+            "Id": "7R1gAwGe",
+            "Name": "Resource",
+            "LastModifiedUtc": "2022-06-13T09:43:10.7913419Z",
+            "Metadata": {
+              "OriginalFilePath": "C:\\Projects\\github\\stemmlerjs\\ddd-forum\\src\\modules\\forum\\domain\\post.ts",
+              "OriginalFileExtension": ".ts"
+            }
+          },
+          {
+            "Id": "ne5ds8AR",
+            "Name": "DTO",
+            "LastModifiedUtc": "2022-06-12T20:18:16.7838134Z",
+            "Metadata": {
+              "OriginalFilePath": "C:\\Projects\\github\\stemmlerjs\\ddd-forum\\src\\modules\\forum\\dtos\\postDTO.ts",
+              "OriginalFileExtension": ".ts"
+            }
+          },
+          {
+            "Id": "VdsjeCF0",
+            "Name": "Routes",
+            "LastModifiedUtc": "2022-06-13T09:17:34.8980803Z",
+            "Metadata": {
+              "OriginalFilePath": "C:\\Projects\\github\\stemmlerjs\\ddd-forum\\src\\modules\\forum\\infra\\http\\routes\\post.ts",
+              "OriginalFileExtension": ".ts"
+            }
+          },
+          {
+            "Id": "r4VRhFkE",
+            "Name": "Mapper",
+            "LastModifiedUtc": "2022-06-13T09:14:55.5337241Z",
+            "Metadata": {
+              "OriginalFilePath": "C:\\Projects\\github\\stemmlerjs\\ddd-forum\\src\\modules\\forum\\mappers\\postMap.ts",
+              "OriginalFileExtension": ".ts"
+            }
+          },
+          {
+            "Id": "cTfY562u",
+            "Name": "RepoInterface",
+            "LastModifiedUtc": "2022-06-13T08:58:55.9112055Z",
+            "Metadata": {
+              "OriginalFilePath": "C:\\Projects\\github\\stemmlerjs\\ddd-forum\\src\\modules\\forum\\repos\\postRepo.ts",
+              "OriginalFileExtension": ".ts"
+            }
+          },
+          {
+            "Id": "2CcBpTbV",
+            "Name": "RepoImplementation",
+            "LastModifiedUtc": "2022-06-12T20:42:25.5150081Z",
+            "Metadata": {
+              "OriginalFilePath": "C:\\Projects\\github\\stemmlerjs\\ddd-forum\\src\\modules\\forum\\repos\\implementations\\sequelizePostRepo.ts",
+              "OriginalFileExtension": ".ts"
+            }
+          },
+          {
+            "Id": "yZY2WRg8",
+            "Name": "Identifier",
+            "LastModifiedUtc": "2022-06-13T08:29:40.5508653Z",
+            "Metadata": {
+              "OriginalFilePath": "C:\\Projects\\github\\stemmlerjs\\ddd-forum\\src\\modules\\forum\\domain\\postId.ts",
+              "OriginalFileExtension": ".ts"
+            }
+          },
+          {
+            "Id": "r5vt6KT5",
+            "Name": "RepoIndex",
+            "LastModifiedUtc": "2022-06-13T09:12:39.2209728Z",
+            "Metadata": {
+              "OriginalFilePath": "C:\\Projects\\github\\stemmlerjs\\ddd-forum\\src\\modules\\forum\\repos\\index.ts",
+              "OriginalFileExtension": ".ts"
+            }
+          }
+        ],
+        "Automation": [
+          {
+            "Id": "Gb3r11qG",
+            "Name": "ResourceCommand1",
+            "Type": "CodeTemplateCommand",
+            "Metadata": {
+              "CodeTemplateId": "7R1gAwGe",
+              "IsOneOff": true,
+              "FilePath": "src/modules/{{Parent.Name | string.camelsingular}}/domain/{{Name | string.camelsingular}}.ts"
+            }
+          },
+          {
+            "Id": "XxMmzS0H",
+            "Name": "DTOCommand2",
+            "Type": "CodeTemplateCommand",
+            "Metadata": {
+              "CodeTemplateId": "ne5ds8AR",
+              "IsOneOff": true,
+              "FilePath": "src/modules/{{Parent.Name | string.camelsingular}}/dtos/{{Name | string.camelsingular}}DTO.ts"
+            }
+          },
+          {
+            "Id": "x664EbyV",
+            "Name": "RoutesCommand3",
+            "Type": "CodeTemplateCommand",
+            "Metadata": {
+              "CodeTemplateId": "VdsjeCF0",
+              "IsOneOff": true,
+              "FilePath": "src/modules/{{Parent.Name | string.camelsingular}}/infra/http/routes/{{Name | string.camelsingular}}.ts"
+            }
+          },
+          {
+            "Id": "eZYU0UWX",
+            "Name": "MapperCommand5",
+            "Type": "CodeTemplateCommand",
+            "Metadata": {
+              "CodeTemplateId": "r4VRhFkE",
+              "IsOneOff": true,
+              "FilePath": "src/modules/{{Parent.Name | string.camelsingular}}/mappers/{{Name | string.camelsingular}}Map.ts"
+            }
+          },
+          {
+            "Id": "VsEhhtp3",
+            "Name": "RepoInterfaceCommand4",
+            "Type": "CodeTemplateCommand",
+            "Metadata": {
+              "CodeTemplateId": "cTfY562u",
+              "IsOneOff": true,
+              "FilePath": "src/modules/{{Parent.Name | string.camelsingular}}/repos/{{Name | string.camelsingular}}Repo.ts"
+            }
+          },
+          {
+            "Id": "f4m3qHck",
+            "Name": "RepoImplementationCommand6",
+            "Type": "CodeTemplateCommand",
+            "Metadata": {
+              "CodeTemplateId": "2CcBpTbV",
+              "IsOneOff": true,
+              "FilePath": "src/modules/{{Parent.Name | string.camelsingular}}/repos/implementations/sequelize{{Name | string.pascalsingular}}Repo.ts"
+            }
+          },
+          {
+            "Id": "75jm5Xj0",
+            "Name": "IdentifierCommand7",
+            "Type": "CodeTemplateCommand",
+            "Metadata": {
+              "CodeTemplateId": "yZY2WRg8",
+              "IsOneOff": true,
+              "FilePath": "src/modules/{{Parent.Name | string.camelsingular}}/domain/{{Name | string.camelsingular}}Id.ts"
+            }
+          },
+          {
+            "Id": "SaPEKz6h",
+            "Name": "RepoIndexCommand8",
+            "Type": "CodeTemplateCommand",
+            "Metadata": {
+              "CodeTemplateId": "r5vt6KT5",
+              "IsOneOff": true,
+              "FilePath": "src/modules/{{Parent.Name | string.camelsingular}}/repos/index.ts"
+            }
+          }
+        ],
+        "IsCollection": true,
+        "Cardinality": "OneOrMany",
+        "AutoCreate": true
+      }
+    ],
+    "Automation": [
+      {
+        "Id": "5DhrMHhf",
+        "Name": "Go",
+        "Type": "CommandLaunchPoint",
+        "Metadata": {
+          "CommandIds": "Gb3r11qG;XxMmzS0H;x664EbyV;eZYU0UWX;VsEhhtp3;f4m3qHck;75jm5Xj0;SaPEKz6h;VUbQMgMU;V3CskeRB;rmWtB8Mg;5M93B0Sd;KcSe1axf"
+        }
+      }
+    ],
+    "DisplayName": "SubDomain",
+    "ToolkitVersion": {
+      "Current": "0.4.0",
+      "LastChanges": "NoChange"
+    }
+  },
+  "CodeTemplateFiles": [
+    {
+      "Id": "7R1gAwGe",
+      "Contents": "DQppbXBvcnQgeyBBZ2dyZWdhdGVSb290IH0gZnJvbSAiLi4vLi4vLi4vc2hhcmVkL2RvbWFpbi9BZ2dyZWdhdGVSb290IjsNCmltcG9ydCB7IEVudGl0eSB9IGZyb20gIi4uLy4uLy4uL3NoYXJlZC9kb21haW4vRW50aXR5IjsNCmltcG9ydCB7IFVuaXF1ZUVudGl0eUlEIH0gZnJvbSAiLi4vLi4vLi4vc2hhcmVkL2RvbWFpbi9VbmlxdWVFbnRpdHlJRCI7DQppbXBvcnQgeyBSZXN1bHQsIEVpdGhlciwgbGVmdCwgcmlnaHQgfSBmcm9tICIuLi8uLi8uLi9zaGFyZWQvY29yZS9SZXN1bHQiOw0KaW1wb3J0IHsgR3VhcmQsIElHdWFyZEFyZ3VtZW50IH0gZnJvbSAiLi4vLi4vLi4vc2hhcmVkL2NvcmUvR3VhcmQiOw0KaW1wb3J0IHsge3tOYW1lIHwgc3RyaW5nLnBhc2NhbHNpbmd1bGFyfX1JZCB9IGZyb20gIi4ve3tOYW1lIHwgc3RyaW5nLmNhbWVsc2luZ3VsYXJ9fUlkIjsNCg0KZXhwb3J0IGludGVyZmFjZSB7e05hbWUgfCBzdHJpbmcucGFzY2Fsc2luZ3VsYXJ9fVByb3BzIHsNCiAgLy9UT0RPOiBhZGQgZG9tYWluIHByb3BlcnRpZXMNCn0NCg0Ke3t\u002BaWYgKEtpbmQ9PSJhZ2dyZWdhdGUiKX59fQ0KZXhwb3J0IGNsYXNzIHt7TmFtZSB8IHN0cmluZy5wYXNjYWxzaW5ndWxhcn19IGV4dGVuZHMgQWdncmVnYXRlUm9vdDx7e05hbWUgfCBzdHJpbmcucGFzY2Fsc2luZ3VsYXJ9fVByb3BzPiB7DQp7e35lbHNlfn19DQpleHBvcnQgY2xhc3Mge3tOYW1lIHwgc3RyaW5nLnBhc2NhbHNpbmd1bGFyfX0gZXh0ZW5kcyBFbnRpdHk8e3tOYW1lIHwgc3RyaW5nLnBhc2NhbHNpbmd1bGFyfX1Qcm9wcz4gew0Ke3t\u002BZW5kfn19DQoNCiAgZ2V0IHt7TmFtZSB8IHN0cmluZy5jYW1lbHNpbmd1bGFyfX1JZCAoKToge3tOYW1lIHwgc3RyaW5nLnBhc2NhbHNpbmd1bGFyfX1JZCB7DQogICAgcmV0dXJuIHt7TmFtZSB8IHN0cmluZy5wYXNjYWxzaW5ndWxhcn19SWQuY3JlYXRlKHRoaXMuX2lkKQ0KICAgIC5nZXRWYWx1ZSgpOw0KICB9DQoNCiAgLy9UT0RPOiBhZGQgZG9tYWluIHByb3BlcnRpZXMNCg0KICBwcml2YXRlIGNvbnN0cnVjdG9yIChwcm9wczoge3tOYW1lIHwgc3RyaW5nLnBhc2NhbHNpbmd1bGFyfX1Qcm9wcywgaWQ/OiBVbmlxdWVFbnRpdHlJRCkgew0KICAgIHN1cGVyKHByb3BzLCBpZCk7DQogIH0NCg0KICBwdWJsaWMgc3RhdGljIGNyZWF0ZSAocHJvcHM6IHt7TmFtZSB8IHN0cmluZy5wYXNjYWxzaW5ndWxhcn19UHJvcHMsIGlkPzogVW5pcXVlRW50aXR5SUQpOiBSZXN1bHQ8e3tOYW1lIHwgc3RyaW5nLnBhc2NhbHNpbmd1bGFyfX0\u002BIHsNCiAgICBjb25zdCBndWFyZEFyZ3M6IElHdWFyZEFyZ3VtZW50W10gPSBbDQogICAgXTsNCg0KICAgIC8vVE9ETzogYWRkIGFyZ3VtZW50cyB0byBndWFyZA0KDQogICAgY29uc3QgZ3VhcmRSZXN1bHQgPSBHdWFyZC5hZ2FpbnN0TnVsbE9yVW5kZWZpbmVkQnVsayhndWFyZEFyZ3MpOw0KDQogICAgaWYgKGd1YXJkUmVzdWx0LmlzRmFpbHVyZSkgew0KICAgICAgcmV0dXJuIFJlc3VsdC5mYWlsPHt7TmFtZSB8IHN0cmluZy5wYXNjYWxzaW5ndWxhcn19PihndWFyZFJlc3VsdC5nZXRFcnJvclZhbHVlKCkpOw0KICAgIH0NCg0KICAgIGNvbnN0IGRlZmF1bHRWYWx1ZXM6IHt7TmFtZSB8IHN0cmluZy5wYXNjYWxzaW5ndWxhcn19UHJvcHMgPSB7DQogICAgICAuLi5wcm9wcw0KICAgICAgLy9UT0RPOiBvdGhlciBwcm9wZXJ0aWVzDQogICAgfTsNCg0KICAgIGNvbnN0IGlzTmV3e3tOYW1lIHwgc3RyaW5nLnBhc2NhbHNpbmd1bGFyfX0gPSAhIWlkID09PSBmYWxzZTsNCiAgICBjb25zdCB7e05hbWUgfCBzdHJpbmcuY2FtZWxzaW5ndWxhcn19ID0gbmV3IHt7TmFtZSB8IHN0cmluZy5wYXNjYWxzaW5ndWxhcn19KGRlZmF1bHRWYWx1ZXMsIGlkKTsNCg0KICAgIGlmIChpc05ld3t7TmFtZSB8IHN0cmluZy5wYXNjYWxzaW5ndWxhcn19KSB7DQogICAgICAvL1RPRE86IGRvIGluaXRpYWxpemF0aW9ucw0KICAgICAgLy9UT0RPOiBjcmVhdGUgZG9tYWluIGV2ZW50DQogICAgICAvL3t7TmFtZSB8IHN0cmluZy5jYW1lbHNpbmd1bGFyfX0uYWRkRG9tYWluRXZlbnQobmV3IHt7TmFtZSB8IHN0cmluZy5wYXNjYWxzaW5ndWxhcn19Q3JlYXRlZCh7e05hbWUgfCBzdHJpbmcuY2FtZWxzaW5ndWxhcn19KSk7DQoNCiAgICB9DQoNCiAgICByZXR1cm4gUmVzdWx0Lm9rPHt7TmFtZSB8IHN0cmluZy5wYXNjYWxzaW5ndWxhcn19Pih7e05hbWUgfCBzdHJpbmcuY2FtZWxzaW5ndWxhcn19KTsNCiAgfQ0KfQ=="
+    },
+    {
+      "Id": "ne5ds8AR",
+      "Contents": "DQoNCmV4cG9ydCBpbnRlcmZhY2Uge3tOYW1lIHwgc3RyaW5nLnBhc2NhbHNpbmd1bGFyfX1EVE8gew0KICAvL1RPRE86IGFkZCB5b3VyIHByb3BlcnRpZXMNCn0NCg0K"
+    },
+    {
+      "Id": "VdsjeCF0",
+      "Contents": "DQppbXBvcnQgZXhwcmVzcyBmcm9tICdleHByZXNzJzsNCmltcG9ydCB7IG1pZGRsZXdhcmUgfSBmcm9tICcuLi8uLi8uLi8uLi8uLi9zaGFyZWQvaW5mcmEvaHR0cCc7DQp7e35mb3IgdXNlY2FzZSBpbiBVc2VDYXNlLkl0ZW1zfn19DQppbXBvcnQgeyB7e3VzZWNhc2UuTmFtZSB8IHN0cmluZy5jYW1lbHNpbmd1bGFyfX17e05hbWUgfCBzdHJpbmcucGFzY2Fsc2luZ3VsYXJ9fUNvbnRyb2xsZXIgfSBmcm9tICcuLi8uLi8uLi91c2VDYXNlcy97e05hbWUgfCBzdHJpbmcuY2FtZWxzaW5ndWxhcn19L3t7dXNlY2FzZS5OYW1lIHwgc3RyaW5nLmNhbWVsc2luZ3VsYXJ9fXt7TmFtZSB8IHN0cmluZy5wYXNjYWxzaW5ndWxhcn19JzsNCnt7fmVuZH59fQ0KDQpjb25zdCB7e05hbWUgfCBzdHJpbmcuY2FtZWxzaW5ndWxhcn19Um91dGVyID0gZXhwcmVzcy5Sb3V0ZXIoKTsNCg0Ke3t\u002BZm9yIHVzZWNhc2UgaW4gVXNlQ2FzZS5JdGVtc359fQ0Ke3tOYW1lIHwgc3RyaW5nLmNhbWVsc2luZ3VsYXJ9fVJvdXRlci57e2lmICh1c2VjYXNlLktpbmQ9PSJjb21tYW5kIil9fXBvc3R7e2Vsc2V9fWdldHt7ZW5kfX0oJ3t7dXNlY2FzZS5Sb3V0ZX19JywNCiAge3tpZiAodXNlY2FzZS5Jc0F1dGhlbnRpY2F0ZWQpfX1taWRkbGV3YXJlLmVuc3VyZUF1dGhlbnRpY2F0ZWQoKSx7e2VuZH19DQogIChyZXEsIHJlcykgPT4ge3t1c2VjYXNlLk5hbWUgfCBzdHJpbmcuY2FtZWxzaW5ndWxhcn19e3tOYW1lIHwgc3RyaW5nLnBhc2NhbHNpbmd1bGFyfX1Db250cm9sbGVyLmV4ZWN1dGUocmVxLCByZXMpDQopDQp7e35lbmR\u002BfX0NCg0KZXhwb3J0IHsNCiAge3tOYW1lIHwgc3RyaW5nLmNhbWVsc2luZ3VsYXJ9fVJvdXRlcg0KfQ0KDQo="
+    },
+    {
+      "Id": "r4VRhFkE",
+      "Contents": "DQppbXBvcnQgeyBNYXBwZXIgfSBmcm9tICIuLi8uLi8uLi9zaGFyZWQvaW5mcmEvTWFwcGVyIjsNCmltcG9ydCB7IHt7TmFtZSB8IHN0cmluZy5wYXNjYWxzaW5ndWxhcn19IH0gZnJvbSAiLi4vZG9tYWluL3t7TmFtZSB8IHN0cmluZy5jYW1lbHNpbmd1bGFyfX0iOw0KaW1wb3J0IHsgVW5pcXVlRW50aXR5SUQgfSBmcm9tICIuLi8uLi8uLi9zaGFyZWQvZG9tYWluL1VuaXF1ZUVudGl0eUlEIjsNCg0KZXhwb3J0IGNsYXNzIHt7TmFtZSB8IHN0cmluZy5wYXNjYWxzaW5ndWxhcn19TWFwIGltcGxlbWVudHMgTWFwcGVyPHt7TmFtZSB8IHN0cmluZy5wYXNjYWxzaW5ndWxhcn19PiB7DQoNCiAgcHVibGljIHN0YXRpYyB0b0RvbWFpbiAocmF3OiBhbnkpOiB7e05hbWUgfCBzdHJpbmcucGFzY2Fsc2luZ3VsYXJ9fSB7DQogICAgDQogICAgY29uc3Qge3tOYW1lIHwgc3RyaW5nLmNhbWVsc2luZ3VsYXJ9fU9yRXJyb3IgPSB7e05hbWUgfCBzdHJpbmcucGFzY2Fsc2luZ3VsYXJ9fS5jcmVhdGUoew0KICAgICAgLy9UT0RPOiBtYXAgcHJvcGVydGllcyB0byBkb21haW4NCiAgICB9LCBuZXcgVW5pcXVlRW50aXR5SUQocmF3Lnt7TmFtZSB8IHN0cmluZy5jYW1lbHNpbmd1bGFyfX1faWQpKQ0KDQogICAge3tOYW1lIHwgc3RyaW5nLmNhbWVsc2luZ3VsYXJ9fU9yRXJyb3IuaXNGYWlsdXJlID8gY29uc29sZS5sb2coe3tOYW1lIHwgc3RyaW5nLmNhbWVsc2luZ3VsYXJ9fU9yRXJyb3IuZ2V0RXJyb3JWYWx1ZSgpKSA6ICcnOw0KDQogICAgcmV0dXJuIHt7TmFtZSB8IHN0cmluZy5jYW1lbHNpbmd1bGFyfX1PckVycm9yLmlzU3VjY2VzcyA/IHt7TmFtZSB8IHN0cmluZy5jYW1lbHNpbmd1bGFyfX1PckVycm9yLmdldFZhbHVlKCkgOiBudWxsOw0KICB9DQoNCiAgcHVibGljIHN0YXRpYyB0b1BlcnNpc3RlbmNlICh7e05hbWUgfCBzdHJpbmcuY2FtZWxzaW5ndWxhcn19OiB7e05hbWUgfCBzdHJpbmcucGFzY2Fsc2luZ3VsYXJ9fSk6IGFueSB7DQogICAgcmV0dXJuIHsNCiAgICAgIC8vVE9ETzogbWFwIHByb3BlcnRpZXMgdG8gcGVyc2lzdA0KICAgICAgdXBkYXRlZEF0OiBuZXcgRGF0ZSgpLnRvU3RyaW5nKCksDQogICAgICB7e05hbWUgfCBzdHJpbmcuY2FtZWxzaW5ndWxhcn19X2lkOiB7e05hbWUgfCBzdHJpbmcuY2FtZWxzaW5ndWxhcn19Lnt7TmFtZSB8IHN0cmluZy5jYW1lbHNpbmd1bGFyfX1JZC5pZC50b1N0cmluZygpLA0KICAgIH0NCiAgfQ0KfQ=="
+    },
+    {
+      "Id": "cTfY562u",
+      "Contents": "DQppbXBvcnQgeyB7e05hbWUgfCBzdHJpbmcucGFzY2Fsc2luZ3VsYXJ9fSB9IGZyb20gIi4uL2RvbWFpbi97e05hbWUgfCBzdHJpbmcuY2FtZWxzaW5ndWxhcn19IjsNCmltcG9ydCB7IHt7TmFtZSB8IHN0cmluZy5wYXNjYWxzaW5ndWxhcn19SWQgfSBmcm9tICIuLi9kb21haW4ve3tOYW1lIHwgc3RyaW5nLmNhbWVsc2luZ3VsYXJ9fUlkIjsNCg0KZXhwb3J0IGludGVyZmFjZSBJe3tOYW1lIHwgc3RyaW5nLnBhc2NhbHNpbmd1bGFyfX1SZXBvIHsNCiAgLy9UT0RPOiBhZGQgcmVwb3NpdG9yeSBtZXRob2RzDQogIGV4aXN0cyAoe3tOYW1lIHwgc3RyaW5nLmNhbWVsc2luZ3VsYXJ9fUlkOiB7e05hbWUgfCBzdHJpbmcucGFzY2Fsc2luZ3VsYXJ9fUlkKTogUHJvbWlzZTxib29sZWFuPjsNCiAgc2F2ZSAoe3tOYW1lIHwgc3RyaW5nLmNhbWVsc2luZ3VsYXJ9fToge3tOYW1lIHwgc3RyaW5nLnBhc2NhbHNpbmd1bGFyfX0pOiBQcm9taXNlPHZvaWQ\u002BOw0KICBkZWxldGUgKHt7TmFtZSB8IHN0cmluZy5jYW1lbHNpbmd1bGFyfX1JZDoge3tOYW1lIHwgc3RyaW5nLnBhc2NhbHNpbmd1bGFyfX1JZCk6IFByb21pc2U8dm9pZD47DQp9"
+    },
+    {
+      "Id": "2CcBpTbV",
+      "Contents": "DQppbXBvcnQgeyBJe3tOYW1lIHwgc3RyaW5nLnBhc2NhbHNpbmd1bGFyfX1SZXBvIH0gZnJvbSAiLi4ve3tOYW1lIHwgc3RyaW5nLmNhbWVsc2luZ3VsYXJ9fVJlcG8iOw0KaW1wb3J0IHsge3tOYW1lIHwgc3RyaW5nLnBhc2NhbHNpbmd1bGFyfX1JZCB9IGZyb20gIi4uLy4uL2RvbWFpbi97e05hbWUgfCBzdHJpbmcuY2FtZWxzaW5ndWxhcn19SWQiOw0KaW1wb3J0IHsge3tOYW1lIHwgc3RyaW5nLnBhc2NhbHNpbmd1bGFyfX0gfSBmcm9tICIuLi8uLi9kb21haW4ve3tOYW1lIHwgc3RyaW5nLmNhbWVsc2luZ3VsYXJ9fSI7DQppbXBvcnQgeyB7e05hbWUgfCBzdHJpbmcucGFzY2Fsc2luZ3VsYXJ9fU1hcCB9IGZyb20gIi4uLy4uL21hcHBlcnMve3tOYW1lIHwgc3RyaW5nLmNhbWVsc2luZ3VsYXJ9fU1hcCI7DQoNCmV4cG9ydCBjbGFzcyB7e05hbWUgfCBzdHJpbmcucGFzY2Fsc2luZ3VsYXJ9fVJlcG8gaW1wbGVtZW50cyBJe3tOYW1lIHwgc3RyaW5nLnBhc2NhbHNpbmd1bGFyfX1SZXBvIHsNCg0KICBwcml2YXRlIG1vZGVsczogYW55Ow0KDQogIGNvbnN0cnVjdG9yIChtb2RlbHM6IGFueSkgew0KICAgIHRoaXMubW9kZWxzID0gbW9kZWxzOw0KICB9DQoNCiAgcHJpdmF0ZSBjcmVhdGVCYXNlUXVlcnkgKCk6IGFueSB7DQogICAgY29uc3QgbW9kZWxzID0gdGhpcy5tb2RlbHM7DQogICAgcmV0dXJuIHsNCiAgICAgIHdoZXJlOiB7fSwNCiAgICAgIGluY2x1ZGU6IFtdDQogICAgfQ0KICB9DQoNCiAgcHVibGljIGFzeW5jIGV4aXN0cyAoe3tOYW1lIHwgc3RyaW5nLmNhbWVsc2luZ3VsYXJ9fUlkOiB7e05hbWUgfCBzdHJpbmcucGFzY2Fsc2luZ3VsYXJ9fUlkKTogUHJvbWlzZTxib29sZWFuPiB7DQogICAgY29uc3Qge3tOYW1lIHwgc3RyaW5nLnBhc2NhbHNpbmd1bGFyfX1Nb2RlbCA9IHRoaXMubW9kZWxzLnt7TmFtZSB8IHN0cmluZy5wYXNjYWxzaW5ndWxhcn19Ow0KICAgIGNvbnN0IGJhc2VRdWVyeSA9IHRoaXMuY3JlYXRlQmFzZVF1ZXJ5KCk7DQogICAgYmFzZVF1ZXJ5LndoZXJlWyd7e05hbWUgfCBzdHJpbmcuY2FtZWxzaW5ndWxhcn19X2lkJ10gPSB7e05hbWUgfCBzdHJpbmcuY2FtZWxzaW5ndWxhcn19SWQuaWQudG9TdHJpbmcoKTsNCiAgICBjb25zdCB7e05hbWUgfCBzdHJpbmcuY2FtZWxzaW5ndWxhcn19ID0gYXdhaXQge3tOYW1lIHwgc3RyaW5nLnBhc2NhbHNpbmd1bGFyfX1Nb2RlbC5maW5kT25lKGJhc2VRdWVyeSk7DQogICAgY29uc3QgZm91bmQgPSAhIXt7TmFtZSB8IHN0cmluZy5jYW1lbHNpbmd1bGFyfX0gPT09IHRydWU7DQogICAgcmV0dXJuIGZvdW5kOw0KICB9DQoNCiAgcHVibGljIGRlbGV0ZSAoe3tOYW1lIHwgc3RyaW5nLmNhbWVsc2luZ3VsYXJ9fUlkOiB7e05hbWUgfCBzdHJpbmcucGFzY2Fsc2luZ3VsYXJ9fUlkKTogUHJvbWlzZTx2b2lkPiB7DQogICAgY29uc3Qge3tOYW1lIHwgc3RyaW5nLnBhc2NhbHNpbmd1bGFyfX1Nb2RlbCA9IHRoaXMubW9kZWxzLnt7TmFtZSB8IHN0cmluZy5wYXNjYWxzaW5ndWxhcn19Ow0KICAgIHJldHVybiB7e05hbWUgfCBzdHJpbmcucGFzY2Fsc2luZ3VsYXJ9fU1vZGVsLmRlc3Ryb3koeyB3aGVyZTogeyB7e05hbWUgfCBzdHJpbmcuY2FtZWxzaW5ndWxhcn19X2lkOiB7e05hbWUgfCBzdHJpbmcuY2FtZWxzaW5ndWxhcn19SWQuaWQudG9TdHJpbmcoKSB9fSk7DQogIH0NCg0KICBwdWJsaWMgYXN5bmMgc2F2ZSAoe3tOYW1lIHwgc3RyaW5nLmNhbWVsc2luZ3VsYXJ9fToge3tOYW1lIHwgc3RyaW5nLnBhc2NhbHNpbmd1bGFyfX0pOiBQcm9taXNlPHZvaWQ\u002BIHsNCiAgICBjb25zdCB7e05hbWUgfCBzdHJpbmcucGFzY2Fsc2luZ3VsYXJ9fU1vZGVsID0gdGhpcy5tb2RlbHMue3tOYW1lIHwgc3RyaW5nLnBhc2NhbHNpbmd1bGFyfX07DQogICAgY29uc3QgZXhpc3RzID0gYXdhaXQgdGhpcy5leGlzdHMoe3tOYW1lIHwgc3RyaW5nLmNhbWVsc2luZ3VsYXJ9fS57e05hbWUgfCBzdHJpbmcuY2FtZWxzaW5ndWxhcn19SWQpOw0KICAgIGNvbnN0IGlzTmV3e3tOYW1lIHwgc3RyaW5nLnBhc2NhbHNpbmd1bGFyfX0gPSAhZXhpc3RzOw0KICAgIGNvbnN0IHJhd1NlcXVlbGl6ZXt7TmFtZSB8IHN0cmluZy5wYXNjYWxzaW5ndWxhcn19ID0gYXdhaXQge3tOYW1lIHwgc3RyaW5nLnBhc2NhbHNpbmd1bGFyfX1NYXAudG9QZXJzaXN0ZW5jZSh7e05hbWUgfCBzdHJpbmcuY2FtZWxzaW5ndWxhcn19KTsNCiAgICANCiAgICBpZiAoaXNOZXd7e05hbWUgfCBzdHJpbmcucGFzY2Fsc2luZ3VsYXJ9fSkgew0KDQogICAgICB0cnkgew0KICAgICAgICBhd2FpdCB7e05hbWUgfCBzdHJpbmcucGFzY2Fsc2luZ3VsYXJ9fU1vZGVsLmNyZWF0ZShyYXdTZXF1ZWxpemV7e05hbWUgfCBzdHJpbmcucGFzY2Fsc2luZ3VsYXJ9fSk7DQogICAgICAgIA0KICAgICAgfSBjYXRjaCAoZXJyKSB7DQogICAgICAgIGF3YWl0IHRoaXMuZGVsZXRlKHt7TmFtZSB8IHN0cmluZy5jYW1lbHNpbmd1bGFyfX0ue3tOYW1lIHwgc3RyaW5nLmNhbWVsc2luZ3VsYXJ9fUlkKTsNCiAgICAgICAgdGhyb3cgbmV3IEVycm9yKGVyci50b1N0cmluZygpKQ0KICAgICAgfQ0KDQogICAgfSBlbHNlIHsNCiAgICAgIGF3YWl0IHt7TmFtZSB8IHN0cmluZy5wYXNjYWxzaW5ndWxhcn19TW9kZWwudXBkYXRlKHJhd1NlcXVlbGl6ZXt7TmFtZSB8IHN0cmluZy5wYXNjYWxzaW5ndWxhcn19LCB7IA0KICAgICAgICAvLyBUbyBtYWtlIHN1cmUgeW91ciBob29rcyBhbHdheXMgcnVuLCBtYWtlIHN1cmUgdG8gaW5jbHVkZSB0aGlzIGluDQogICAgICAgIC8vIHRoZSBxdWVyeQ0KICAgICAgICBpbmRpdmlkdWFsSG9va3M6IHRydWUsICANCiAgICAgICAgaG9va3M6IHRydWUsDQogICAgICAgIHdoZXJlOiB7IHt7TmFtZSB8IHN0cmluZy5jYW1lbHNpbmd1bGFyfX1faWQ6IHt7TmFtZSB8IHN0cmluZy5jYW1lbHNpbmd1bGFyfX0ue3tOYW1lIHwgc3RyaW5nLmNhbWVsc2luZ3VsYXJ9fUlkLmlkLnRvU3RyaW5nKCkgfQ0KICAgICAgfSk7DQogICAgfQ0KICB9DQp9"
+    },
+    {
+      "Id": "yZY2WRg8",
+      "Contents": "DQppbXBvcnQgeyBVbmlxdWVFbnRpdHlJRCB9IGZyb20gIi4uLy4uLy4uL3NoYXJlZC9kb21haW4vVW5pcXVlRW50aXR5SUQiOw0KaW1wb3J0IHsgUmVzdWx0IH0gZnJvbSAiLi4vLi4vLi4vc2hhcmVkL2NvcmUvUmVzdWx0IjsNCmltcG9ydCB7IEVudGl0eSB9IGZyb20gIi4uLy4uLy4uL3NoYXJlZC9kb21haW4vRW50aXR5IjsNCg0KZXhwb3J0IGNsYXNzIHt7TmFtZSB8IHN0cmluZy5wYXNjYWxzaW5ndWxhcn19SWQgZXh0ZW5kcyBFbnRpdHk8YW55PiB7DQoNCiAgZ2V0IGlkICgpOiBVbmlxdWVFbnRpdHlJRCB7DQogICAgcmV0dXJuIHRoaXMuX2lkOw0KICB9DQoNCiAgcHJpdmF0ZSBjb25zdHJ1Y3RvciAoaWQ/OiBVbmlxdWVFbnRpdHlJRCkgew0KICAgIHN1cGVyKG51bGwsIGlkKQ0KICB9DQoNCiAgcHVibGljIHN0YXRpYyBjcmVhdGUgKGlkPzogVW5pcXVlRW50aXR5SUQpOiBSZXN1bHQ8e3tOYW1lIHwgc3RyaW5nLnBhc2NhbHNpbmd1bGFyfX1JZD4gew0KICAgIHJldHVybiBSZXN1bHQub2s8e3tOYW1lIHwgc3RyaW5nLnBhc2NhbHNpbmd1bGFyfX1JZD4obmV3IHt7TmFtZSB8IHN0cmluZy5wYXNjYWxzaW5ndWxhcn19SWQoaWQpKTsNCiAgfQ0KfQ=="
+    },
+    {
+      "Id": "r5vt6KT5",
+      "Contents": "DQppbXBvcnQgbW9kZWxzIGZyb20gIi4uLy4uLy4uL3NoYXJlZC9pbmZyYS9kYXRhYmFzZS9zZXF1ZWxpemUvbW9kZWxzIjsNCmltcG9ydCB7IHt7TmFtZSB8IHN0cmluZy5wYXNjYWxzaW5ndWxhcn19UmVwbyB9IGZyb20gIi4vaW1wbGVtZW50YXRpb25zL3NlcXVlbGl6ZXt7TmFtZSB8IHN0cmluZy5wYXNjYWxzaW5ndWxhcn19UmVwbyI7DQoNCmNvbnN0IHt7TmFtZSB8IHN0cmluZy5jYW1lbHNpbmd1bGFyfX1SZXBvID0gbmV3IHt7TmFtZSB8IHN0cmluZy5wYXNjYWxzaW5ndWxhcn19UmVwbyhtb2RlbHMpOw0KDQpleHBvcnQgeyB7e05hbWUgfCBzdHJpbmcuY2FtZWxzaW5ndWxhcn19UmVwbyB9Ow0K"
+    },
+    {
+      "Id": "dwDXxv9G",
+      "Contents": "DQppbXBvcnQgeyBVc2VDYXNlIH0gZnJvbSAiLi4vLi4vLi4vLi4vLi4vc2hhcmVkL2NvcmUvVXNlQ2FzZSI7IA0KaW1wb3J0IHsgSXt7UGFyZW50Lk5hbWUgfHN0cmluZy5wYXNjYWxzaW5ndWxhcn19UmVwbyB9IGZyb20gIi4uLy4uLy4uL3JlcG9zL3t7UGFyZW50Lk5hbWUgfHN0cmluZy5jYW1lbHNpbmd1bGFyfX1SZXBvIjsNCmltcG9ydCB7IEVpdGhlciwgUmVzdWx0LCBsZWZ0LCByaWdodCB9IGZyb20gIi4uLy4uLy4uLy4uLy4uL3NoYXJlZC9jb3JlL1Jlc3VsdCI7DQppbXBvcnQgeyBBcHBFcnJvciB9IGZyb20gIi4uLy4uLy4uLy4uLy4uL3NoYXJlZC9jb3JlL0FwcEVycm9yIjsNCmltcG9ydCB7IHt7UGFyZW50Lk5hbWUgfHN0cmluZy5wYXNjYWxzaW5ndWxhcn19LCB7e1BhcmVudC5OYW1lIHxzdHJpbmcucGFzY2Fsc2luZ3VsYXJ9fVByb3BzIH0gZnJvbSAiLi4vLi4vLi4vZG9tYWluL3t7UGFyZW50Lk5hbWUgfHN0cmluZy5jYW1lbHNpbmd1bGFyfX0iOw0KDQppbXBvcnQgeyB7e05hbWUgfCBzdHJpbmcucGFzY2Fsc2luZ3VsYXJ9fXt7UGFyZW50Lk5hbWUgfHN0cmluZy5wYXNjYWxzaW5ndWxhcn19RFRPIH0gZnJvbSAiLi97e05hbWUgfCBzdHJpbmcucGFzY2Fsc2luZ3VsYXJ9fXt7UGFyZW50Lk5hbWUgfHN0cmluZy5wYXNjYWxzaW5ndWxhcn19RFRPIjsNCmltcG9ydCB7IHt7TmFtZSB8IHN0cmluZy5wYXNjYWxzaW5ndWxhcn19e3tQYXJlbnQuTmFtZSB8c3RyaW5nLnBhc2NhbHNpbmd1bGFyfX1FcnJvcnMgfSBmcm9tICIuL3t7TmFtZSB8IHN0cmluZy5wYXNjYWxzaW5ndWxhcn19e3tQYXJlbnQuTmFtZSB8c3RyaW5nLnBhc2NhbHNpbmd1bGFyfX1FcnJvcnMiOw0KDQp0eXBlIFJlc3BvbnNlID0gRWl0aGVyPA0KICBBcHBFcnJvci5VbmV4cGVjdGVkRXJyb3IgfA0KICBSZXN1bHQ8YW55PiwNCiAgUmVzdWx0PHZvaWQ\u002BDQo\u002BDQoNCmV4cG9ydCBjbGFzcyB7e05hbWUgfCBzdHJpbmcucGFzY2Fsc2luZ3VsYXJ9fXt7UGFyZW50Lk5hbWUgfHN0cmluZy5wYXNjYWxzaW5ndWxhcn19IGltcGxlbWVudHMgVXNlQ2FzZTx7e05hbWUgfCBzdHJpbmcucGFzY2Fsc2luZ3VsYXJ9fXt7UGFyZW50Lk5hbWUgfHN0cmluZy5wYXNjYWxzaW5ndWxhcn19RFRPLCBQcm9taXNlPFJlc3BvbnNlPj4gew0KICBwcml2YXRlIHt7UGFyZW50Lk5hbWUgfHN0cmluZy5jYW1lbHNpbmd1bGFyfX1SZXBvOiBJe3tQYXJlbnQuTmFtZSB8c3RyaW5nLnBhc2NhbHNpbmd1bGFyfX1SZXBvOw0KDQogIGNvbnN0cnVjdG9yICh7e1BhcmVudC5OYW1lIHxzdHJpbmcuY2FtZWxzaW5ndWxhcn19UmVwbzogSXt7UGFyZW50Lk5hbWUgfHN0cmluZy5wYXNjYWxzaW5ndWxhcn19UmVwbykgew0KICAgIHRoaXMue3tQYXJlbnQuTmFtZSB8c3RyaW5nLmNhbWVsc2luZ3VsYXJ9fVJlcG8gPSB7e1BhcmVudC5OYW1lIHxzdHJpbmcuY2FtZWxzaW5ndWxhcn19UmVwbzsNCiAgfQ0KICANCiAgcHVibGljIGFzeW5jIGV4ZWN1dGUgKHJlcXVlc3Q6IHt7TmFtZSB8IHN0cmluZy5wYXNjYWxzaW5ndWxhcn19e3tQYXJlbnQuTmFtZSB8c3RyaW5nLnBhc2NhbHNpbmd1bGFyfX1EVE8pOiBQcm9taXNlPFJlc3BvbnNlPiB7DQogICAgbGV0IHt7UGFyZW50Lk5hbWUgfHN0cmluZy5jYW1lbHNpbmd1bGFyfX06IHt7UGFyZW50Lk5hbWUgfHN0cmluZy5wYXNjYWxzaW5ndWxhcn19Ow0KDQogICAgdHJ5IHsNCg0KICAgICAgLy9UT0RPOiBjb25zdHJ1Y3QgeW91ciBzdGF0ZQ0KDQogICAgICBjb25zdCB7e1BhcmVudC5OYW1lIHxzdHJpbmcuY2FtZWxzaW5ndWxhcn19UHJvcHM6IHt7UGFyZW50Lk5hbWUgfHN0cmluZy5wYXNjYWxzaW5ndWxhcn19UHJvcHMgPSB7DQogICAgICAgIC8vVE9ETzogaW5pdGlhbGl6ZSB5b3VyIHByb3BlcnRpZXMNCiAgICAgIH0NCg0KICAgICAgY29uc3Qge3tQYXJlbnQuTmFtZSB8c3RyaW5nLmNhbWVsc2luZ3VsYXJ9fU9yRXJyb3IgPSB7e1BhcmVudC5OYW1lIHxzdHJpbmcucGFzY2Fsc2luZ3VsYXJ9fS5jcmVhdGUoe3tQYXJlbnQuTmFtZSB8c3RyaW5nLmNhbWVsc2luZ3VsYXJ9fVByb3BzKTsNCg0KICAgICAgaWYgKHt7UGFyZW50Lk5hbWUgfHN0cmluZy5jYW1lbHNpbmd1bGFyfX1PckVycm9yLmlzRmFpbHVyZSkgew0KICAgICAgICByZXR1cm4gbGVmdCh7e1BhcmVudC5OYW1lIHxzdHJpbmcuY2FtZWxzaW5ndWxhcn19T3JFcnJvcik7DQogICAgICB9DQoNCiAgICAgIHt7UGFyZW50Lk5hbWUgfHN0cmluZy5jYW1lbHNpbmd1bGFyfX0gPSB7e1BhcmVudC5OYW1lIHxzdHJpbmcuY2FtZWxzaW5ndWxhcn19T3JFcnJvci5nZXRWYWx1ZSgpOw0KDQogICAgICBhd2FpdCB0aGlzLnt7UGFyZW50Lk5hbWUgfHN0cmluZy5jYW1lbHNpbmd1bGFyfX1SZXBvLnNhdmUoe3tQYXJlbnQuTmFtZSB8c3RyaW5nLmNhbWVsc2luZ3VsYXJ9fSk7DQoNCiAgICAgIHJldHVybiByaWdodChSZXN1bHQub2s8dm9pZD4oKSkNCg0KICAgIH0gY2F0Y2ggKGVycikgew0KICAgICAgcmV0dXJuIGxlZnQobmV3IEFwcEVycm9yLlVuZXhwZWN0ZWRFcnJvcihlcnIpKTsNCiAgICB9DQogIH0NCn0="
+    },
+    {
+      "Id": "PmEpX6M7",
+      "Contents": "aW1wb3J0IHsgQmFzZUNvbnRyb2xsZXIgfSBmcm9tICIuLi8uLi8uLi8uLi8uLi9zaGFyZWQvaW5mcmEvaHR0cC9tb2RlbHMvQmFzZUNvbnRyb2xsZXIiOw0KaW1wb3J0IHsgRGVjb2RlZEV4cHJlc3NSZXF1ZXN0IH0gZnJvbSAiLi4vLi4vLi4vLi4vdXNlcnMvaW5mcmEvaHR0cC9tb2RlbHMvZGVjb2RlZFJlcXVlc3QiOw0KaW1wb3J0IHsgVGV4dFV0aWxzIH0gZnJvbSAiLi4vLi4vLi4vLi4vLi4vc2hhcmVkL3V0aWxzL1RleHRVdGlscyI7DQppbXBvcnQgeyB7e05hbWUgfCBzdHJpbmcucGFzY2Fsc2luZ3VsYXJ9fXt7UGFyZW50Lk5hbWUgfCBzdHJpbmcucGFzY2Fsc2luZ3VsYXJ9fSB9IGZyb20gIi4ve3tOYW1lIHwgc3RyaW5nLnBhc2NhbHNpbmd1bGFyfX17e1BhcmVudC5OYW1lIHwgc3RyaW5nLnBhc2NhbHNpbmd1bGFyfX0iOw0KaW1wb3J0IHsge3tOYW1lIHwgc3RyaW5nLnBhc2NhbHNpbmd1bGFyfX17e1BhcmVudC5OYW1lIHwgc3RyaW5nLnBhc2NhbHNpbmd1bGFyfX1EVE8gfSBmcm9tICIuL3t7TmFtZSB8IHN0cmluZy5wYXNjYWxzaW5ndWxhcn19e3tQYXJlbnQuTmFtZSB8IHN0cmluZy5wYXNjYWxzaW5ndWxhcn19RFRPIjsNCmltcG9ydCB7IHt7TmFtZSB8IHN0cmluZy5wYXNjYWxzaW5ndWxhcn19e3tQYXJlbnQuTmFtZSB8IHN0cmluZy5wYXNjYWxzaW5ndWxhcn19RXJyb3JzIH0gZnJvbSAiLi97e05hbWUgfCBzdHJpbmcucGFzY2Fsc2luZ3VsYXJ9fXt7UGFyZW50Lk5hbWUgfCBzdHJpbmcucGFzY2Fsc2luZ3VsYXJ9fUVycm9ycyI7DQoNCg0KZXhwb3J0IGNsYXNzIHt7TmFtZSB8IHN0cmluZy5wYXNjYWxzaW5ndWxhcn19e3tQYXJlbnQuTmFtZSB8IHN0cmluZy5wYXNjYWxzaW5ndWxhcn19Q29udHJvbGxlciBleHRlbmRzIEJhc2VDb250cm9sbGVyIHsNCiAgcHJpdmF0ZSB1c2VDYXNlOiB7e05hbWUgfCBzdHJpbmcucGFzY2Fsc2luZ3VsYXJ9fXt7UGFyZW50Lk5hbWUgfCBzdHJpbmcucGFzY2Fsc2luZ3VsYXJ9fTsNCg0KICBjb25zdHJ1Y3RvciAodXNlQ2FzZToge3tOYW1lIHwgc3RyaW5nLnBhc2NhbHNpbmd1bGFyfX17e1BhcmVudC5OYW1lIHwgc3RyaW5nLnBhc2NhbHNpbmd1bGFyfX0pIHsNCiAgICBzdXBlcigpOw0KICAgIHRoaXMudXNlQ2FzZSA9IHVzZUNhc2U7DQogIH0NCg0KICBhc3luYyBleGVjdXRlSW1wbCAocmVxOiBEZWNvZGVkRXhwcmVzc1JlcXVlc3QsIHJlczogYW55KTogUHJvbWlzZTxhbnk\u002BIHsNCiAgICBjb25zdCB7IHVzZXJJZCB9ID0gcmVxLmRlY29kZWQ7DQoNCiAgICBjb25zdCBkdG86IHt7TmFtZSB8IHN0cmluZy5wYXNjYWxzaW5ndWxhcn19e3tQYXJlbnQuTmFtZSB8IHN0cmluZy5wYXNjYWxzaW5ndWxhcn19RFRPID0gew0KICAgICAgLy9UT0RPOiBwb3B1bGF0ZSBwcm9wZXJ0aWVzDQogICAgfQ0KICANCiAgICB0cnkgew0KICAgICAgY29uc3QgcmVzdWx0ID0gYXdhaXQgdGhpcy51c2VDYXNlLmV4ZWN1dGUoZHRvKTsNCg0KICAgICAgaWYgKHJlc3VsdC5pc0xlZnQoKSkgew0KICAgICAgICBjb25zdCBlcnJvciA9IHJlc3VsdC52YWx1ZTsNCiAgDQogICAgICAgIHN3aXRjaCAoZXJyb3IuY29uc3RydWN0b3IpIHsNCiAgICAgICAgICBkZWZhdWx0Og0KICAgICAgICAgICAgcmV0dXJuIHRoaXMuZmFpbChyZXMsIGVycm9yLmdldEVycm9yVmFsdWUoKS5tZXNzYWdlKTsNCiAgICAgICAgfQ0KICAgICAgICANCiAgICAgIH0gZWxzZSB7DQogICAgICAgIHJldHVybiB0aGlzLm9rKHJlcyk7DQogICAgICB9DQoNCiAgICB9IGNhdGNoIChlcnIpIHsNCiAgICAgIHJldHVybiB0aGlzLmZhaWwocmVzLCBlcnIpDQogICAgfQ0KICB9DQp9"
+    },
+    {
+      "Id": "1uxps3Sc",
+      "Contents": "DQpleHBvcnQgaW50ZXJmYWNlIHt7TmFtZSB8IHN0cmluZy5wYXNjYWxzaW5ndWxhcn19e3tQYXJlbnQuTmFtZSB8IHN0cmluZy5wYXNjYWxzaW5ndWxhcn19RFRPIHsNCiAgLy9UT0RPOiBwcm9wZXJ0aWVzDQp9"
+    },
+    {
+      "Id": "cd8R6rKQ",
+      "Contents": "DQppbXBvcnQgeyBVc2VDYXNlRXJyb3IgfSBmcm9tICIuLi8uLi8uLi8uLi8uLi9zaGFyZWQvY29yZS9Vc2VDYXNlRXJyb3IiOw0KaW1wb3J0IHsgUmVzdWx0IH0gZnJvbSAiLi4vLi4vLi4vLi4vLi4vc2hhcmVkL2NvcmUvUmVzdWx0IjsNCg0KZXhwb3J0IG5hbWVzcGFjZSB7e05hbWUgfCBzdHJpbmcucGFzY2Fsc2luZ3VsYXJ9fXt7UGFyZW50Lk5hbWUgfCBzdHJpbmcucGFzY2Fsc2luZ3VsYXJ9fUVycm9ycyB7DQoNCiAgLy9UT0RPOiBhZGQgeW91ciBlcnJvcnMNCn0="
+    },
+    {
+      "Id": "Dn8BrSRK",
+      "Contents": "DQppbXBvcnQgeyB7e05hbWUgfCBzdHJpbmcucGFzY2Fsc2luZ3VsYXJ9fXt7UGFyZW50Lk5hbWUgfCBzdHJpbmcucGFzY2Fsc2luZ3VsYXJ9fSB9IGZyb20gIi4ve3tOYW1lIHwgc3RyaW5nLnBhc2NhbHNpbmd1bGFyfX17e1BhcmVudC5OYW1lIHwgc3RyaW5nLnBhc2NhbHNpbmd1bGFyfX0iOw0KaW1wb3J0IHsge3tQYXJlbnQuTmFtZSB8IHN0cmluZy5jYW1lbHNpbmd1bGFyfX1SZXBvIH0gZnJvbSAiLi4vLi4vLi4vcmVwb3MiOw0KaW1wb3J0IHsge3tOYW1lIHwgc3RyaW5nLnBhc2NhbHNpbmd1bGFyfX17e1BhcmVudC5OYW1lIHwgc3RyaW5nLnBhc2NhbHNpbmd1bGFyfX1Db250cm9sbGVyIH0gZnJvbSAiLi97e05hbWUgfCBzdHJpbmcucGFzY2Fsc2luZ3VsYXJ9fXt7UGFyZW50Lk5hbWUgfCBzdHJpbmcucGFzY2Fsc2luZ3VsYXJ9fUNvbnRyb2xsZXIiOw0KDQpjb25zdCB7e05hbWUgfCBzdHJpbmcuY2FtZWxzaW5ndWxhcn19e3tQYXJlbnQuTmFtZSB8IHN0cmluZy5wYXNjYWxzaW5ndWxhcn19ID0gbmV3IHt7TmFtZSB8IHN0cmluZy5wYXNjYWxzaW5ndWxhcn19e3tQYXJlbnQuTmFtZSB8IHN0cmluZy5wYXNjYWxzaW5ndWxhcn19KHt7UGFyZW50Lk5hbWUgfCBzdHJpbmcuY2FtZWxzaW5ndWxhcn19UmVwbyk7DQpjb25zdCB7e05hbWUgfCBzdHJpbmcuY2FtZWxzaW5ndWxhcn19e3tQYXJlbnQuTmFtZSB8IHN0cmluZy5wYXNjYWxzaW5ndWxhcn19Q29udHJvbGxlciA9IG5ldyB7e05hbWUgfCBzdHJpbmcucGFzY2Fsc2luZ3VsYXJ9fXt7UGFyZW50Lk5hbWUgfCBzdHJpbmcucGFzY2Fsc2luZ3VsYXJ9fUNvbnRyb2xsZXIoDQogIHt7TmFtZSB8IHN0cmluZy5jYW1lbHNpbmd1bGFyfX17e1BhcmVudC5OYW1lIHwgc3RyaW5nLnBhc2NhbHNpbmd1bGFyfX0NCik7DQoNCmV4cG9ydCB7IA0KICB7e05hbWUgfCBzdHJpbmcuY2FtZWxzaW5ndWxhcn19e3tQYXJlbnQuTmFtZSB8IHN0cmluZy5wYXNjYWxzaW5ndWxhcn19LA0KICB7e05hbWUgfCBzdHJpbmcuY2FtZWxzaW5ndWxhcn19e3tQYXJlbnQuTmFtZSB8IHN0cmluZy5wYXNjYWxzaW5ndWxhcn19Q29udHJvbGxlcg0KfQ0KDQo="
+    }
+  ]
+}
