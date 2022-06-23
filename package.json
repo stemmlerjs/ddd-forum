@@ -64,7 +64,7 @@
     "graphql-iso-date": "^3.6.1",
     "helmet": "^3.21.1",
     "jest": "^24.9.0",
-    "jsdom": "^15.1.1",
+    "jsdom": "^16.5.0",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.15",
     "morgan": "^1.9.1",
