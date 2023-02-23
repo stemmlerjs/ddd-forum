@@ -75,7 +75,7 @@
     "react-quill": "^1.3.3",
     "redis": "^2.8.0",
     "rimraf": "^3.0.0",
-    "sequelize": "^5.19.2",
+    "sequelize": "^6.28.2",
     "sequelize-cli": "^5.5.1",
     "sinon": "^7.5.0",
     "sinon-chai": "^3.3.0",
