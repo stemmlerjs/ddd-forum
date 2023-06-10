@@ -20,7 +20,7 @@ export class AfterCommentPosted implements IHandle<CommentPosted> {
   private async onCommentPosted (event: CommentPosted): Promise<void> {
 
     try {
-      await this.updatePostStats.execute({ postId: event.post.postId.id.toString() });
+      await this.updatePostStats.execute({ postId: event.post.postId.getStringValue() });
       console.log(`[AfterCommentPosted]: Updated post stats for {${event.post.title.value}}`);
     } catch (err) {
       console.log(`[AfterCommentPosted]: Failed to update post stats for {${event.post.title.value}}`);

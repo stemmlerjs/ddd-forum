@@ -24,8 +24,8 @@ export class MemberMap implements Mapper<Member> {
 
   public static toPersistence (member: Member): any {
     return {
-      member_id: member.memberId.id.toString(),
-      member_base_id: member.userId.id.toString(),
+      member_id: member.memberId.getStringValue(),
+      member_base_id: member.userId.getStringValue(),
       reputation: member.reputation
     }
   } 

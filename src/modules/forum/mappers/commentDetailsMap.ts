@@ -37,8 +37,8 @@ export class CommentDetailsMap implements Mapper<CommentDetails> {
   public static toDTO (commentDetails: CommentDetails): CommentDTO {
     return {
       postSlug: commentDetails.postSlug.value,
-      commentId: commentDetails.commentId.id.toString(),
-      parentCommentId: commentDetails.parentCommentId ? commentDetails.parentCommentId.id.toString() : null,
+      commentId: commentDetails.commentId.getStringValue(),
+      parentCommentId: commentDetails.parentCommentId ? commentDetails.parentCommentId.getStringValue() : null,
       text: commentDetails.text.value,
       member: MemberDetailsMap.toDTO(commentDetails.member),
       createdAt: commentDetails.createdAt,

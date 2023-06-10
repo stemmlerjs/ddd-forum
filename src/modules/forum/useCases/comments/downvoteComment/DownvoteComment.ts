@@ -58,7 +58,7 @@ export class DownvoteComment implements UseCase<DownvoteCommentDTO, Promise<Down
       }
 
       try {
-        post = await this.postRepo.getPostByPostId(comment.postId.id.toString());
+        post = await this.postRepo.getPostByPostId(comment.postId.getStringValue());
       } catch (err) {
         return left(new DownvoteCommentErrors.PostNotFoundError(req.commentId));
       }

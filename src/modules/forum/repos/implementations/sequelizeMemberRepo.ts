@@ -103,7 +103,7 @@ export class MemberRepo implements IMemberRepo {
 
   public async save (member: Member): Promise<void> {
     const MemberModel = this.models.Member;
-    const exists = await this.exists(member.userId.id.toString());
+    const exists = await this.exists(member.userId.getStringValue());
     
     if (!exists) {
       const rawSequelizeMember = await MemberMap.toPersistence(member);

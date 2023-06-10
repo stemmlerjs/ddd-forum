@@ -25,8 +25,8 @@ export class CommentVoteMap implements Mapper<CommentVote> {
   public static toPersistence (vote: CommentVote): any {
     return {
       comment_vote_id: vote.id.toString(),
-      comment_id: vote.commentId.id.toString(),
-      member_id: vote.memberId.id.toString(),
+      comment_id: vote.commentId.getStringValue(),
+      member_id: vote.memberId.getStringValue(),
       type: vote.type
     }
   }

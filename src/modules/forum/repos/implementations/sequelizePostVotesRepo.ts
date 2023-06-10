@@ -23,8 +23,8 @@ export class PostVotesRepo implements IPostVotesRepo {
   public async exists (postId: PostId, memberId: MemberId, voteType: VoteType): Promise<boolean> {
     const PostVote = this.models.PostVote;
     const baseQuery = this.createBaseQuery();
-    baseQuery.where['member_id'] = memberId.id.toString();
-    baseQuery.where['post_id'] = postId.id.toString();
+    baseQuery.where['member_id'] = memberId.getStringValue();
+    baseQuery.where['post_id'] = postId.getStringValue();
     baseQuery.where['type'] = voteType;
     const vote = await PostVote.findOne(baseQuery);
     return !!vote === true;
@@ -33,8 +33,8 @@ export class PostVotesRepo implements IPostVotesRepo {
   async getVotesForPostByMemberId (postId: PostId, memberId: MemberId): Promise<PostVote[]> {
     const PostVote = this.models.PostVote;
     const baseQuery = this.createBaseQuery();
-    baseQuery.where['member_id'] = memberId.id.toString();
-    baseQuery.where['post_id'] = postId.id.toString();
+    baseQuery.where['member_id'] = memberId.getStringValue();
+    baseQuery.where['post_id'] = postId.getStringValue();
     const votes = await PostVote.findAll(baseQuery);
     return votes.map((v) => PostVoteMap.toDomain(v));
   }
@@ -59,8 +59,8 @@ export class PostVotesRepo implements IPostVotesRepo {
     const PostVoteModel = this.models.PostVote;
     return PostVoteModel.destroy({ 
       where: { 
-        post_id: vote.postId.id.toString(),
-        member_id: vote.memberId.id.toString()
+        post_id: vote.postId.getStringValue(),
+        member_id: vote.memberId.getStringValue()
       }
     })
   }
@@ -77,7 +77,7 @@ export class PostVotesRepo implements IPostVotesRepo {
 
   async countPostUpvotesByPostId (postId: PostId| string): Promise<number> {
     postId  = postId instanceof PostId 
-    ? (<PostId>postId).id.toString() 
+    ? (<PostId>postId).getStringValue() 
     : postId;
 
     const result = await this.models.sequelize.query(
@@ -93,7 +93,7 @@ export class PostVotesRepo implements IPostVotesRepo {
 
   async countPostDownvotesByPostId (postId: PostId | string): Promise<number> {
     postId  = postId instanceof PostId 
-    ? (<PostId>postId).id.toString() 
+    ? (<PostId>postId).getStringValue() 
     : postId;
 
     const result = await this.models.sequelize.query(

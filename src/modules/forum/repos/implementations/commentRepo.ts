@@ -61,7 +61,7 @@ export class CommentRepo implements ICommentRepo {
       detailsQuery.include.push({ 
         model: this.models.CommentVote,
         as: 'CommentVotes',
-        where: { member_id: memberId.id.toString() },
+        where: { member_id: memberId.getStringValue() },
         required: false
       })
     }
@@ -89,7 +89,7 @@ export class CommentRepo implements ICommentRepo {
       detailsQuery.include.push({ 
         model: this.models.CommentVote,
         as: 'CommentVotes',
-        where: { member_id: memberId.id.toString() },
+        where: { member_id: memberId.getStringValue() },
         required: false
       })
     }
@@ -102,7 +102,7 @@ export class CommentRepo implements ICommentRepo {
 
   async deleteComment (commentId: CommentId): Promise<void> {
     const CommentModel = this.models.Comment;
-    return CommentModel.destroy({ where: { comment_id: commentId.id.toString() }});
+    return CommentModel.destroy({ where: { comment_id: commentId.getStringValue() }});
   }
 
   private saveCommentVotes (commentVotes: CommentVotes) {
@@ -111,7 +111,7 @@ export class CommentRepo implements ICommentRepo {
 
   async save (comment: Comment): Promise<void> {
     const CommentModel = this.models.Comment;
-    const exists = await this.exists(comment.commentId.id.toString());
+    const exists = await this.exists(comment.commentId.getStringValue());
     const rawSequelizeComment = CommentMap.toPersistence(comment);
     
 
@@ -128,7 +128,7 @@ export class CommentRepo implements ICommentRepo {
         await this.saveCommentVotes(comment.getVotes())
 
         const sequelizeCommentInstance = await CommentModel.findOne({ 
-          where: { comment_id: comment.commentId.id.toString() }
+          where: { comment_id: comment.commentId.getStringValue() }
         });
         await sequelizeCommentInstance.update(rawSequelizeComment);
       }

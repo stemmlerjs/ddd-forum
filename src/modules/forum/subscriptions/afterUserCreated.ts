@@ -22,7 +22,7 @@ export class AfterUserCreated implements IHandle<UserCreated> {
     const { user } = event;
 
     try {
-      await this.createMember.execute({ userId: user.userId.id.toString() })
+      await this.createMember.execute({ userId: user.userId.getStringValue() })
       console.log(`[AfterUserCreated]: Successfully executed CreateMember use case AfterUserCreated`)
     } catch (err) {
       console.log(`[AfterUserCreated]: Failed to execute CreateMember use case AfterUserCreated.`)

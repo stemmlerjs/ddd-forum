@@ -11,10 +11,10 @@ export class CommentMap implements Mapper<Comment> {
 
   public static toPersistence (comment: Comment): any {
     return {
-      post_id: comment.postId.id.toString(),
-      comment_id: comment.commentId.id.toString(),
-      member_id: comment.memberId.id.toString(),
-      parent_comment_id: comment.parentCommentId ? comment.parentCommentId.id.toString() : null,
+      post_id: comment.postId.getStringValue(),
+      comment_id: comment.commentId.getStringValue(),
+      member_id: comment.memberId.getStringValue(),
+      parent_comment_id: comment.parentCommentId ? comment.parentCommentId.getStringValue() : null,
       text: comment.text.value,
       points: comment.points
     }

@@ -25,8 +25,8 @@ export class PostVoteMap implements Mapper<PostVote> {
   public static toPersistence (vote: PostVote): any {
     return {
       post_vote_id: vote.id.toString(),
-      post_id: vote.postId.id.toString(),
-      member_id: vote.memberId.id.toString(),
+      post_id: vote.postId.getStringValue(),
+      member_id: vote.memberId.getStringValue(),
       type: vote.type
     }
   }

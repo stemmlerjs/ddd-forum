@@ -51,7 +51,7 @@ export class PostRepo implements IPostRepo {
 
   public async getPostByPostId (postId: PostId | string): Promise<Post> {
     postId  = postId instanceof PostId 
-    ? (<PostId>postId).id.toString() 
+    ? (<PostId>postId).getStringValue() 
     : postId;
     const PostModel = this.models.Post;
     const detailsQuery = this.createBaseQuery();
@@ -64,7 +64,7 @@ export class PostRepo implements IPostRepo {
 
   public async getNumberOfCommentsByPostId (postId: PostId | string): Promise<number> {
     postId  = postId instanceof PostId 
-    ? (<PostId>postId).id.toString() 
+    ? (<PostId>postId).getStringValue() 
     : postId;
 
     const result = await this.models.sequelize.query(
@@ -118,7 +118,7 @@ export class PostRepo implements IPostRepo {
   public async exists (postId: PostId): Promise<boolean> {
     const PostModel = this.models.Post;
     const baseQuery = this.createBaseQuery();
-    baseQuery.where['post_id'] = postId.id.toString();
+    baseQuery.where['post_id'] = postId.getStringValue();
     const post = await PostModel.findOne(baseQuery);
     const found = !!post === true;
     return found;
@@ -126,7 +126,7 @@ export class PostRepo implements IPostRepo {
 
   public delete (postId: PostId): Promise<void> {
     const PostModel = this.models.Post;
-    return PostModel.destroy({ where: { post_id: postId.id.toString() }});
+    return PostModel.destroy({ where: { post_id: postId.getStringValue() }});
   }
 
   private saveComments (comments: Comments) {
@@ -166,7 +166,7 @@ export class PostRepo implements IPostRepo {
         // the query
         individualHooks: true,  
         hooks: true,
-        where: { post_id: post.postId.id.toString() }
+        where: { post_id: post.postId.getStringValue() }
       });
     }
   }

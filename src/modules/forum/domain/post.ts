@@ -46,7 +46,7 @@ export class Post extends AggregateRoot<PostProps> {
 
   get postId (): PostId {
     return PostId.create(this._id)
-    .getValue();
+      .getValue();
   }
 
   get memberId (): MemberId {
