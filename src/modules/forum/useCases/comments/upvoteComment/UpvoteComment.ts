@@ -58,7 +58,7 @@ export class UpvoteComment implements UseCase<UpvoteCommentDTO, Promise<UpvoteCo
       }
 
       try {
-        post = await this.postRepo.getPostByPostId(comment.postId.id.toString());
+        post = await this.postRepo.getPostByPostId(comment.postId.getStringValue());
       } catch (err) {
         return left(new UpvoteCommentErrors.PostNotFoundError(req.commentId));
       }

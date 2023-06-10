@@ -26,7 +26,7 @@ export class UpdateCommentStats implements UseCase<UpdateCommentStatsDTO, Promis
     try {
       // Get the comment
       const comment: Comment = await this.commentRepo
-        .getCommentByCommentId(req.commentId.id.toString());
+        .getCommentByCommentId(req.commentId.getStringValue());
 
       // Get number upvotes and downvotes
       let [ numUpvotes, numDownvotes ] = await Promise.all([

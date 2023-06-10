@@ -1,20 +1,28 @@
 
 import { UniqueEntityID } from "../../../shared/domain/UniqueEntityID";
 import { Result } from "../../../shared/core/Result";
-import { Entity } from "../../../shared/domain/Entity";
+import { ValueObject } from "../../../shared/domain/ValueObject";
+import { Guard } from "../../../shared/core/Guard";
 
+export class UserId extends ValueObject<{ value: UniqueEntityID }> {
 
-export class UserId extends Entity<any> {
-
-  get id (): UniqueEntityID {
-    return this._id;
+  getStringValue (): string {
+    return this.props.value.toString();
   }
 
-  private constructor (id?: UniqueEntityID) {
-    super(null, id)
+  getValue (): UniqueEntityID {
+    return this.props.value;
   }
 
-  public static create (id?: UniqueEntityID): Result<UserId> {
-    return Result.ok<UserId>(new UserId(id));
+  private constructor (value: UniqueEntityID) {
+    super({ value });
+  }
+
+  public static create (value: UniqueEntityID): Result<UserId> {
+    let guardResult = Guard.againstNullOrUndefined(value, 'value');
+    if (guardResult.isFailure) {
+      return Result.fail<UserId>(guardResult.getErrorValue())
+    }
+    return Result.ok<UserId>(new UserId(value));
   }
 }

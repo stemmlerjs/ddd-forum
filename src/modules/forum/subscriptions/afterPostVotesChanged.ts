@@ -23,11 +23,11 @@ export class AfterPostVotesChanged implements IHandle<PostVotesChanged> {
     let postId: PostId = event.post.postId;
     try {
       // Then, update the post stats
-      await this.updatePostStats.execute({ postId: postId.id.toString() });
-      console.log(`[AfterPostVotesChanged]: Updated votes on postId={${postId.id.toString()}}`);
+      await this.updatePostStats.execute({ postId: postId.getStringValue() });
+      console.log(`[AfterPostVotesChanged]: Updated votes on postId={${postId.getStringValue()}}`);
     } catch (err) {
       console.log(err);
-      console.log(`[AfterPostVotesChanged]: Failed to update votes on postId={${postId.id.toString()}}`)
+      console.log(`[AfterPostVotesChanged]: Failed to update votes on postId={${postId.getStringValue()}}`)
     }
   }
 

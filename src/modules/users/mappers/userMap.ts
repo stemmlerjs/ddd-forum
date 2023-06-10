@@ -47,7 +47,7 @@ export class UserMap implements Mapper<User> {
     }
 
     return {
-      base_user_id: user.userId.id.toString(),
+      base_user_id: user.userId.getStringValue(),
       user_email: user.email.value,
       is_email_verified: user.isEmailVerified,
       username: user.username.value,

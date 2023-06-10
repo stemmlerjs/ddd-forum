@@ -51,7 +51,7 @@ export class EditPost implements UseCase<EditPostDTO, Promise<EditPostResponse>>
     try {
       post = await this.postRepo.getPostByPostId(request.postId);
     } catch (err) {
-      return left(new EditPostErrors.PostNotFoundError(post.postId.id.toString()))
+      return left(new EditPostErrors.PostNotFoundError(post.postId.getStringValue()))
     }
 
     
