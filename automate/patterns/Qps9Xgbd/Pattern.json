@@ -1,0 +1,365 @@
+{
+  "Id": "Qps9Xgbd",
+  "Name": "SubDomain",
+  "Attributes": [
+    {
+      "Id": "ppTa0ZPY",
+      "Name": "Name",
+      "DataType": "string",
+      "IsRequired": true,
+      "Choices": []
+    }
+  ],
+  "Elements": [
+    {
+      "Id": "YQY1UP9X",
+      "Name": "Resource",
+      "Attributes": [
+        {
+          "Id": "nYEcsBJ0",
+          "Name": "Name",
+          "DataType": "string",
+          "IsRequired": true,
+          "Choices": []
+        },
+        {
+          "Id": "zyMKwj1w",
+          "Name": "Kind",
+          "DataType": "string",
+          "IsRequired": true,
+          "DefaultValue": "entity",
+          "Choices": [
+            "aggregate",
+            "entity"
+          ]
+        }
+      ],
+      "Elements": [
+        {
+          "Id": "fG9N9vM6",
+          "Name": "UseCase",
+          "Attributes": [
+            {
+              "Id": "gTRJAA6u",
+              "Name": "Name",
+              "DataType": "string",
+              "IsRequired": true,
+              "Choices": []
+            },
+            {
+              "Id": "24hWYBWf",
+              "Name": "Kind",
+              "DataType": "string",
+              "IsRequired": true,
+              "DefaultValue": "command",
+              "Choices": [
+                "command",
+                "query"
+              ]
+            },
+            {
+              "Id": "znJ67wqj",
+              "Name": "Route",
+              "DataType": "string",
+              "IsRequired": true,
+              "DefaultValue": "/",
+              "Choices": []
+            },
+            {
+              "Id": "x3H8M06Q",
+              "Name": "IsAuthenticated",
+              "DataType": "bool",
+              "IsRequired": true,
+              "DefaultValue": "true",
+              "Choices": []
+            }
+          ],
+          "CodeTemplates": [
+            {
+              "Id": "dwDXxv9G",
+              "Name": "UseCase",
+              "LastModifiedUtc": "2022-06-13T08:57:11.8172269Z",
+              "Metadata": {
+                "OriginalFilePath": "C:\\Projects\\github\\stemmlerjs\\ddd-forum\\src\\modules\\forum\\useCases\\post\\createPost\\CreatePost.ts",
+                "OriginalFileExtension": ".ts"
+              }
+            },
+            {
+              "Id": "PmEpX6M7",
+              "Name": "Controller",
+              "LastModifiedUtc": "2022-06-13T08:54:14.9353515Z",
+              "Metadata": {
+                "OriginalFilePath": "C:\\Projects\\github\\stemmlerjs\\ddd-forum\\src\\modules\\forum\\useCases\\post\\createPost\\CreatePostController.ts",
+                "OriginalFileExtension": ".ts"
+              }
+            },
+            {
+              "Id": "1uxps3Sc",
+              "Name": "DTO",
+              "LastModifiedUtc": "2022-06-13T08:50:57.6134271Z",
+              "Metadata": {
+                "OriginalFilePath": "C:\\Projects\\github\\stemmlerjs\\ddd-forum\\src\\modules\\forum\\useCases\\post\\createPost\\CreatePostDTO.ts",
+                "OriginalFileExtension": ".ts"
+              }
+            },
+            {
+              "Id": "cd8R6rKQ",
+              "Name": "Errors",
+              "LastModifiedUtc": "2022-06-13T08:46:12.6939558Z",
+              "Metadata": {
+                "OriginalFilePath": "C:\\Projects\\github\\stemmlerjs\\ddd-forum\\src\\modules\\forum\\useCases\\post\\createPost\\CreatePostErrors.ts",
+                "OriginalFileExtension": ".ts"
+              }
+            },
+            {
+              "Id": "Dn8BrSRK",
+              "Name": "Index",
+              "LastModifiedUtc": "2022-06-13T08:41:16.3553577Z",
+              "Metadata": {
+                "OriginalFilePath": "C:\\Projects\\github\\stemmlerjs\\ddd-forum\\src\\modules\\forum\\useCases\\post\\createPost\\index.ts",
+                "OriginalFileExtension": ".ts"
+              }
+            }
+          ],
+          "Automation": [
+            {
+              "Id": "VUbQMgMU",
+              "Name": "UseCaseCommand1",
+              "Type": "CodeTemplateCommand",
+              "Metadata": {
+                "CodeTemplateId": "dwDXxv9G",
+                "IsOneOff": true,
+                "FilePath": "src/modules/{{Parent.Parent.Name | string.camelsingular}}/useCases/{{Parent.Name | string.camelsingular}}/{{Name | string.camelsingular}}{{Parent.Name | string.pascalsingular}}/{{Name | string.pascalsingular}}{{Parent.Name | string.pascalsingular}}.ts"
+              }
+            },
+            {
+              "Id": "V3CskeRB",
+              "Name": "ControllerCommand2",
+              "Type": "CodeTemplateCommand",
+              "Metadata": {
+                "CodeTemplateId": "PmEpX6M7",
+                "IsOneOff": true,
+                "FilePath": "src/modules/{{Parent.Parent.Name | string.camelsingular}}/useCases/{{Parent.Name | string.camelsingular}}/{{Name | string.camelsingular}}{{Parent.Name | string.pascalsingular}}/{{Name | string.pascalsingular}}{{Parent.Name | string.pascalsingular}}Controller.ts"
+              }
+            },
+            {
+              "Id": "rmWtB8Mg",
+              "Name": "DTOCommand3",
+              "Type": "CodeTemplateCommand",
+              "Metadata": {
+                "CodeTemplateId": "1uxps3Sc",
+                "IsOneOff": true,
+                "FilePath": "src/modules/{{Parent.Parent.Name | string.camelsingular}}/useCases/{{Parent.Name | string.camelsingular}}/{{Name | string.camelsingular}}{{Parent.Name | string.pascalsingular}}/{{Name | string.pascalsingular}}{{Parent.Name | string.pascalsingular}}DTO.ts"
+              }
+            },
+            {
+              "Id": "5M93B0Sd",
+              "Name": "ErrorsCommand4",
+              "Type": "CodeTemplateCommand",
+              "Metadata": {
+                "CodeTemplateId": "cd8R6rKQ",
+                "IsOneOff": true,
+                "FilePath": "src/modules/{{Parent.Parent.Name | string.camelsingular}}/useCases/{{Parent.Name | string.camelsingular}}/{{Name | string.camelsingular}}{{Parent.Name | string.pascalsingular}}/{{Name | string.pascalsingular}}{{Parent.Name | string.pascalsingular}}Errors.ts"
+              }
+            },
+            {
+              "Id": "KcSe1axf",
+              "Name": "IndexCommand5",
+              "Type": "CodeTemplateCommand",
+              "Metadata": {
+                "CodeTemplateId": "Dn8BrSRK",
+                "IsOneOff": true,
+                "FilePath": "src/modules/{{Parent.Parent.Name | string.camelsingular}}/useCases/{{Parent.Name | string.camelsingular}}/{{Name | string.camelsingular}}{{Parent.Name | string.pascalsingular}}/index.ts"
+              }
+            },
+            {
+              "Id": "8HYpvvQc",
+              "Name": "Go",
+              "Type": "CommandLaunchPoint",
+              "Metadata": {
+                "CommandIds": "VUbQMgMU;V3CskeRB;rmWtB8Mg;5M93B0Sd;KcSe1axf"
+              }
+            }
+          ],
+          "IsCollection": true,
+          "Cardinality": "OneOrMany",
+          "AutoCreate": true
+        }
+      ],
+      "CodeTemplates": [
+        {
+          "Id": "7R1gAwGe",
+          "Name": "Resource",
+          "LastModifiedUtc": "2022-06-13T09:43:10.7913419Z",
+          "Metadata": {
+            "OriginalFilePath": "C:\\Projects\\github\\stemmlerjs\\ddd-forum\\src\\modules\\forum\\domain\\post.ts",
+            "OriginalFileExtension": ".ts"
+          }
+        },
+        {
+          "Id": "ne5ds8AR",
+          "Name": "DTO",
+          "LastModifiedUtc": "2022-06-12T20:18:16.7838134Z",
+          "Metadata": {
+            "OriginalFilePath": "C:\\Projects\\github\\stemmlerjs\\ddd-forum\\src\\modules\\forum\\dtos\\postDTO.ts",
+            "OriginalFileExtension": ".ts"
+          }
+        },
+        {
+          "Id": "VdsjeCF0",
+          "Name": "Routes",
+          "LastModifiedUtc": "2022-06-13T09:17:34.8980803Z",
+          "Metadata": {
+            "OriginalFilePath": "C:\\Projects\\github\\stemmlerjs\\ddd-forum\\src\\modules\\forum\\infra\\http\\routes\\post.ts",
+            "OriginalFileExtension": ".ts"
+          }
+        },
+        {
+          "Id": "r4VRhFkE",
+          "Name": "Mapper",
+          "LastModifiedUtc": "2022-06-13T09:14:55.5337241Z",
+          "Metadata": {
+            "OriginalFilePath": "C:\\Projects\\github\\stemmlerjs\\ddd-forum\\src\\modules\\forum\\mappers\\postMap.ts",
+            "OriginalFileExtension": ".ts"
+          }
+        },
+        {
+          "Id": "cTfY562u",
+          "Name": "RepoInterface",
+          "LastModifiedUtc": "2022-06-13T08:58:55.9112055Z",
+          "Metadata": {
+            "OriginalFilePath": "C:\\Projects\\github\\stemmlerjs\\ddd-forum\\src\\modules\\forum\\repos\\postRepo.ts",
+            "OriginalFileExtension": ".ts"
+          }
+        },
+        {
+          "Id": "2CcBpTbV",
+          "Name": "RepoImplementation",
+          "LastModifiedUtc": "2022-06-12T20:42:25.5150081Z",
+          "Metadata": {
+            "OriginalFilePath": "C:\\Projects\\github\\stemmlerjs\\ddd-forum\\src\\modules\\forum\\repos\\implementations\\sequelizePostRepo.ts",
+            "OriginalFileExtension": ".ts"
+          }
+        },
+        {
+          "Id": "yZY2WRg8",
+          "Name": "Identifier",
+          "LastModifiedUtc": "2022-06-13T08:29:40.5508653Z",
+          "Metadata": {
+            "OriginalFilePath": "C:\\Projects\\github\\stemmlerjs\\ddd-forum\\src\\modules\\forum\\domain\\postId.ts",
+            "OriginalFileExtension": ".ts"
+          }
+        },
+        {
+          "Id": "r5vt6KT5",
+          "Name": "RepoIndex",
+          "LastModifiedUtc": "2022-06-13T09:12:39.2209728Z",
+          "Metadata": {
+            "OriginalFilePath": "C:\\Projects\\github\\stemmlerjs\\ddd-forum\\src\\modules\\forum\\repos\\index.ts",
+            "OriginalFileExtension": ".ts"
+          }
+        }
+      ],
+      "Automation": [
+        {
+          "Id": "Gb3r11qG",
+          "Name": "ResourceCommand1",
+          "Type": "CodeTemplateCommand",
+          "Metadata": {
+            "CodeTemplateId": "7R1gAwGe",
+            "IsOneOff": true,
+            "FilePath": "src/modules/{{Parent.Name | string.camelsingular}}/domain/{{Name | string.camelsingular}}.ts"
+          }
+        },
+        {
+          "Id": "XxMmzS0H",
+          "Name": "DTOCommand2",
+          "Type": "CodeTemplateCommand",
+          "Metadata": {
+            "CodeTemplateId": "ne5ds8AR",
+            "IsOneOff": true,
+            "FilePath": "src/modules/{{Parent.Name | string.camelsingular}}/dtos/{{Name | string.camelsingular}}DTO.ts"
+          }
+        },
+        {
+          "Id": "x664EbyV",
+          "Name": "RoutesCommand3",
+          "Type": "CodeTemplateCommand",
+          "Metadata": {
+            "CodeTemplateId": "VdsjeCF0",
+            "IsOneOff": true,
+            "FilePath": "src/modules/{{Parent.Name | string.camelsingular}}/infra/http/routes/{{Name | string.camelsingular}}.ts"
+          }
+        },
+        {
+          "Id": "eZYU0UWX",
+          "Name": "MapperCommand5",
+          "Type": "CodeTemplateCommand",
+          "Metadata": {
+            "CodeTemplateId": "r4VRhFkE",
+            "IsOneOff": true,
+            "FilePath": "src/modules/{{Parent.Name | string.camelsingular}}/mappers/{{Name | string.camelsingular}}Map.ts"
+          }
+        },
+        {
+          "Id": "VsEhhtp3",
+          "Name": "RepoInterfaceCommand4",
+          "Type": "CodeTemplateCommand",
+          "Metadata": {
+            "CodeTemplateId": "cTfY562u",
+            "IsOneOff": true,
+            "FilePath": "src/modules/{{Parent.Name | string.camelsingular}}/repos/{{Name | string.camelsingular}}Repo.ts"
+          }
+        },
+        {
+          "Id": "f4m3qHck",
+          "Name": "RepoImplementationCommand6",
+          "Type": "CodeTemplateCommand",
+          "Metadata": {
+            "CodeTemplateId": "2CcBpTbV",
+            "IsOneOff": true,
+            "FilePath": "src/modules/{{Parent.Name | string.camelsingular}}/repos/implementations/sequelize{{Name | string.pascalsingular}}Repo.ts"
+          }
+        },
+        {
+          "Id": "75jm5Xj0",
+          "Name": "IdentifierCommand7",
+          "Type": "CodeTemplateCommand",
+          "Metadata": {
+            "CodeTemplateId": "yZY2WRg8",
+            "IsOneOff": true,
+            "FilePath": "src/modules/{{Parent.Name | string.camelsingular}}/domain/{{Name | string.camelsingular}}Id.ts"
+          }
+        },
+        {
+          "Id": "SaPEKz6h",
+          "Name": "RepoIndexCommand8",
+          "Type": "CodeTemplateCommand",
+          "Metadata": {
+            "CodeTemplateId": "r5vt6KT5",
+            "IsOneOff": true,
+            "FilePath": "src/modules/{{Parent.Name | string.camelsingular}}/repos/index.ts"
+          }
+        }
+      ],
+      "IsCollection": true,
+      "Cardinality": "OneOrMany",
+      "AutoCreate": true
+    }
+  ],
+  "Automation": [
+    {
+      "Id": "5DhrMHhf",
+      "Name": "Go",
+      "Type": "CommandLaunchPoint",
+      "Metadata": {
+        "CommandIds": "Gb3r11qG;XxMmzS0H;x664EbyV;eZYU0UWX;VsEhhtp3;f4m3qHck;75jm5Xj0;SaPEKz6h;VUbQMgMU;V3CskeRB;rmWtB8Mg;5M93B0Sd;KcSe1axf"
+      }
+    }
+  ],
+  "DisplayName": "SubDomain",
+  "ToolkitVersion": {
+    "Current": "0.4.0",
+    "LastChanges": "NoChange"
+  }
+}
